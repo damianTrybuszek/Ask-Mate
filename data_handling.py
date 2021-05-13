@@ -1,5 +1,6 @@
 import os
 import csv
+import util as util
 
 DATA_FILE_PATH_QUESTIONS = os.getenv('DATA_FILE_PATH') if 'DATA_FILE_PATH' in os.environ else 'sample_data\\question.csv'
 DATA_FILE_PATH_ANSWERS = os.getenv('DATA_FILE_PATH') if 'DATA_FILE_PATH' in os.environ else 'sample_data\\answer.csv'
@@ -37,3 +38,14 @@ def bubble_sort(numbers):
             for j in range(n-i-1):
                 if numbers[j][0] > numbers[j+1][0]:
                     numbers[j], numbers[j+1] = numbers[j+1], numbers[j]
+
+def save_question(new_question_input):
+    data_questions = get_questions()
+    new_question_input["id"] = str(len(data_questions)+1)
+    new_question_input["submission_time"] = str(util.get_unix_timestamp())
+    new_question_input["view_number"] = "0"
+    new_question_input["vote_number"] = "0"
+    with open(DATA_FILE_PATH_QUESTIONS, 'a') as file:
+        writer = csv.DictWriter(file, fieldnames=get_headers_questions(), delimiter=",")
+        writer.writerow(new_question_input)
+

@@ -1,5 +1,6 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request, redirect, url_for
 import data_handling
+import util as util
 
 app = Flask(__name__)
 
@@ -38,6 +39,15 @@ def display(question_id):
             data_handling.bubble_sort(answers_to_questions)
 
     return render_template("display.html", question=question_to_display, answers=answers_to_questions, headers=headers)
+
+
+@app.route("/add_question", methods=["POST", "GET"])
+def add_question():
+    if request.method == "POST":
+        new_question_input = dict(request.form)
+        data_handling.save_question(new_question_input)
+        return redirect(f"/question/{new_question_input['id']}")
+    return render_template("add_question.html")
 
 if __name__ =="__main__":
     app.run(debug=True)
