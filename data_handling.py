@@ -13,8 +13,13 @@ def get_questions():
             question_list.append(row)
     return question_list
 
-def get_headers():
+def get_headers_questions():
     with open(DATA_FILE_PATH_QUESTIONS) as file:
+        lines = file.readlines()
+        return lines[0].split(",")
+
+def get_headers_answers():
+    with open(DATA_FILE_PATH_ANSWERS) as file:
         lines = file.readlines()
         return lines[0].split(",")
     
@@ -26,6 +31,9 @@ def get_answers():
             answer_list.append(row)
     return answer_list
 
-
-
-
+def bubble_sort(numbers):
+    n = len(numbers)
+    for i in range(n-1):
+            for j in range(n-i-1):
+                if numbers[j][0] > numbers[j+1][0]:
+                    numbers[j], numbers[j+1] = numbers[j+1], numbers[j]
