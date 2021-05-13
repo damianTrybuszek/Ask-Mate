@@ -1,12 +1,13 @@
-from flask import Flask, render_template
-import data_handling
+from flask import Flask, render_template, request, redirect, url_for
+import data_handling as data_handling
+import util as util
 
 app = Flask(__name__)
 
 
 @app.route("/")
 def hello():
-    return "Hello !"
+    return render_template('main_page.html')
 
 @app.route("/list")
 def list():
@@ -28,7 +29,7 @@ def display(question_id):
                 question_to_display = question
         headers = data_handling.get_headers_questions()
 
-    if question_id !=0:
+    if question_id != 0:
         for answer in answer_list:
             if answer["question_id"] == question_id:
                 temp_list = [answer["vote_number"], answer["message"]]
@@ -38,6 +39,16 @@ def display(question_id):
             data_handling.bubble_sort(answers_to_questions)
 
     return render_template("display.html", question=question_to_display, answers=answers_to_questions, headers=headers)
+
+
+@app.route("/question/<question_id>/new-answer", methods=["GET", "POST"])
+def post_an_answer(question_id):
+    if request.method == "POST":
+        answer = dict(request.form)
+        data_handling.save_answer(question_id, answer)
+        return redirect( f"/question/{answer['question_id']}")
+    return render_template("post_an_answer.html", question_id=question_id)
+
 
 if __name__ =="__main__":
     app.run(debug=True)
