@@ -14,7 +14,7 @@ def get_questions():
     return question_list
 
 def get_headers():
-    with open(DATA_FILE_PATH) as file:
+    with open(DATA_FILE_PATH_QUESTIONS) as file:
         lines = file.readlines()
         return lines[0].split(",")
     
