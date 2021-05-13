@@ -4,7 +4,6 @@ import util as util
 
 app = Flask(__name__)
 
-
 @app.route("/")
 def hello():
     return render_template('main_page.html')
@@ -40,6 +39,15 @@ def display(question_id):
 
     return render_template("display.html", question=question_to_display, answers=answers_to_questions, headers=headers)
 
+
+
+@app.route("/add_question", methods=["POST", "GET"])
+def add_question():
+    if request.method == "POST":
+        new_question_input = dict(request.form)
+        data_handling.save_question(new_question_input)
+        return redirect(f"/question/{new_question_input['id']}")
+    return render_template("add_question.html")
 
 @app.route("/question/<question_id>/new-answer", methods=["GET", "POST"])
 def post_an_answer(question_id):
