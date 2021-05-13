@@ -16,12 +16,15 @@
         {% for element in question_list[::-1] %}
     <tr>
             {% for key in element %}
-                <td>{{ element[key] }}</td>
+                {% if key == "id" %}
+                    <td><a href="/question/{{ element[key] }}">{{ element[key] }}</a></td>
+                {% else %}
+                    <td>{{ element[key] }}</td>
+                {% endif %}
             {% endfor %}
     </tr>
         {% endfor %}
 
 </table>
-
 </body>
 </html>
