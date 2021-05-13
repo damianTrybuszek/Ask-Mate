@@ -23,8 +23,8 @@ def get_answers():
     with open(DATA_FILE_PATH_ANSWERS) as file:
         reader = csv.DictReader(file)
         for row in reader:
-            question_list.append(row)
-    return question_list
+            answer_list.append(row)
+    return answer_list
 
 
 
