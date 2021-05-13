@@ -32,6 +32,16 @@ def get_answers():
             answer_list.append(row)
     return answer_list
 
+def save_answer(question_id, answer):
+    data_list = get_answers()
+    answer["submission_time"] = str(util.get_unix_timestamp())
+    answer['id'] = str(len(data_list)+1)
+    answer['vote_number'] = "0"
+    answer['question_id'] = question_id
+    with open(DATA_FILE_PATH_ANSWERS, 'a') as file:
+        writer = csv.DictWriter(file, fieldnames=get_headers_answers(), delimiter=",")
+        writer.writerow(answer)
+
 def bubble_sort(numbers):
     n = len(numbers)
     for i in range(n-1):
