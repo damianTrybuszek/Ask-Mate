@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>List questions</title>
+</head>
+<body>
+    <h1>Hello dear user!</h1>
+<table border="1px">
+    <tr>
+        {% for element in headers %}
+            <td>{{ element }}</td>
+        {% endfor %}
+    </tr>
+
+        {% for element in question_list[::-1] %}
+    <tr>
+            {% for key in element %}
+         {% if key == "id" %}
+                    <td><a href="/question/{{ element[key] }}">{{ element[key] }}</a></td>
+                {% else %}
+                    <td>{{ element[key] }}</td>
+                {% endif %}
+            {% endfor %}
+    </tr>
+        {% endfor %}
+
+</table>
+<a href="/add_question"><h3>Add a question!</h3></a>
+</body>
+</html>
