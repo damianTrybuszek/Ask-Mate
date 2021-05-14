@@ -14,32 +14,11 @@ def list():
     headers = data_handling.get_headers_questions()
     return render_template("list.html", question_list=question_list, headers=headers)
 
-
 @app.route("/question/<question_id>")
 def display(question_id):
-    question_list = data_handling.get_questions()
-    answer_list = data_handling.get_answers()
-    headers = data_handling.get_headers_questions()
-    answers_to_questions = []
-    if question_id:
-        question_to_display = "0"
-        for question in question_list:
-            if question["id"] == question_id:
-                question_to_display = question
-        headers = data_handling.get_headers_questions()
-
-    if question_id != 0:
-        for answer in answer_list:
-            if answer["question_id"] == question_id:
-                temp_list = [answer["vote_number"], answer["message"]]
-                answers_to_questions.append(temp_list)
-
-        if len(answers_to_questions) > 0:
-            data_handling.bubble_sort(answers_to_questions)
-
-    return render_template("display.html", question=question_to_display, answers=answers_to_questions, headers=headers)
-
-
+    question_to_display = util.get_question_to_display(question_id)
+    answers_to_questions = util.get_answers(question_id)
+    return render_template("display.html", question=question_to_display, answers=answers_to_questions)
 
 @app.route("/add_question", methods=["POST", "GET"])
 def add_question():
