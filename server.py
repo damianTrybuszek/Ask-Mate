@@ -6,12 +6,17 @@ app = Flask(__name__)
 
 @app.route("/")
 def hello():
-    return render_template('main_page.html')
+    return render_template('index.html')
 
-@app.route("/list")
+@app.route("/list", methods=["POST", "GET"])
 def list():
     question_list = data_handling.get_questions()
     headers = data_handling.get_headers_questions()
+    direction = "asc"
+    if request.method == "POST":
+        header = request.form
+        util.sort_table(header, direction, question_list)
+
     return render_template("list.html", question_list=question_list, headers=headers)
 
 

@@ -1,8 +1,14 @@
 <!DOCTYPE html>
+
+{% extends "base.html" %}
+{% block title %} Display a question {% endblock %}
+
+{% block content %}
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Display a question</title>
+<!--    <title>Display a question</title>-->
 </head>
 <p>
     {% if question == "0" %}
@@ -38,3 +44,4 @@
 
 </body>
 </html>
+{% endblock %}
