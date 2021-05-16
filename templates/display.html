@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %} Display a question {% endblock %}
+
+{% block content %}
+<p>
+    {% if question == "0" %}
+        <h1 class="header">There is no question with such ID.</h1>
+    {% else %}
+        <h1 class="header"> This is a question with id: {{ question["id"] }}</h1>
+        <hr>
+        <h4 class="header">Title of the question:</h4>
+        <h2 class="header">{{ question["title"] }}</h2>
+        <hr>
+        <h4 class="header">The question message: </h4>
+        <h3 class="header"><pre>{{ question["message"] }}</pre></h3>
+        <hr>
+            {% if answers|length > 0 %}
+                <h3 class="header">Answer list: </h3>
+                <table class="table__general" border="1px">
+                    <tr>
+                        <th class="table__header">Vote numbers</th>
+                        <th class="table__header">Answer</th>
+                        <th class="table__header">Delete the answer</th>
+                    </tr>
+                    {% for answer in answers %}
+                        <tr>
+                            <td>{{answer['vote_number']}}</td>
+                            <td>{{answer['message']}}</td>
+                            <td align="center"><a href="/answer/{{ answer['id'] }}/delete">DELETE</a></td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            {% else %}
+                <h2 class="header">There is no answer yet! </h2>
+            {% endif %}
+        {% endif %}
+
+<hr>
+<a href="/question/{{ question["id"] }}/new-answer"><h2 class="header">Post a new answer!</h2></a></br>
+<a href="/question/{{ question["id"] }}/edit"><h2 class="header">Edit this question!</h2></a></br>
+<a href="/list"><h2 class="header">Go to questions list page!</h2></a></br>
+<a href="/question/{{ question["id"] }}/delete"<h2 class="header">Delete this question</h2></a></br>
+
+{% endblock %}
