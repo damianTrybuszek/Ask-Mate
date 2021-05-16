@@ -108,5 +108,23 @@ def delete_question(question_id):
     return render_template("delete_question.html", question_id=question_id)
 
 
+@app.route("/question/<question_id>/vote_up", methods=["GET", "POST"])
+def questions_vote_up(question_id):
+    question = data_handling.get_question_by_id(question_id)
+    if request.method == "POST":
+        if 'vote_up' in request.form:
+            data_handling.question_vote_up(question)
+    return redirect("/list")
+
+
+@app.route("/question/<question_id>/vote_down", methods=["GET", "POST"])
+def questions_vote_down(question_id):
+    question = data_handling.get_question_by_id(question_id)
+    if request.method == "POST":
+        if 'vote_down' in request.form:
+            data_handling.question_vote_down(question)
+    return redirect("/list")
+
+
 if __name__ == "__main__":
     app.run(debug=True)

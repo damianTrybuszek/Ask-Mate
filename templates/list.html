@@ -10,6 +10,7 @@
             {{ element }}
         </th>
         {% endfor %}
+        <th></th>
     </tr>
 
         {% for element in question_list[::-1] %}
@@ -21,6 +22,12 @@
                     <td class="table__cell">{{ element[key] }}</td>
                 {% endif %}
             {% endfor %}
+        <form action="/question/{{ element['id'] }}/vote_up" method="POST">
+            <td><button class="voteup__button" onclick="alert('Thank you! You have up-voted the question!')" type="submit" name="vote_up">Vote up</button>
+        </form>
+        <form action="/question/{{ element['id'] }}/vote_down" method="POST">
+            <button class="votedown__button" onclick="alert('Thank you! You have down-voted the question!')" type="submit" name="vote_down">Vote down</button></a></td>
+        </form>
     </tr>
         {% endfor %}
 </table>
