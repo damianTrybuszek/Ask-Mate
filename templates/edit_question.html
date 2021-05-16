@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+
+{% extends "base.html" %}
+{% block title %} Edit your question {% endblock %}
+
+{% block content %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+</head>
+    <h1>Edit your question:</h1>
+    <form action="{{ '' }}" method="POST"><br>
+        <label for="title">Title:</label><br/>
+        <input type="text" id="title" name="title" size="100" value="{{ question['title'] }}"><br><br/>
+        <label for="message">Message:</label><br/>
+        <textarea id="message" name="message" rows="25" cols="100">{{ question['message'] }}</textarea><br/>
+<!--        <input type="submit" value="Submit">-->
+        <button onclick="alert('Thank you! Your edits have been submited!')" type="submit">Save</button><br>
+
+<body>
+
+</body>
+</html>
+{% endblock %}

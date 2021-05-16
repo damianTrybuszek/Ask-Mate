@@ -41,6 +41,8 @@ def display(question_id):
         if len(answers_to_questions) > 0:
             data_handling.bubble_sort(answers_to_questions)
 
+    # question['message'] = question['message'].replace("\n", "\\n")
+
     return render_template("display.html", question=question_to_display, answers=answers_to_questions, headers=headers)
 
 
@@ -53,6 +55,7 @@ def add_question():
         return redirect(f"/question/{new_question_input['id']}")
     return render_template("add_question.html")
 
+
 @app.route("/question/<question_id>/new-answer", methods=["GET", "POST"])
 def post_an_answer(question_id):
     if request.method == "POST":
@@ -61,6 +64,16 @@ def post_an_answer(question_id):
         return redirect( f"/question/{answer['question_id']}")
     return render_template("post_an_answer.html", question_id=question_id)
 
+@app.route("/question/<question_id>/edit", methods=["GET", "POST"])
+def edit_question(question_id):
+    question = data_handling.get_question_by_id(question_id)
+    if request.method == "POST":
+        new_data = dict(request.form)
+        util.edit_single_question(question, new_data)
+        data_handling.overwrite_question(question)
+        return redirect( f"/question/{question_id}")
+    return render_template("edit_question.html", question=question, question_id=question_id)
 
-if __name__ =="__main__":
+
+if __name__ == "__main__":
     app.run(debug=True)
