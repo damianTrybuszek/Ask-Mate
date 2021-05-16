@@ -2,18 +2,17 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="88a8eb5a-2907-4559-bc6d-56add9f1c8de" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/templates/edit_question.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/delete_answer.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/data_handling.py" beforeDir="false" afterPath="$PROJECT_DIR$/data_handling.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/sample_data/answer.csv" beforeDir="false" afterPath="$PROJECT_DIR$/sample_data/answer.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/sample_data/question.csv" beforeDir="false" afterPath="$PROJECT_DIR$/sample_data/question.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server.py" beforeDir="false" afterPath="$PROJECT_DIR$/server.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/add_question.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/add_question.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/display.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/display.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/edit_question.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/edit_question.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/list.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/list.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/post_an_answer.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/post_an_answer.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/util.py" beforeDir="false" afterPath="$PROJECT_DIR$/util.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -48,7 +47,7 @@
             <value>
               <list>
                 <branch-info repo="$PROJECT_DIR$" source="main" />
-                <branch-info repo="$PROJECT_DIR$" source="sort_questions" />
+                <branch-info repo="$PROJECT_DIR$" source="delete_an_answer" />
               </list>
             </value>
           </entry>
@@ -147,7 +146,7 @@
     </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/Ask_Mate$Flask__server_py_.coverage" NAME="Flask (server.py) Coverage Results" MODIFIED="1621166642203" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Ask_Mate$Flask__server_py_.coverage" NAME="Flask (server.py) Coverage Results" MODIFIED="1621168143533" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Ask_Mate$Ask_Mate.coverage" NAME="Ask-Mate Coverage Results" MODIFIED="1620945464553" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>
