@@ -28,3 +28,8 @@ def sort_table(header, direction, questions_list):
             if searched_header == question[header]:
                 new_questions_list.append(question)
     return new_questions_list
+
+
+def edit_single_question(question, new_data):
+    for key in new_data:
+        question[key] = new_data[key]
