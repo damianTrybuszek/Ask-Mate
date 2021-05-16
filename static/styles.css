@@ -1,0 +1,20 @@
+.table__sortable {
+    border-spacing: 0;
+    background-color: #58E1F6;
+}
+
+.table__header {
+    background-color: #58FC62;
+}
+
+.table__row:nth-child(even) {
+    background-color: #e5e5e5;
+}
+
+.table__header {
+    text-align: center;
+}
+
+.table__cell {
+    padding: 8px;
+}

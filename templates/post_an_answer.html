@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+
+{% extends "base.html" %}
+{% block title %} New Answer {% endblock %}
+
+{% block content %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+<!--    <title>New Answer</title>-->
+</head>
+<body>
+    <h1>Please submit your answer</h1>
+    <form action="{{ '' }}" method="POST"><br>
+        <h2>Answer:<br/></h2>
+        <textarea name="message" placeholder="Please type your answer here" cols="100" rows="25" required></textarea><br>
+        <button type="reset">Reset</button>
+        <button onclick="alert('Thank you! You answer has been submited!')" type="submit">Save</button><br>
+    </form>
+</body>
+</html>
+
+{% endblock %}
