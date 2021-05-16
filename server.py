@@ -70,6 +70,7 @@ def post_an_answer(question_id):
         return redirect( f"/question/{answer['question_id']}")
     return render_template("post_an_answer.html", question_id=question_id)
 
+
 @app.route("/question/<question_id>/edit", methods=["GET", "POST"])
 def edit_question(question_id):
     question = data_handling.get_question_by_id(question_id)
@@ -92,6 +93,19 @@ def delete_answer(answer_id):
             return redirect(f"/question/{answer['question_id']}")
 
     return render_template("delete_answer.html", answer_id=answer_id)
+
+
+@app.route("/question/<question_id>/delete", methods=["GET", "POST"])
+def delete_question(question_id):
+    question = data_handling.get_question_by_id(question_id)
+    if request.method == "POST":
+        if 'yes_button' in request.form:
+            data_handling.delete_question(question)
+            return redirect("/list")
+        else:
+            return redirect(f"/question/{question['id']}")
+
+    return render_template("delete_question.html", question_id=question_id)
 
 
 if __name__ == "__main__":
