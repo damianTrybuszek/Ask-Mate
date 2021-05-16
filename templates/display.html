@@ -16,17 +16,22 @@
         <hr>
             {% if answers|length > 0 %}
                 <h3 class="header">Answer list: </h3>
-                <table class="table__general" border="1px">
-                    <tr>
-                        <th class="table__header">Vote numbers</th>
-                        <th class="table__header">Answer</th>
-                        <th class="table__header">Delete the answer</th>
+                <table border="1px" class="table__general">
+                    <tr class="table__header">
+                        <th>Vote numbers</th>
+                        <th>Answer</th>
+                        <th>Delete the answer</th>
+                        <th></th>
                     </tr>
                     {% for answer in answers %}
-                        <tr>
-                            <td>{{answer['vote_number']}}</td>
-                            <td>{{answer['message']}}</td>
-                            <td align="center"><a href="/answer/{{ answer['id'] }}/delete">DELETE</a></td>
+                        <tr class="table__row">
+                            <td class="table__cell">{{answer['vote_number']}}</td>
+                            <td class="table__cell">{{answer['message']}}</td>
+                            <td align="center", class="table__cell"><a href="/answer/{{ answer['question_id'] }}/delete">DELETE</a></td>
+                            <td width="1%"><form action="/answer/{{ answer['id'] }}/vote_up" method="POST">
+                            <button class="voteup__button" onclick="alert('Thank you! You have up-voted the answer!')" type="submit" name="vote_up">Vote up</button></form>
+                            <form action="/answer/{{ answer['id'] }}/vote_down" method="POST">
+                            <button class="votedown__button" onclick="alert('Thank you! You have down-voted the answer!')" type="submit" name="vote_down">Vote down</button></form></td>
                         </tr>
                     {% endfor %}
                 </table>

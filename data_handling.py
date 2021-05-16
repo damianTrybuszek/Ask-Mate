@@ -112,12 +112,7 @@ def save_question(new_question_input):
         writer.writerow(new_question_input)
 
 
-def bubble_sort(numbers):
-    n = len(numbers)
-    for i in range(n-1):
-        for j in range(n-i-1):
-            if numbers[j][0] > numbers[j+1][0]:
-                numbers[j], numbers[j+1] = numbers[j+1], numbers[j]
+
 
 
 def get_max_id(iterable_of_dicts):
@@ -162,3 +157,22 @@ def question_vote_down(question):
             temp_vote_number = int(element["vote_number"]) - 1
             element["vote_number"] = str(temp_vote_number)
     file_overwrite(questions_list, headers, DATA_FILE_PATH_QUESTIONS)
+
+def answer_vote_up(answer):
+    answers_list = get_answers()
+    headers = get_headers_answers()
+    for element in answers_list:
+        if element['id'] == answer['id']:
+            temp_vote_number = int(element["vote_number"]) + 1
+            element["vote_number"] = str(temp_vote_number)
+    file_overwrite(answers_list, headers, DATA_FILE_PATH_ANSWERS)
+
+def answer_vote_down(answer):
+    answers_list = get_answers()
+    headers = get_headers_answers()
+    for element in answers_list:
+        if element['id'] == answer['id']:
+            temp_vote_number = int(element["vote_number"]) - 1
+            element["vote_number"] = str(temp_vote_number)
+    file_overwrite(answers_list, headers, DATA_FILE_PATH_ANSWERS)
+
