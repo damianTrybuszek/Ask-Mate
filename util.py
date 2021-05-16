@@ -7,15 +7,10 @@ def get_unix_timestamp():
     return int(time_stamp)
 
 
-def direction_change():
-    if direction == "asc":
-         direction = "desc"
-    else:
-        direction = "asc"
-    return direction
-
-
 def sort_table(header, direction, questions_list):
+    if header == None or direction == None:
+        return questions_list
+
     headers = []
     new_questions_list = []
 
@@ -23,15 +18,13 @@ def sort_table(header, direction, questions_list):
         headers.append(element[header])
 
     if direction == "asc":
-        headers = sorted(headers)
-    else:
         headers = sorted(headers)[::-1]
+    else:
+        headers = sorted(headers)
 
-    while len(headers) > 0:
-        searched_header = headers[0]
-        for i in range(len(questions_list)):
-            if searched_header == questions_list[i][header]:
-                new_questions_list.append(questions_list[i])
-                questions_list.pop(i)
-
-    direction_change()
+    for i in range(len(headers)):
+        searched_header = headers[i]
+        for question in questions_list:
+            if searched_header == question[header]:
+                new_questions_list.append(question)
+    return new_questions_list
