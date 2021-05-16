@@ -6,6 +6,14 @@ DATA_FILE_PATH_QUESTIONS = os.getenv('DATA_FILE_PATH') if 'DATA_FILE_PATH' in os
 DATA_FILE_PATH_ANSWERS = os.getenv('DATA_FILE_PATH') if 'DATA_FILE_PATH' in os.environ else 'sample_data\\answer.csv'
 
 
+def file_overwrite(iterable, headers, filename):
+    with open(filename, 'w', newline='') as file:
+        writer = csv.DictWriter(file, fieldnames=headers, delimiter=",")
+        file.write(",".join(headers)+"\n")
+        for item in iterable:
+            writer.writerow(item)
+
+
 def get_questions():
     question_list = []
     with open(DATA_FILE_PATH_QUESTIONS) as file:
@@ -136,3 +144,21 @@ def delete_question(question):
         file.write(",".join(headers)+"\n")
         for question in questions_list:
             writer.writerow(question)
+
+def question_vote_up(question):
+    questions_list = get_questions()
+    headers = get_headers_questions()
+    for element in questions_list:
+        if element['id'] == question['id']:
+            temp_vote_number = int(element["vote_number"]) + 1
+            element["vote_number"] = str(temp_vote_number)
+    file_overwrite(questions_list, headers, DATA_FILE_PATH_QUESTIONS)
+
+def question_vote_down(question):
+    questions_list = get_questions()
+    headers = get_headers_questions()
+    for element in questions_list:
+        if element['id'] == question['id']:
+            temp_vote_number = int(element["vote_number"]) - 1
+            element["vote_number"] = str(temp_vote_number)
+    file_overwrite(questions_list, headers, DATA_FILE_PATH_QUESTIONS)

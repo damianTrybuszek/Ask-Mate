@@ -9,6 +9,7 @@
     border-spacing: 0;
     background-color: #58E1F6;
     margin: 20px;
+    width: 70%;
 }
 
 .table__header {
@@ -65,4 +66,17 @@
 
 .no__button{
     margin:0px;
+}
+
+.voteup__button{
+    text-align: center;
+    color: #0db46a;
+    width: 55px;
+    height: 55px;
+}
+
+.votedown__button{
+    text-align: center;
+    width: 55px;
+    height: 55px;
 }

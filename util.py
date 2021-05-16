@@ -33,3 +33,11 @@ def sort_table(header, direction, questions_list):
 def edit_single_question(question, new_data):
     for key in new_data:
         question[key] = new_data[key]
+
+def question_vote_up(question):
+    temp_vote_number = int(question["vote_number"]) + 1
+    question["vote_number"] = str(temp_vote_number)
+
+def question_vote_down(question):
+    temp_vote_number = int(question["vote_number"]) - 1
+    question["vote_number"] = str(temp_vote_number)
