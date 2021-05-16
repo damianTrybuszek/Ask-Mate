@@ -1,10 +1,19 @@
+.table__general{
+    border-spacing: 0;
+    background-color: #58E1F6;
+    margin: 20px;
+    width: 50%;
+}
+
 .table__sortable {
     border-spacing: 0;
     background-color: #58E1F6;
+    margin: 20px;
 }
 
 .table__header {
     background-color: #58FC62;
+
 }
 
 .table__row:nth-child(even) {
@@ -17,4 +26,43 @@
 
 .table__cell {
     padding: 8px;
+}
+
+.title__input {
+    margin:20px;
+    font-weight: bold;
+}
+
+.textarea__input {
+    margin:20px;
+    font-weight: bold;
+}
+
+.submit__button{
+    margin:0px;
+    background-color:#97f7cc;
+    color: #0db46a;
+    font-size: 18px;
+}
+
+.reset__button{
+    margin: 20px;
+}
+
+.header{
+    margin: 20px;
+}
+
+.label{
+    margin-left:20px;
+    font-weight: bold
+}
+.yes__button{
+    margin:20px;
+    color: #0db46a;
+    font-size: 18px;
+}
+
+.no__button{
+    margin:0px;
 }

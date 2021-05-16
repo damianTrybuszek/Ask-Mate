@@ -113,9 +113,26 @@ def bubble_sort(numbers):
 
 
 def get_max_id(iterable_of_dicts):
+    if len(iterable_of_dicts) <= 0:
+        return 1
     max_id = 0
+    max_index = 0
     for index, element in enumerate(iterable_of_dicts):
         if int(element['id']) > max_id:
             max_id = int(element['id'])
             max_index = index
     return iterable_of_dicts[max_index]['id']
+
+
+def delete_question(question):
+    questions_list = get_questions()
+    headers = get_headers_questions()
+    for i in range(len(questions_list)):
+        if questions_list[i]['id'] == question['id']:
+            questions_list.pop(i)
+            break
+    with open(DATA_FILE_PATH_QUESTIONS, 'w', newline='') as file:
+        writer = csv.DictWriter(file, fieldnames=headers, delimiter=",")
+        file.write(",".join(headers)+"\n")
+        for question in questions_list:
+            writer.writerow(question)

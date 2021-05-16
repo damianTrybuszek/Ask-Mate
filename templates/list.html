@@ -1,16 +1,8 @@
-<!DOCTYPE html>
-
 {% extends "base.html" %}
 {% block title %} List questions {% endblock %}
 
 {% block content %}
-
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-</head>
-<body>
-    <h1>Hello dear user!</h1>
+<h1 class="header">Hello dear user!</h1>
 <table border="1px" class="table__sortable">
     <tr class="table__header">
         {% for element in headers %}
@@ -31,11 +23,8 @@
             {% endfor %}
     </tr>
         {% endfor %}
-
 </table>
 
-<a href="/add_question"><h3>Add a question!</h3></a>
+<a href="/add_question"><h3 class="header">Add a question!</h3></a>
 
-</body>
-</html>
 {% endblock %}
