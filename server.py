@@ -12,10 +12,9 @@ def hello():
 def list():
     question_list = data_handling.get_questions()
     headers = data_handling.get_headers_questions()
-    direction = "asc"
-    if request.method == "POST":
-        header = request.form
-        util.sort_table(header, direction, question_list)
+    order_by = request.args.get('order_by', None)
+    order_direction = request.args.get('order_direction', None)
+    question_list = util.sort_table(order_by, order_direction, question_list)
 
     return render_template("list.html", question_list=question_list, headers=headers)
 
