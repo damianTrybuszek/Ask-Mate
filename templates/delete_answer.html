@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+
+{% extends "base.html" %}
+{% block title %} Delete an answer {% endblock %}
+
+{% block content %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+</head>
+<body>
+    <form action="{{ '' }}" method="POST"><br>
+        <h1>Would you like to delete your answer?</h1>
+        <button onclick="alert('Thank you! Your edits have been submited!')" type="submit" name="yes_button" value="yes">YES</button>
+        <button type="submit" name="no_button" value="no">NO</button><br>
+
+</body>
+</html>
+{% endblock %}

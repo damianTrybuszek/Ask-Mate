@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+
+{% extends "base.html" %}
+{% block title %} List questions {% endblock %}
+
+{% block content %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <h1>Hello dear user!</h1>
+<table border="1px" class="table__sortable">
+    <tr class="table__header">
+        {% for element in headers %}
+        <th class="table__cell">
+            {{ element }}
+        </th>
+        {% endfor %}
+    </tr>
+
+        {% for element in question_list[::-1] %}
+    <tr class="table__row">
+            {% for key in element %}
+                {% if key == "id" %}
+                    <td class="table__cell"><a href="/question/{{ element[key] }}">{{ element[key] }}</a></td>
+                {% else %}
+                    <td class="table__cell">{{ element[key] }}</td>
+                {% endif %}
+            {% endfor %}
+    </tr>
+        {% endfor %}
+
+</table>
+
+<a href="/add_question"><h3>Add a question!</h3></a>
+
+</body>
+</html>
+{% endblock %}
