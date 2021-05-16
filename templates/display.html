@@ -27,11 +27,13 @@
                     <tr>
                         <th>Vote numbers</th>
                         <th>Answer</th>
+                        <th>Delete the answer</th>
                     </tr>
                     {% for answer in answers %}
                         <tr>
-                            <td>{{answer[0]}}</td>
-                            <td>{{answer[1]}}</td>
+                            <td>{{answer['vote_number']}}</td>
+                            <td>{{answer['message']}}</td>
+                            <td align="center"><a href="/answer/{{ answer['id'] }}/delete">DELETE</a></td>
                         </tr>
                     {% endfor %}
                 </table>
