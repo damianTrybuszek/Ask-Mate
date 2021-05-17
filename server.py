@@ -12,8 +12,8 @@ def hello():
 def list():
     question_list = data_handling.get_questions()
     headers = data_handling.get_headers_questions()
-    order_by = request.args.get('order_by', None)
-    order_direction = request.args.get('order_direction', None)
+    order_by = request.args.get('order_by', 'id')
+    order_direction = request.args.get('order_direction', 'desc')
     question_list = util.sort_table(order_by, order_direction, question_list)
 
     return render_template("list.html", question_list=question_list, headers=headers)
