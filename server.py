@@ -15,14 +15,13 @@ def list():
     order_by = request.args.get('order_by', None)
     order_direction = request.args.get('order_direction', None)
     question_list = util.sort_table(order_by, order_direction, question_list)
-
-    return render_template("list.html", question_list=question_list, headers=headers)
+    question_list_to_show = util.get_question_list_with_real_time(question_list)
+    return render_template("list.html", question_list=question_list_to_show, headers=headers)
 
 @app.route("/question/<question_id>")
 def display(question_id):
     question_to_display, headers = util.get_questions_to_display(question_id)
     final_answer_list = util.get_answer_to_display(question_id)
-
     return render_template("display.html", question=question_to_display, answers=final_answer_list, headers=headers)
 
 @app.route("/add_question", methods=["POST", "GET"])
