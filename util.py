@@ -1,11 +1,14 @@
 import time
 import data_handling as data_handling
-
+from datetime import datetime
+import copy
 
 def get_unix_timestamp():
     time_stamp = time.time()
     return int(time_stamp)
 
+def get_real_time(unix_time):
+    return datetime.fromtimestamp(int(unix_time))
 
 def sort_table(header, direction, questions_list):
     if header == None or direction == None:
@@ -29,7 +32,6 @@ def sort_table(header, direction, questions_list):
                 new_questions_list.append(question)
     return new_questions_list
 
-
 def edit_single_question(question, new_data):
     for key in new_data:
         question[key] = new_data[key]
@@ -49,7 +51,7 @@ def get_questions_to_display(question_id):
         for question in question_list:
             if question["id"] == question_id:
                 question_to_display = question
-        headers = data_handling.get_headers_questions()
+                headers = data_handling.get_headers_questions()
     return question_to_display, headers
 
 def get_answer_to_display(question_id):
@@ -60,6 +62,7 @@ def get_answer_to_display(question_id):
         for answer in answer_list:
             if answer["question_id"] == question_id:
                 # temp_list = [answer["vote_number"], answer["message"], answer['id']]
+                answer["submission_time"]=get_real_time(answer["submission_time"])
                 answers_to_questions.append(answer)
 
         if len(answers_to_questions) > 0:
@@ -72,6 +75,13 @@ def get_answer_to_display(question_id):
                     if answer['vote_number'] == str(votes):
                         final_answer_list.append(answer)
     return final_answer_list
+
+def get_question_list_with_real_time(question_list):
+    new_question_list = copy.deepcopy(question_list)
+    for element in new_question_list:
+        element["submission_time"] = get_real_time(element["submission_time"])
+    return new_question_list
+
 
 def bubble_sort(numbers):
     n = len(numbers)
