@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %} Add question {% endblock %}
+
+{% block content %}
+
+<h2 class="header">Please input your question</h2>
+<p>
+<form action="" method="POST">
+    <div class="title__input">
+        <label for="title">Title: </label><br/>
+        <input type="text" name="title" id="title" placeholder="The title of the question" required>
+    </div>
+
+    <div class="textarea__input">
+        <label for="message">Your question: </label><br/>
+        <textarea type="text" name="message" id="message" placeholder="Type your question here" cols="100" rows="25" required></textarea>
+    </div>
+    <button type="reset" class="reset__button">Reset</button>
+    <button autofocus onclick="alert('Your question has been submitted! Thank you!')" type="submit"
+            class ="submit__button">
+        Submit
+    </button>
+</form>
+</p>
+
+{% endblock %}

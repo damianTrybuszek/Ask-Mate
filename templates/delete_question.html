@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block title %} Delete a question {% endblock %}
+
+{% block content %}
+    <form action="#" method="POST"><br>
+        <h1 class="header">Would you like to delete this question?</h1>
+        <button class="yes__button" onclick="alert('Thank you! This question has been deleted!')" type="submit" name="yes_button" value="yes">YES</button>
+        <button class="no__button" type="submit" name="no_button" value="no">NO</button><br>
+    </form>
+{% endblock %}
