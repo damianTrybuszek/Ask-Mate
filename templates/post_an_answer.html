@@ -1,16 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>New Answer</title>
-</head>
-<body>
-    <h1>Please submit your answer</h1>
-    <form action="{{ '' }}" method="POST"><br>
-        <h2>Answer:<br/></h2>
-        <textarea name="message" placeholder="Please type your answer here" cols="100" rows="25" required></textarea><br>
-        <button type="reset">Reset</button>
-        <button onclick="alert('Thank you! You answer has been submited!')" type="submit">Save</button><br>
+{% extends "base.html" %}
+{% block title %} New Answer {% endblock %}
+
+{% block content %}
+    <h1 class="header">Please submit your answer</h1>
+    <form action="#" method="POST">
+        <label class="label" for="message">Answer:</label><br/>
+        <textarea class="textarea__input" name="message" placeholder="Please type your answer here" cols="100" rows="25" required></textarea><br/>
+        <button class ="reset__button" type="reset">Reset</button>
+        <button class ="submit__button" onclick="alert('Thank you! You answer has been submited!')" type="submit">Save</button>
     </form>
-</body>
-</html>
+{% endblock %}

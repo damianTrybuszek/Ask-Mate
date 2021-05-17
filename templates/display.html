@@ -1,40 +1,49 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Display a question</title>
-</head>
+{% extends "base.html" %}
+{% block title %} Display a question {% endblock %}
+
+{% block content %}
 <p>
     {% if question == "0" %}
-        <h1>There is no question with such ID.</h1>
+        <h1 class="header">There is no question with such ID.</h1>
     {% else %}
-        <h1> This is a question with id: {{ question["id"] }}</h1>
-        <h4>Title of the question:</h4>
-        <h2>{{ question["title"] }}</h2>
-        <h4>The question message: </h4>
-        <h3>{{ question["message"] }}</h3>
+        <h1 class="header"> This is a question with id: {{ question["id"] }}</h1>
+        <hr>
+        <h4 class="header">Title of the question:</h4>
+        <h2 class="header">{{ question["title"] }}</h2>
+        <hr>
+        <h4 class="header">The question message: </h4>
+        <h3 class="header"><pre>{{ question["message"] }}</pre></h3>
+        <hr>
             {% if answers|length > 0 %}
-                <h3>Answer list: </h3>
-                <table border="1px">
-                    <tr>
+                <h3 class="header">Answer list: </h3>
+                <table border="1px" class="table__general">
+                    <tr class="table__header">
                         <th>Vote numbers</th>
                         <th>Answer</th>
+                        <th>Delete the answer</th>
+                        <th></th>
                     </tr>
                     {% for answer in answers %}
-                        <tr>
-                            <td>{{answer[0]}}</td>
-                            <td>{{answer[1]}}</td>
+                        <tr class="table__row">
+                            <td class="table__cell">{{answer['vote_number']}}</td>
+                            <td class="table__cell">{{answer['message']}}</td>
+                            <td align="center", class="table__cell"><a href="/answer/{{ answer['question_id'] }}/delete">DELETE</a></td>
+                            <td width="1%"><form action="/answer/{{ answer['id'] }}/vote_up" method="POST">
+                            <button class="voteup__button" onclick="alert('Thank you! You have up-voted the answer!')" type="submit" name="vote_up">Vote up</button></form>
+                            <form action="/answer/{{ answer['id'] }}/vote_down" method="POST">
+                            <button class="votedown__button" onclick="alert('Thank you! You have down-voted the answer!')" type="submit" name="vote_down">Vote down</button></form></td>
                         </tr>
                     {% endfor %}
                 </table>
             {% else %}
-                <h2>There is no answer yet! </h2>
+                <h2 class="header">There is no answer yet! </h2>
             {% endif %}
         {% endif %}
-<a href="/question/{{ question["id"] }}/new-answer"><h2>Post a new answer!</h2></a>
-<a href="/list"><h2>Go to questions list page!</h2></a>
+<hr>
 
+<a href="/question/{{ question["id"] }}/new-answer"><h2 class="header">Post a new answer!</h2></a></br>
+<a href="/question/{{ question["id"] }}/edit"><h2 class="header">Edit this question!</h2></a></br>
+<a href="/list"><h2 class="header">Go to questions list page!</h2></a></br>
+<a href="/question/{{ question["id"] }}/delete"<h2 class="header">Delete this question</h2></a></br>
 
-
-</body>
-</html>
+{% endblock %}

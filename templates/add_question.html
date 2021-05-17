@@ -1,37 +1,26 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Add question</title>
-</head>
+{% extends "base.html" %}
+{% block title %} Add question {% endblock %}
 
-<body>
-<h2>Please input your question</h2>
+{% block content %}
+
+<h2 class="header">Please input your question</h2>
 <p>
 <form action="" method="POST">
-    <div>
-        <label for="title">Title: </label>
+    <div class="title__input">
+        <label for="title">Title: </label><br/>
         <input type="text" name="title" id="title" placeholder="The title of the question" required>
     </div>
-    </br>
-    <div>
-        <label for="message">Your question: </label>
-        <textarea type="text" name="message" id="message" placeholder="Type your question here" cols="100" rows="25" required ></textarea>
+
+    <div class="textarea__input">
+        <label for="message">Your question: </label><br/>
+        <textarea type="text" name="message" id="message" placeholder="Type your question here" cols="100" rows="25" required></textarea>
     </div>
-</br>
-    <button type="reset">Reset</button>
+    <button type="reset" class="reset__button">Reset</button>
     <button autofocus onclick="alert('Your question has been submitted! Thank you!')" type="submit"
-            style="background-color:#97f7cc;
-                   color: #0db46a;
-                   font-size: 18px">
+            class ="submit__button">
         Submit
     </button>
 </form>
 </p>
 
-
-
-
-
-</body>
-</html>
+{% endblock %}
