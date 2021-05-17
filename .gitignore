@@ -8,6 +8,7 @@ __pycache__/
 
 
 
+.idea/
 Readme.md
 
 # Distribution / packaging
@@ -150,6 +151,5 @@ _mailinglist
 .tox/
 .cache/
 .pytest_cache/
-.idea/
 docs/_build/
 .vscode
