@@ -10,39 +10,30 @@ def get_unix_timestamp():
 def get_real_time(unix_time):
     return datetime.fromtimestamp(int(unix_time))
 
-def sort_table(header, direction, questions_list):
-    if header == None or direction == None:
-        return questions_list
-
-    headers = []
-    new_questions_list = []
-
-    for element in questions_list:
-        headers.append(element[header])
-
-    if direction == "asc":
-        headers = sorted(headers)[::-1]
+def sort_table(order_by, order_direction, questions_list):
+    if order_direction == "asc":
+        direction = True
     else:
-        headers = sorted(headers)
+        direction = False
 
-    for i in range(len(headers)):
-        searched_header = headers[i]
-        for question in questions_list:
-            if searched_header == question[header]:
-                new_questions_list.append(question)
-    return new_questions_list
+    return sorted(questions_list,
+                  key=lambda x: int(x[order_by]) if x[order_by].replace("-", "").isdigit()
+                  else x[order_by], reverse=direction)
 
 def edit_single_question(question, new_data):
     for key in new_data:
         question[key] = new_data[key]
 
+
 def question_vote_up(question):
     temp_vote_number = int(question["vote_number"]) + 1
     question["vote_number"] = str(temp_vote_number)
 
+
 def question_vote_down(question):
     temp_vote_number = int(question["vote_number"]) - 1
     question["vote_number"] = str(temp_vote_number)
+
 
 def get_questions_to_display(question_id):
     question_list = data_handling.get_questions()
@@ -53,6 +44,7 @@ def get_questions_to_display(question_id):
                 question_to_display = question
                 headers = data_handling.get_headers_questions()
     return question_to_display, headers
+
 
 def get_answer_to_display(question_id):
     answers_to_questions = []
@@ -76,6 +68,7 @@ def get_answer_to_display(question_id):
                         final_answer_list.append(answer)
     return final_answer_list
 
+
 def get_question_list_with_real_time(question_list):
     new_question_list = copy.deepcopy(question_list)
     for element in new_question_list:
@@ -85,7 +78,7 @@ def get_question_list_with_real_time(question_list):
 
 def bubble_sort(numbers):
     n = len(numbers)
-    for i in range(n-1):
-        for j in range(n-i-1):
-            if numbers[j] < numbers[j+1]:
-                numbers[j], numbers[j+1] = numbers[j+1], numbers[j]
+    for i in range(n - 1):
+        for j in range(n - i - 1):
+            if numbers[j] < numbers[j + 1]:
+                numbers[j], numbers[j + 1] = numbers[j + 1], numbers[j]

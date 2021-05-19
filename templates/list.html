@@ -10,6 +10,14 @@
         {% for element in headers %}
         <th class="table__cell">
             {{ element }}
+
+            <form action="/list?order_by={{ element }}&order_direction=asc" method="POST">
+            <button class="asc__button" type="submit" name="asc"><img class="arrows_up_down" src="/static/graphics/up_arrow.jpg"></button>
+            </form>
+
+            <form action="/list?order_by={{ element }}&order_direction=desc" method="POST">
+            <button class="desc__button" type="submit" name="desc"><img class="arrows_up_down" src="/static/graphics/down_arrow.jpg"></button>
+            </form>
         </th>
         {% endfor %}
         <th></th>
@@ -28,7 +36,7 @@
             <td><button class="voteup__button" onclick="alert('Thank you! You have up-voted the question!')" type="submit" name="vote_up">Vote up</button>
         </form>
         <form action="/question/{{ element['id'] }}/vote_down" method="POST">
-            <button class="votedown__button" onclick="alert('Thank you! You have down-voted the question!')" type="submit" name="vote_down">Vote down</button></a></td>
+            <button class="votedown__button" onclick="alert('Thank you! You have down-voted the question!')" type="submit" name="vote_down">Vote down</button></td>
         </form>
     </tr>
         {% endfor %}
