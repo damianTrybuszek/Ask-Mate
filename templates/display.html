@@ -19,6 +19,7 @@
                 <table border="1px" class="table__general">
                     <tr class="table__header">
                         <th>Vote numbers</th>
+                        <th>Submission time</th>
                         <th>Answer</th>
                         <th>Delete the answer</th>
                         <th></th>
@@ -26,6 +27,7 @@
                     {% for answer in answers %}
                         <tr class="table__row">
                             <td class="table__cell">{{answer['vote_number']}}</td>
+                            <td class="table__cell">{{answer['submission_time']}}</td>
                             <td class="table__cell">{{answer['message']}}</td>
                             <td align="center", class="table__cell"><a href="/answer/{{ answer['question_id'] }}/delete">DELETE</a></td>
                             <td width="1%"><form action="/answer/{{ answer['id'] }}/vote_up" method="POST">

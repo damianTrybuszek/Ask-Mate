@@ -15,14 +15,13 @@ def list():
     order_by = request.args.get('order_by', 'id')
     order_direction = request.args.get('order_direction', 'desc')
     question_list = util.sort_table(order_by, order_direction, question_list)
-
-    return render_template("list.html", question_list=question_list, headers=headers)
+    question_list_to_show = util.get_question_list_with_real_time(question_list)
+    return render_template("list.html", question_list=question_list_to_show, headers=headers)
 
 @app.route("/question/<question_id>")
 def display(question_id):
     question_to_display, headers = util.get_questions_to_display(question_id)
     final_answer_list = util.get_answer_to_display(question_id)
-
     return render_template("display.html", question=question_to_display, answers=final_answer_list, headers=headers)
 
 @app.route("/add_question", methods=["POST", "GET"])
@@ -103,7 +102,7 @@ def answers_vote_up(answer_id):
     if request.method == "POST":
         if 'vote_up' in request.form:
             data_handling.answer_vote_up(answer)
-    return redirect("/list")
+    return redirect(f"/question/{answer['question_id']}")
 
 @app.route("/answer/<answer_id>/vote_down", methods=["GET", "POST"])
 def answers_vote_down(answer_id):
@@ -111,7 +110,7 @@ def answers_vote_down(answer_id):
     if request.method == "POST":
         if 'vote_down' in request.form:
             data_handling.answer_vote_down(answer)
-    return redirect("/list")
+    return redirect(f"/question/{answer['question_id']}")
 
 
 if __name__ == "__main__":

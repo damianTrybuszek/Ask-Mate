@@ -13,7 +13,6 @@ def file_overwrite(iterable, headers, filename):
         for item in iterable:
             writer.writerow(item)
 
-
 def get_questions():
     question_list = []
     with open(DATA_FILE_PATH_QUESTIONS) as file:
@@ -111,10 +110,6 @@ def save_question(new_question_input):
         writer = csv.DictWriter(file, fieldnames=get_headers_questions(), delimiter=",")
         writer.writerow(new_question_input)
 
-
-
-
-
 def get_max_id(iterable_of_dicts):
     if len(iterable_of_dicts) <= 0:
         return 1
@@ -125,7 +120,6 @@ def get_max_id(iterable_of_dicts):
             max_id = int(element['id'])
             max_index = index
     return iterable_of_dicts[max_index]['id']
-
 
 def delete_question(question):
     questions_list = get_questions()
