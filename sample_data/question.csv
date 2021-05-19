@@ -1,5 +1,7 @@
 id,submission_time,view_number,vote_number,title,message,image
-1,1493368154,29,7,How to make lists in Python?,"I am totally new to this, any hints?",
+1,1493368154,29,7,How to make lists in Python?,"I am totally new to this, any hints?
+
+CHANGED",
 2,1493068124,15,10,Wordpress loading multiple jQuery Versions,"I developed a plugin that uses the jquery booklet plugin (http://builtbywill.com/booklet/#/) this plugin binds a function to $ so I cann call $('.myBook').booklet();
 
 I could easy managing the loading order with wp_enqueue_script so first I load jquery then I load booklet so everything is fine.
@@ -17,4 +19,5 @@ This is the code I'm using to draw the image (that works on web/desktop but not 
 CHANGED AGAIN",
 5,1621172975,0,-3,Hello,Testity test test,
 6,1621183506,0,1,New question,How to change that bulb?,
-7,1621184419,0,4,Question,What is the meaning of life?,
+7,1621184419,0,5,Question,What is the meaning of life?,
+8,1621365028,0,1,WHAT AM I DOING HERE,WHY DOES MY code not work LOL,
