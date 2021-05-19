@@ -3,12 +3,15 @@ import data_handling as data_handling
 from datetime import datetime
 import copy
 
+
 def get_unix_timestamp():
     time_stamp = time.time()
     return int(time_stamp)
 
+
 def get_real_time(unix_time):
     return datetime.fromtimestamp(int(unix_time))
+
 
 def sort_table(order_by, order_direction, questions_list):
     if order_direction == "asc":
@@ -19,6 +22,7 @@ def sort_table(order_by, order_direction, questions_list):
     return sorted(questions_list,
                   key=lambda x: int(x[order_by]) if x[order_by].replace("-", "").isdigit()
                   else x[order_by], reverse=direction)
+
 
 def edit_single_question(question, new_data):
     for key in new_data:
