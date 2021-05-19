@@ -3,24 +3,37 @@
 
 {% block content %}
 <h1 class="header">Hello There!</h1>
-<h3 align="center">Currently available list of questions</h3>
+<caption>Currently available list of questions</caption>
 <hr>
 <table border="1px" class="table__sortable">
     <tr class="table__header">
         {% for element in headers %}
-        <th class="table__cell">
-            {{ element }}
+            {%  if element == "image" %}
+                <th class="table__cell" colspan="2">
+                    {{ element }}
 
-            <form action="/list?order_by={{ element }}&order_direction=asc" method="POST">
-            <button class="asc__button" type="submit" name="asc"><img class="arrows_up_down" src="/static/graphics/up_arrow.jpg"></button>
-            </form>
+                    <form action="/list?order_by={{ element }}&order_direction=asc" method="POST">
+                    <button class="asc__button" type="submit" name="asc"><img class="arrows_up_down" src="/static/graphics/up_arrow.jpg"></button>
+                    </form>
 
-            <form action="/list?order_by={{ element }}&order_direction=desc" method="POST">
-            <button class="desc__button" type="submit" name="desc"><img class="arrows_up_down" src="/static/graphics/down_arrow.jpg"></button>
-            </form>
-        </th>
+                    <form action="/list?order_by={{ element }}&order_direction=desc" method="POST">
+                    <button class="desc__button" type="submit" name="desc"><img class="arrows_up_down" src="/static/graphics/down_arrow.jpg"></button>
+                    </form>
+                </th>
+            {% else %}
+                <th class="table__cell">
+                    {{ element }}
+
+                    <form action="/list?order_by={{ element }}&order_direction=asc" method="POST">
+                    <button class="asc__button" type="submit" name="asc"><img class="arrows_up_down" src="/static/graphics/up_arrow.jpg"></button>
+                    </form>
+
+                    <form action="/list?order_by={{ element }}&order_direction=desc" method="POST">
+                    <button class="desc__button" type="submit" name="desc"><img class="arrows_up_down" src="/static/graphics/down_arrow.jpg"></button>
+                    </form>
+                </th>
+            {% endif %}
         {% endfor %}
-        <th></th>
     </tr>
 
         {% for element in question_list[::-1] %}
