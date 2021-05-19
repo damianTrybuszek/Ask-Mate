@@ -13,6 +13,7 @@ def file_overwrite(iterable, headers, filename):
         for item in iterable:
             writer.writerow(item)
 
+
 def get_questions():
     question_list = []
     with open(DATA_FILE_PATH_QUESTIONS) as file:
@@ -77,11 +78,7 @@ def overwrite_question(question):
         if questions_list[i]['id'] == question['id']:
             questions_list[i] = question
     headers = get_headers_questions()
-    with open(DATA_FILE_PATH_QUESTIONS, 'w', newline='') as file:
-        writer = csv.DictWriter(file, fieldnames=headers, delimiter=",")
-        file.write(",".join(headers)+"\n")
-        for question in questions_list:
-            writer.writerow(question)
+    file_overwrite(questions_list, headers, DATA_FILE_PATH_QUESTIONS)
 
 
 def delete_answer(answer):
@@ -91,11 +88,7 @@ def delete_answer(answer):
         if answers_list[i]['id'] == answer['id']:
             answers_list.pop(i)
             break
-    with open(DATA_FILE_PATH_ANSWERS, 'w', newline='') as file:
-        writer = csv.DictWriter(file, fieldnames=headers, delimiter=",")
-        file.write(",".join(headers)+"\n")
-        for answer in answers_list:
-            writer.writerow(answer)
+    file_overwrite(answers_list, headers, DATA_FILE_PATH_ANSWERS)
 
 
 def save_question(new_question_input):
@@ -110,6 +103,7 @@ def save_question(new_question_input):
         writer = csv.DictWriter(file, fieldnames=get_headers_questions(), delimiter=",")
         writer.writerow(new_question_input)
 
+
 def get_max_id(iterable_of_dicts):
     if len(iterable_of_dicts) <= 0:
         return 1
@@ -121,6 +115,7 @@ def get_max_id(iterable_of_dicts):
             max_index = index
     return iterable_of_dicts[max_index]['id']
 
+
 def delete_question(question):
     questions_list = get_questions()
     headers = get_headers_questions()
@@ -128,11 +123,8 @@ def delete_question(question):
         if questions_list[i]['id'] == question['id']:
             questions_list.pop(i)
             break
-    with open(DATA_FILE_PATH_QUESTIONS, 'w', newline='') as file:
-        writer = csv.DictWriter(file, fieldnames=headers, delimiter=",")
-        file.write(",".join(headers)+"\n")
-        for question in questions_list:
-            writer.writerow(question)
+    file_overwrite(questions_list, headers, DATA_FILE_PATH_QUESTIONS)
+
 
 def question_vote_up(question):
     questions_list = get_questions()
@@ -143,6 +135,7 @@ def question_vote_up(question):
             element["vote_number"] = str(temp_vote_number)
     file_overwrite(questions_list, headers, DATA_FILE_PATH_QUESTIONS)
 
+
 def question_vote_down(question):
     questions_list = get_questions()
     headers = get_headers_questions()
@@ -151,6 +144,7 @@ def question_vote_down(question):
             temp_vote_number = int(element["vote_number"]) - 1
             element["vote_number"] = str(temp_vote_number)
     file_overwrite(questions_list, headers, DATA_FILE_PATH_QUESTIONS)
+
 
 def answer_vote_up(answer):
     answers_list = get_answers()
@@ -161,6 +155,7 @@ def answer_vote_up(answer):
             element["vote_number"] = str(temp_vote_number)
     file_overwrite(answers_list, headers, DATA_FILE_PATH_ANSWERS)
 
+
 def answer_vote_down(answer):
     answers_list = get_answers()
     headers = get_headers_answers()
@@ -169,4 +164,3 @@ def answer_vote_down(answer):
             temp_vote_number = int(element["vote_number"]) - 1
             element["vote_number"] = str(temp_vote_number)
     file_overwrite(answers_list, headers, DATA_FILE_PATH_ANSWERS)
-
