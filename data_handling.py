@@ -88,6 +88,7 @@ def delete_answer(answer):
         if answers_list[i]['id'] == answer['id']:
             answers_list.pop(i)
             break
+
     file_overwrite(answers_list, headers, DATA_FILE_PATH_ANSWERS)
 
 
@@ -123,6 +124,7 @@ def delete_question(question):
         if questions_list[i]['id'] == question['id']:
             questions_list.pop(i)
             break
+
     file_overwrite(questions_list, headers, DATA_FILE_PATH_QUESTIONS)
 
 

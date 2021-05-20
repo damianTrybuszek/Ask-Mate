@@ -24,6 +24,7 @@ def display(question_id):
     final_answer_list = util.get_answer_to_display(question_id)
     return render_template("display.html", question=question_to_display, answers=final_answer_list, headers=headers)
 
+
 @app.route("/add_question", methods=["POST", "GET"])
 def add_question():
     if request.method == "POST":
@@ -56,27 +57,31 @@ def edit_question(question_id):
 @app.route("/answer/<answer_id>/delete", methods=["GET", "POST"])
 def delete_answer(answer_id):
     answer = data_handling.get_answer_by_id(answer_id)
-    if request.method == "POST":
-        if 'yes_button' in request.form:
-            data_handling.delete_answer(answer)
-            return redirect(f"/question/{answer['question_id']}")
-        else:
-            return redirect(f"/question/{answer['question_id']}")
-
-    return render_template("delete_answer.html", answer_id=answer_id)
+    if answer:
+        if request.method == "POST":
+            if 'yes_button' in request.form:
+                data_handling.delete_answer(answer)
+                return redirect(f"/question/{answer['question_id']}")
+            else:
+                return redirect(f"/question/{answer['question_id']}")
+        return render_template("delete_answer.html", answer_id=answer_id)
+    else:
+        return render_template("wrong_answer_id.html")
 
 
 @app.route("/question/<question_id>/delete", methods=["GET", "POST"])
 def delete_question(question_id):
     question = data_handling.get_question_by_id(question_id)
-    if request.method == "POST":
-        if 'yes_button' in request.form:
-            data_handling.delete_question(question)
-            return redirect("/list")
-        else:
-            return redirect(f"/question/{question['id']}")
-
-    return render_template("delete_question.html", question_id=question_id)
+    if question:
+        if request.method == "POST":
+            if 'yes_button' in request.form:
+                data_handling.delete_question(question)
+                return redirect("/list")
+            else:
+                return redirect(f"/question/{question['id']}")
+        return render_template("delete_question.html", question_id=question_id)
+    else:
+        return render_template("wrong_question_id.html")
 
 
 @app.route("/question/<question_id>/vote_up", methods=["GET", "POST"])
