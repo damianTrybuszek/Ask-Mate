@@ -43,6 +43,7 @@ def get_questions_to_display(question_id):
     question_list = data_handling.get_questions()
     if question_id:
         question_to_display = "0"
+        headers = "0"
         for question in question_list:
             if question["id"] == question_id:
                 question_to_display = question
