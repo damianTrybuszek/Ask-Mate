@@ -4,7 +4,7 @@ import util as util
 
 DATA_FILE_PATH_QUESTIONS = os.getenv('DATA_FILE_PATH') if 'DATA_FILE_PATH' in os.environ else 'sample_data\\question.csv'
 DATA_FILE_PATH_ANSWERS = os.getenv('DATA_FILE_PATH') if 'DATA_FILE_PATH' in os.environ else 'sample_data\\answer.csv'
-UPLOAD_FOLDER = os.getcwd() + "/static/img/"
+UPLOAD_FOLDER = os.getcwd() + "\\static\\img\\"
 
 def file_overwrite(iterable, headers, filename):
     with open(filename, 'w', newline='') as file:
