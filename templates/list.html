@@ -3,9 +3,11 @@
 
 {% block content %}
 <h1 class="header">Hello There!</h1>
-<caption>Currently available list of questions</caption>
+    <caption>Currently available list of questions</caption>
 <hr>
+
 <table border="1px" class="table__sortable">
+
     <tr class="table__header">
         {% for element in headers %}
             {%  if element == "image" %}
@@ -41,6 +43,8 @@
             {% for key in element %}
                 {% if key == "id" %}
                     <td class="table__cell"><a href="/question/{{ element[key] }}">{{ element[key] }}</a></td>
+                {% elif key == "image" and  element[key]|length > 0 %}
+                    <td class="table__cell" align="center"><img src="/static/img/{{ element[key] }}" alt="Question Image" align="center" max-width="100%" width="300"/></td>
                 {% else %}
                     <td class="table__cell">{{ element[key] }}</td>
                 {% endif %}

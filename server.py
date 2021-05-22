@@ -1,8 +1,11 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, flash
 import data_handling as data_handling
 import util as util
+from werkzeug.utils import secure_filename
+import os
 
 app = Flask(__name__)
+app.config['UPLOAD_FOLDER'] = data_handling.UPLOAD_FOLDER
 
 @app.route("/")
 def hello():
@@ -33,8 +36,11 @@ def display(question_id):
 @app.route("/add_question", methods=["POST", "GET"])
 def add_question():
     if request.method == "POST":
+        file = request.files['file']
+        filename = secure_filename(file.filename)
+        file.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
         new_question_input = dict(request.form)
-        data_handling.save_question(new_question_input)
+        data_handling.save_question(new_question_input, filename)
         return redirect(f"/question/{new_question_input['id']}")
     return render_template("add_question.html")
 
@@ -42,8 +48,11 @@ def add_question():
 @app.route("/question/<question_id>/new-answer", methods=["GET", "POST"])
 def post_an_answer(question_id):
     if request.method == "POST":
+        file = request.files['file']
+        filename = secure_filename(file.filename)
+        file.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
         answer = dict(request.form)
-        data_handling.save_answer(question_id, answer)
+        data_handling.save_answer(question_id, answer, filename)
         return redirect( f"/question/{answer['question_id']}")
     return render_template("post_an_answer.html", question_id=question_id)
 
@@ -55,7 +64,7 @@ def edit_question(question_id):
         new_data = dict(request.form)
         util.edit_single_question(question, new_data)
         data_handling.overwrite_question(question)
-        return redirect( f"/question/{question_id}")
+        return redirect(f"/question/{question_id}")
     return render_template("edit_question.html", question=question, question_id=question_id)
 
 

@@ -3,7 +3,7 @@
 
 {% block content %}
     <h1 class="header">Edit your question:</h1>
-    <form action="#" method="POST"><br/>
+    <form action="#" method="POST" enctype="multipart/form-data"><br/>
         <label class="label" for="title">Title:</label><br/>
         <input class="title__input" type="text" id="title" name="title" size="100" value="{{ question['title'] }}"><br/>
         <label class="label" for="message">Message:</label><br/>
