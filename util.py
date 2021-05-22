@@ -67,9 +67,4 @@ def get_question_list_with_real_time(question_list):
     return new_question_list
 
 
-def bubble_sort(numbers):
-    n = len(numbers)
-    for i in range(n - 1):
-        for j in range(n - i - 1):
-            if numbers[j] < numbers[j + 1]:
-                numbers[j], numbers[j + 1] = numbers[j + 1], numbers[j]
+
