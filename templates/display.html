@@ -29,7 +29,7 @@
                             {%  if element == "image" %}
                                 <th class="table__cell">
                                     {{ element }}
-                                    <form action="/question/{{ question['id'] }}={{ element }}&order_direction=asc" method="POST">
+                                    <form action="/question/{{ question['id'] }}?order_by={{ element }}&order_direction=asc" method="POST">
                                         <button class="asc__button" type="submit" name="asc"><img class="arrows_up_down" src="/static/graphics/up_arrow.jpg"></button>
                                     </form>
 
