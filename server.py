@@ -36,11 +36,13 @@ def display(question_id):
 @app.route("/add_question", methods=["POST", "GET"])
 def add_question():
     if request.method == "POST":
-        filename = False
-        if "file" in request.files['file']:
+        if "file" in request.files:
             file = request.files['file']
             filename = secure_filename(file.filename)
-            file.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
+            if len(filename) > 0:
+                file.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
+            else:
+                filename = False
         new_question_input = dict(request.form)
         data_handling.save_question(new_question_input, filename)
         return redirect(f"/question/{new_question_input['id']}")
@@ -50,11 +52,13 @@ def add_question():
 @app.route("/question/<question_id>/new-answer", methods=["GET", "POST"])
 def post_an_answer(question_id):
     if request.method == "POST":
-        filename = False
-        if "file" in request.files['file']:
+        if "file" in request.files:
             file = request.files['file']
             filename = secure_filename(file.filename)
-            file.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
+            if len(filename) > 0:
+                file.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
+            else:
+                filename = False
         answer = dict(request.form)
         data_handling.save_answer(question_id, answer, filename)
         return redirect( f"/question/{answer['question_id']}")
