@@ -15,9 +15,9 @@ def get_real_time(unix_time):
 
 def sort_table(order_by, order_direction, questions_list):
     if order_direction == "asc":
-        direction = True
-    else:
         direction = False
+    else:
+        direction = True
 
     return sorted(questions_list,
                   key=lambda x: int(x[order_by]) if x[order_by].replace("-", "").isdigit()
