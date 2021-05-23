@@ -39,7 +39,7 @@ def add_question():
         if "file" in request.files:
             file = request.files['file']
             filename = secure_filename(file.filename)
-            if len(filename) > 0:
+            if filename:
                 file.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
             else:
                 filename = False
@@ -55,7 +55,8 @@ def post_an_answer(question_id):
         if "file" in request.files:
             file = request.files['file']
             filename = secure_filename(file.filename)
-            if len(filename) > 0:
+            if filename:
+                filename = str(question_id) + "_" + filename
                 file.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
             else:
                 filename = False
