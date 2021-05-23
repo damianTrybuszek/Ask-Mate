@@ -2,7 +2,7 @@ id,submission_time,view_number,vote_number,title,message,image
 1,1493368154,29,7,How to make lists in Python?,"I am totally new to this, any hints?
 
 CHANGED",
-2,1493068124,15,10,Wordpress loading multiple jQuery Versions,"I developed a plugin that uses the jquery booklet plugin (http://builtbywill.com/booklet/#/) this plugin binds a function to $ so I cann call $('.myBook').booklet();
+2,1493068124,15,11,Wordpress loading multiple jQuery Versions,"I developed a plugin that uses the jquery booklet plugin (http://builtbywill.com/booklet/#/) this plugin binds a function to $ so I cann call $('.myBook').booklet();
 
 I could easy managing the loading order with wp_enqueue_script so first I load jquery then I load booklet so everything is fine.
 
@@ -22,4 +22,6 @@ CHANGED AGAIN",
 
 Totally changed, noice!",
 7,1621184419,0,6,Question,What is the meaning of life?,
-8,1621644540,0,0,Some weird site.,blaabblab,Trello_logo_gradient.jpg
+8,1621644540,0,0,Some weird site.,Test question.,Trello_logo_gradient.jpg
+11,1621764164,0,1,Some new language...,"Hello, 
+please let me know what kind of language it is....",Screenshot-2020-11-05-at-11-50-58-PM.png
