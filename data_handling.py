@@ -1,6 +1,8 @@
 import os
 import csv
 import util as util
+import database_connection as database_connection
+
 
 DATA_FILE_PATH_QUESTIONS = os.getenv('DATA_FILE_PATH') if 'DATA_FILE_PATH' in os.environ else 'sample_data\\question.csv'
 DATA_FILE_PATH_ANSWERS = os.getenv('DATA_FILE_PATH') if 'DATA_FILE_PATH' in os.environ else 'sample_data\\answer.csv'
@@ -13,15 +15,20 @@ def file_overwrite(iterable, headers, filename):
         for item in iterable:
             writer.writerow(item)
 
-
-def get_questions():
-    question_list = []
-    with open(DATA_FILE_PATH_QUESTIONS) as file:
-        reader = csv.DictReader(file)
-        for row in reader:
-            question_list.append(row)
-    return question_list
-
+@database_connection.connection_handler
+def get_questions(cursor):
+    # question_list = []
+    # with open(DATA_FILE_PATH_QUESTIONS) as file:
+    #     reader = csv.DictReader(file)
+    #     for row in reader:
+    #         question_list.append(row)
+    # return question_list
+    query = """
+            SELECT *
+            FROM question
+            ORDER BY id;"""
+    cursor.execute(query)
+    return cursor.fetchall()
 
 def get_question_by_id(question_id):
     questions_list = get_questions()

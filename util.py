@@ -19,9 +19,12 @@ def sort_table(order_by, order_direction, questions_list):
     else:
         direction = True
 
-    return sorted(questions_list,
-                  key=lambda x: int(x[order_by]) if x[order_by].replace("-", "").isdigit()
-                  else x[order_by], reverse=direction)
+    return sorted(questions_list, key=lambda x: x[order_by], reverse=direction)
+
+    # sexy linijka - zostawcie na chwilkę
+    # return sorted(questions_list,
+    #               key=lambda x: int(x[order_by]) if x[order_by].replace("-", "").isdigit()
+    #               else x[order_by], reverse=direction)
 
 
 def edit_single_question(question, new_data):
