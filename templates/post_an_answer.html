@@ -3,10 +3,13 @@
 
 {% block content %}
     <h1 class="header">Please submit your answer</h1>
-    <form action="#" method="POST">
+    <form action="#" method="POST" enctype="multipart/form-data">
         <label class="label" for="message">Answer:</label><br/>
         <textarea class="textarea__input" name="message" placeholder="Please type your answer here" cols="100" rows="25" required></textarea><br/>
+
+        <label class="label" for="file">Choose image to upload</label>
+        <input class = "add_image__button" type="file" accept=".jpg, .jpeg, .png" name="file">
         <button class ="reset__button" type="reset">Reset</button>
-        <button class ="submit__button" onclick="alert('Thank you! You answer has been submited!')" type="submit">Save</button>
+        <button class ="submit__button" onclick="alert('Thank you! You answer has been submitted!')" type="submit">Save</button>
     </form>
 {% endblock %}

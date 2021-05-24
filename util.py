@@ -15,9 +15,9 @@ def get_real_time(unix_time):
 
 def sort_table(order_by, order_direction, questions_list):
     if order_direction == "asc":
-        direction = True
-    else:
         direction = False
+    else:
+        direction = True
 
     return sorted(questions_list,
                   key=lambda x: int(x[order_by]) if x[order_by].replace("-", "").isdigit()
@@ -46,31 +46,18 @@ def get_questions_to_display(question_id):
         for question in question_list:
             if question["id"] == question_id:
                 question_to_display = question
-                headers = data_handling.get_headers_questions()
-    return question_to_display, headers
+    return question_to_display
 
 
 def get_answer_to_display(question_id):
     answers_to_questions = []
     answer_list = data_handling.get_answers()
     if question_id != 0:
-        final_answer_list = []
         for answer in answer_list:
             if answer["question_id"] == question_id:
-                # temp_list = [answer["vote_number"], answer["message"], answer['id']]
-                answer["submission_time"]=get_real_time(answer["submission_time"])
                 answers_to_questions.append(answer)
 
-        if len(answers_to_questions) > 0:
-            temp_order_list = []
-            for answer in answers_to_questions:
-                temp_order_list.append(int(answer['vote_number']))
-            bubble_sort(temp_order_list)
-            for votes in temp_order_list:
-                for answer in answers_to_questions:
-                    if answer['vote_number'] == str(votes):
-                        final_answer_list.append(answer)
-    return final_answer_list
+    return answers_to_questions
 
 
 def get_question_list_with_real_time(question_list):
@@ -80,9 +67,4 @@ def get_question_list_with_real_time(question_list):
     return new_question_list
 
 
-def bubble_sort(numbers):
-    n = len(numbers)
-    for i in range(n - 1):
-        for j in range(n - i - 1):
-            if numbers[j] < numbers[j + 1]:
-                numbers[j], numbers[j + 1] = numbers[j + 1], numbers[j]
+

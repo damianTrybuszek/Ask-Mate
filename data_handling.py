@@ -4,7 +4,7 @@ import util as util
 
 DATA_FILE_PATH_QUESTIONS = os.getenv('DATA_FILE_PATH') if 'DATA_FILE_PATH' in os.environ else 'sample_data\\question.csv'
 DATA_FILE_PATH_ANSWERS = os.getenv('DATA_FILE_PATH') if 'DATA_FILE_PATH' in os.environ else 'sample_data\\answer.csv'
-
+UPLOAD_FOLDER = os.getcwd() + "\\static\\img\\"
 
 def file_overwrite(iterable, headers, filename):
     with open(filename, 'w', newline='') as file:
@@ -60,13 +60,16 @@ def get_answers():
     return answer_list
 
 
-def save_answer(question_id, answer):
+def save_answer(question_id, answer, filename):
     data_list = get_answers()
     answer["submission_time"] = str(util.get_unix_timestamp())
     answer['id'] = str(int(get_max_id(data_list)) + 1)
     answer['vote_number'] = "0"
     answer['question_id'] = question_id
-    answer['image'] = ""
+    if filename:
+        answer['image'] = filename
+    else:
+        answer['image'] =""
     with open(DATA_FILE_PATH_ANSWERS, 'a', newline='') as file:
         writer = csv.DictWriter(file, fieldnames=get_headers_answers(), delimiter=",")
         writer.writerow(answer)
@@ -76,7 +79,8 @@ def overwrite_question(question):
     questions_list = get_questions()
     for i in range(len(questions_list)):
         if questions_list[i]['id'] == question['id']:
-            questions_list[i] = question
+            questions_list[i]['message'] = question['message']
+            questions_list[i]['title'] = question['title']
     headers = get_headers_questions()
     file_overwrite(questions_list, headers, DATA_FILE_PATH_QUESTIONS)
 
@@ -86,18 +90,25 @@ def delete_answer(answer):
     headers = get_headers_answers()
     for i in range(len(answers_list)):
         if answers_list[i]['id'] == answer['id']:
+            if len(answers_list[i]['image']) > 0:
+                os.remove(f"{UPLOAD_FOLDER}/{answers_list[i]['image']}")
+
             answers_list.pop(i)
             break
+
     file_overwrite(answers_list, headers, DATA_FILE_PATH_ANSWERS)
 
 
-def save_question(new_question_input):
+def save_question(new_question_input, filename):
     data_questions = get_questions()
     new_question_input["id"] = str(int(get_max_id(data_questions)) + 1)
     new_question_input["submission_time"] = str(util.get_unix_timestamp())
     new_question_input["view_number"] = "0"
     new_question_input["vote_number"] = "0"
-    new_question_input["image"] = ""
+    if filename:
+        new_question_input['image'] = filename
+    else:
+        new_question_input['image'] =""
 
     with open(DATA_FILE_PATH_QUESTIONS, 'a', newline='') as file:
         writer = csv.DictWriter(file, fieldnames=get_headers_questions(), delimiter=",")
@@ -121,8 +132,11 @@ def delete_question(question):
     headers = get_headers_questions()
     for i in range(len(questions_list)):
         if questions_list[i]['id'] == question['id']:
+            if len(questions_list[i]['image']) > 0:
+                os.remove(f"{UPLOAD_FOLDER}/{questions_list[i]['image']}")
             questions_list.pop(i)
             break
+
     file_overwrite(questions_list, headers, DATA_FILE_PATH_QUESTIONS)
 
 

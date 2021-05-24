@@ -15,14 +15,11 @@
 
 .table__header {
     background-color: #FECF9B;
+    text-align: center;
 }
 
 .table__row:nth-child(even) {
     background-color: #e5e5e5;
-}
-
-.table__header {
-    text-align: center;
 }
 
 .table__cell {
@@ -48,6 +45,10 @@
 
 .reset__button{
     margin: 20px;
+}
+
+.add_image__button{
+    margin: 30px;
 }
 
 .header{
