@@ -43,7 +43,7 @@
             {% for key in element %}
                 {% if key == "id" %}
                     <td class="table__cell"><a href="/question/{{ element[key] }}">{{ element[key] }}</a></td>
-                {% elif key == "image" and  element[key]|length > 0 %}
+                {% elif key == "image" and element[key] %}
                     <td class="table__cell" align="center"><img src="/static/img/{{ element[key] }}" alt="Question Image" align="center" max-width="100%" width="300"/></td>
                 {% else %}
                     <td class="table__cell">{{ element[key] }}</td>
