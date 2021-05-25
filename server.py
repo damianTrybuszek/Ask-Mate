@@ -17,8 +17,8 @@ def list():
     headers = data_handling.get_headers_questions()
     order_by = request.args.get('order_by', 'id')
     order_direction = request.args.get('order_direction', 'desc')
-    question_list = util.sort_table(order_by, order_direction, question_list)
-    question_list_to_show = util.get_question_list_with_real_time(question_list)
+    question_list_to_show = util.sort_table(order_by, order_direction, question_list)
+    # question_list_to_show = util.get_question_list_with_real_time(question_list)
     return render_template("list.html", question_list=question_list_to_show, headers=headers)
 
 @app.route("/question/<question_id>", methods=["POST", "GET"])
@@ -29,8 +29,8 @@ def display(question_id):
     order_by = request.args.get('order_by', 'vote_number')
     order_direction = request.args.get('order_direction', 'asc')
     answer_list_to_show = util.sort_table(order_by, order_direction, answer_list)
-    final_answer_list = util.get_question_list_with_real_time(answer_list_to_show)
-    return render_template("display.html", question=question_to_display, answers=final_answer_list, headers=headers)
+    # final_answer_list = util.get_question_list_with_real_time(answer_list_to_show)
+    return render_template("display.html", question=question_to_display, answers=answer_list_to_show, headers=headers)
 
 
 @app.route("/add_question", methods=["POST", "GET"])
