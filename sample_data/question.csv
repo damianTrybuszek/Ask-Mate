@@ -1,6 +1,8 @@
 id,submission_time,view_number,vote_number,title,message,image
-1,1493368154,29,7,How to make lists in Python?,"I am totally new to this, any hints?",
-2,1493068124,15,10,Wordpress loading multiple jQuery Versions,"I developed a plugin that uses the jquery booklet plugin (http://builtbywill.com/booklet/#/) this plugin binds a function to $ so I cann call $('.myBook').booklet();
+1,1493368154,29,7,How to make lists in Python?,"I am totally new to this, any hints?
+
+CHANGED",
+2,1493068124,15,11,Wordpress loading multiple jQuery Versions,"I developed a plugin that uses the jquery booklet plugin (http://builtbywill.com/booklet/#/) this plugin binds a function to $ so I cann call $('.myBook').booklet();
 
 I could easy managing the loading order with wp_enqueue_script so first I load jquery then I load booklet so everything is fine.
 
@@ -8,14 +10,18 @@ BUT in my theme i also using jquery via webpack so the loading order is now foll
 
 jquery
 booklet
-app.js (bundled file with webpack, including jquery)",images/image1.png
+app.js (bundled file with webpack, including jquery)",
 3,1493015432,1364,57,Drawing canvas with an image picked with Cordova Camera Plugin,"I'm getting an image from device and drawing a canvas with filters using Pixi JS. It works all well using computer to get an image. But when I'm on IOS, it throws errors such as cross origin issue, or that I'm trying to use an unknown format.
 
 This is the code I'm using to draw the image (that works on web/desktop but not cordova built ios app)",
 4,1621164064,0,1,Completely testable question nr 4 CHANGED,"This is just a test messsage
 
 CHANGED AGAIN",
-5,1621172975,0,-2,Hello,Testity test test,
-6,1621183506,0,1,New question,How to change that bulb?,
+5,1621172975,0,-2,Hello123,New test,
+6,1621183506,0,1,New question,"How to change that bulb?
+
+Totally changed, noice!",
 7,1621184419,0,6,Question,What is the meaning of life?,
-8,1621282855,0,4,This is a new question,Are llamas real?,
+8,1621644540,0,0,Some weird site.,Test question.,Trello_logo_gradient.jpg
+11,1621764164,0,1,Some new language...,"Hello, 
+please let me know what kind of language it is....",Screenshot-2020-11-05-at-11-50-58-PM.png

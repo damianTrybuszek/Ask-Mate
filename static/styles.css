@@ -14,16 +14,12 @@
 }
 
 .table__header {
-    background-color: #58FC62;
-
+    background-color: #FECF9B;
+    text-align: center;
 }
 
 .table__row:nth-child(even) {
     background-color: #e5e5e5;
-}
-
-.table__header {
-    text-align: center;
 }
 
 .table__cell {
@@ -51,6 +47,10 @@
     margin: 20px;
 }
 
+.add_image__button{
+    margin: 30px;
+}
+
 .header{
     margin: 20px;
 }
@@ -74,10 +74,42 @@
     color: #0db46a;
     width: 55px;
     height: 55px;
+    font-weight: bold;
+    margin: 5px 5px 10px 5px;
 }
 
 .votedown__button{
     text-align: center;
     width: 55px;
     height: 55px;
+    font-weight: bold;
+    margin: 10px 5px 5px 5px;
+}
+
+.asc__button{
+    padding: 0;
+    border: none;
+    background: none;
+    text-align: center;
+    color: #0db46a;
+    width: 30px;
+    height: 30px;
+    font-size: small;
+    display: inline;
+}
+
+.desc__button{
+    padding: 0;
+    border: none;
+    background: none;
+    text-align: center;
+    width: 30px;
+    height: 30px;
+    font-size: small;
+    display: inline;
+}
+
+.arrows_up_down{
+    width: 25px;
+    height: 25px;
 }
