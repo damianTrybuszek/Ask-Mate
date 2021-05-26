@@ -3,25 +3,25 @@
 
 {% block content %}
     <p>
-        {% if question == "0" %}
+        {% if question|length == 0 %}
             <h1 class="header">There is no question with such ID.</h1>
         {% else %}
-            <h1 class="header"> This is a question with id: {{ question["id"] }}</h1>
+            <h1 class="header">Question ID: {{ question["id"] }}</h1>
             <hr>
-            <h4 class="header">Title of the question:</h4>
+            <h4 class="header">Title:</h4>
             <h2 class="header">{{ question["title"] }}</h2>
             <hr>
-            <h4 class="header">The question message: </h4>
+            <h4 class="header">Message:</h4>
             <h3 class="header"><pre>{{ question["message"] }}</pre></h3>
             <hr>
-            {% if question["image"]|length > 0 %}
+            {% if question["image"] %}
             <hr>
             <h4 class="header">Image for the question: </h4>
             <img src="/static/img/{{ question["image"] }}" alt="Answer Image" align="center" max-width="100%" width="300"/>
             <hr>
             {% endif %}
             {% if answers|length > 0 %}
-                <h3 class="header">Answer list: </h3>
+                <h3 class="header">Answer list:</h3>
 
                 <table border="1px" class="table__sortable">
                     <tr class="table__header">
