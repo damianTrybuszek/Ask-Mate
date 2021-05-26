@@ -52,8 +52,7 @@ def get_answer_by_id(cursor, answer_id):
     query = """
             SELECT *
             FROM answer
-            WHERE id = %s
-            ORDER BY id;
+            WHERE id = %s;
             """
     query_params = [answer_id]
     cursor.execute(query, query_params)
@@ -203,7 +202,7 @@ def delete_answer(cursor, deleted_answer):
     #         break
     #
     # file_overwrite(answers_list, headers, DATA_FILE_PATH_ANSWERS)
-    if len(deleted_answer['image']) > 0:
+    if deleted_answer['image']:
         os.remove(f"{UPLOAD_FOLDER}/{deleted_answer['image']}")
 
     query = """
@@ -212,8 +211,6 @@ def delete_answer(cursor, deleted_answer):
             """
     query_params = [deleted_answer['id']]
     cursor.execute(query, query_params)
-
-    return cursor.fetchall()
 
 
 @database_connection.connection_handler
@@ -229,7 +226,7 @@ def delete_question(cursor, deleted_question):
     #
     # file_overwrite(questions_list, headers, DATA_FILE_PATH_QUESTIONS)
 
-    if len(deleted_question['image']) > 0:
+    if deleted_question['image']:
         os.remove(f"{UPLOAD_FOLDER}/{deleted_question['image']}")
 
     query = """
@@ -238,8 +235,6 @@ def delete_question(cursor, deleted_question):
             """
     query_params = [deleted_question['id']]
     cursor.execute(query, query_params)
-
-    return cursor.fetchall()
 
 # def get_max_id(iterable_of_dicts):
 #     if len(iterable_of_dicts) <= 0:

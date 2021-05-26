@@ -25,13 +25,18 @@ def list():
 def display(question_id):
     order_by = request.args.get('order_by', 'vote_number')
     order_direction = request.args.get('order_direction', 'asc')
-    question_to_display = util.get_questions_to_display(question_id)
+    question = util.get_questions_to_display(question_id)
+    if len(question) > 0:
+        question_to_display = question[0]
+    else:
+        question_to_display = question
+
     headers = data_handling.get_headers_answers()
     answer_list = util.get_answer_to_display(question_id, order_by, order_direction)
 
     # answer_list_to_show = util.sort_table(order_by, order_direction, answer_list)
     # final_answer_list = util.get_question_list_with_real_time(answer_list_to_show)
-    return render_template("display.html", question=question_to_display[0], answers=answer_list, headers=headers)
+    return render_template("display.html", question=question_to_display, answers=answer_list, headers=headers)
 
 
 @app.route("/add_question", methods=["POST", "GET"])
@@ -80,32 +85,35 @@ def edit_question(question_id):
 
 @app.route("/answer/<answer_id>/delete", methods=["GET", "POST"])
 def delete_answer(answer_id):
-    answer = data_handling.get_answer_by_id(answer_id)
-    if answer:
-        if request.method == "POST":
-            if 'yes_button' in request.form:
-                data_handling.delete_answer(answer)
-                return redirect(f"/question/{answer['question_id']}")
-            else:
-                return redirect(f"/question/{answer['question_id']}")
-        return render_template("delete_answer.html", answer_id=answer_id)
-    else:
-        return render_template("wrong_answer_id.html")
+    deleted_answer = data_handling.get_answer_by_id(answer_id)[0]
+    # if answer:
+    if request.method == "POST":
+        if 'yes_button' in request.form:
+            data_handling.delete_answer(deleted_answer)
+            return redirect(f"/question/{deleted_answer['question_id']}")
+        else:
+            return redirect(f"/question/{deleted_answer['question_id']}")
+    return render_template("delete_answer.html", answer_id=answer_id)
+    # else:
+    #     return render_template("wrong_answer_id.html")
 
 
 @app.route("/question/<question_id>/delete", methods=["GET", "POST"])
 def delete_question(question_id):
-    question = data_handling.get_question_by_id(question_id)
-    if question:
+    deleted_question = data_handling.get_question_by_id(question_id)[0]
+    # if question:
+    try:
         if request.method == "POST":
             if 'yes_button' in request.form:
-                data_handling.delete_question(question)
+                data_handling.delete_question(deleted_question)
                 return redirect("/list")
             else:
-                return redirect(f"/question/{question['id']}")
+                return redirect(f"/question/{deleted_question['id']}")
         return render_template("delete_question.html", question_id=question_id)
-    else:
-        return render_template("wrong_question_id.html")
+    except:
+        raise KeyError("This question still has answers that are tied to it, you can't just delete it")
+    # else:
+    #     return render_template("wrong_question_id.html")
 
 
 @app.route("/question/<question_id>/vote_up", methods=["GET", "POST"])
