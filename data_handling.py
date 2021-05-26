@@ -15,19 +15,11 @@ UPLOAD_FOLDER = os.getcwd() + "\\static\\img\\"
 #         for item in iterable:
 #             writer.writerow(item)
 
+
 @database_connection.connection_handler
-def get_questions(cursor):
-    # question_list = []
-    # with open(DATA_FILE_PATH_QUESTIONS) as file:
-    #     reader = csv.DictReader(file)
-    #     for row in reader:
-    #         question_list.append(row)
-    # return question_list
-    query = """
-            SELECT *
-            FROM question
-            ORDER BY id;
-            """
+def get_questions(cursor, order_by, order_direction):
+    query = f"SELECT * FROM question ORDER BY {order_by} {order_direction};"
+    # query_params = [order_by, order_direction]
     cursor.execute(query)
     return cursor.fetchall()
 
@@ -85,6 +77,7 @@ def get_headers_questions(cursor):
         for key in dictionary:
             final_headers_list.append(dictionary[key])
     return final_headers_list
+
 
 @database_connection.connection_handler
 def get_headers_answers(cursor):
