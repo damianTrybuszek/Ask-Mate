@@ -23,11 +23,6 @@ def get_real_time(unix_time):
 #     return sorted(questions_list, key=lambda x: x[order_by], reverse=direction)
 
 
-def edit_single_question(question, new_data):
-    for key in new_data:
-        question[key] = new_data[key]
-
-
 def question_vote_up(question):
     temp_vote_number = int(question["vote_number"]) + 1
     question["vote_number"] = str(temp_vote_number)
