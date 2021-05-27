@@ -91,7 +91,6 @@ def save_question(cursor, new_question_input, filename):
         new_question_input['image'] = filename
     else:
         new_question_input['image'] = None
-
     query = """
             INSERT INTO question
             (submission_time, view_number, vote_number, title, message, image)
@@ -103,6 +102,14 @@ def save_question(cursor, new_question_input, filename):
                     new_question_input['message'], new_question_input['image']]
     cursor.execute(query, query_params)
 
+    
+@database_connection.connection_handler
+def get_last_question(cursor):
+    query = """
+            SELECT * FROM question
+            ORDER BY id DESC LIMIT 1; 
+            """
+    cursor.execute(query)
     return cursor.fetchall()
 
 
@@ -126,7 +133,6 @@ def save_answer(cursor, question_id, new_answer, filename):
                     new_answer['question_id'], new_answer['message'],
                     new_answer['image']]
     cursor.execute(query, query_params)
-    return cursor.fetchall()
 
 
 @database_connection.connection_handler
