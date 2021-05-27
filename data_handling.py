@@ -80,9 +80,9 @@ def get_headers_questions(cursor):
 
 @database_connection.connection_handler
 def get_headers_answers(cursor):
-#     with open(DATA_FILE_PATH_ANSWERS) as file:
-#         lines = file.readlines()
-#         return lines[0].replace("\n", "").split(",")
+    # with open(DATA_FILE_PATH_ANSWERS) as file:
+    #     lines = file.readlines()
+    #     return lines[0].replace("\n", "").split(",")
     query = """
             SELECT column_name
             FROM INFORMATION_SCHEMA.COLUMNS
@@ -117,8 +117,6 @@ def get_answers(cursor):
 
 @database_connection.connection_handler
 def save_question(cursor, new_question_input, filename):
-    # data_questions = get_questions()
-    # new_question_input["id"] = str(int(get_max_id(data_questions)) + 1)
     new_question_input["submission_time"] = str(util.get_real_time((util.get_unix_timestamp())))
     new_question_input["view_number"] = "0"
     new_question_input["vote_number"] = "0"
@@ -126,10 +124,6 @@ def save_question(cursor, new_question_input, filename):
         new_question_input['image'] = filename
     else:
         new_question_input['image'] = None
-
-    # with open(DATA_FILE_PATH_QUESTIONS, 'a', newline='') as file:
-    #     writer = csv.DictWriter(file, fieldnames=get_headers_questions(), delimiter=",")
-    #     writer.writerow(new_question_input)
     query = """
             INSERT INTO question
             (submission_time, view_number, vote_number, title, message, image)
@@ -140,6 +134,15 @@ def save_question(cursor, new_question_input, filename):
                     new_question_input['vote_number'], new_question_input['title'],
                     new_question_input['message'], new_question_input['image']]
     cursor.execute(query, query_params)
+
+
+@database_connection.connection_handler
+def get_last_question(cursor):
+    query = """
+            SELECT * FROM question
+            ORDER BY id DESC LIMIT 1; 
+            """
+    cursor.execute(query)
     return cursor.fetchall()
 
 
@@ -166,7 +169,6 @@ def save_answer(cursor, question_id, new_answer, filename):
                     new_answer['question_id'], new_answer['message'],
                     new_answer['image']]
     cursor.execute(query, query_params)
-    return cursor.fetchall()
 
 
 @database_connection.connection_handler
