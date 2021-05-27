@@ -20,6 +20,21 @@
             <img src="/static/img/{{ question["image"] }}" alt="Question Image" align="center" max-width="100%" width="300"/>
             <hr>
             {% endif %}
+            <h4 class="header">Question comments: </h4>
+            <table border="1px" class="table__sortable">
+                <tr class="table__header">
+                    <th class="table__cell">Comment</th>
+                    <th class="table__cell">Submission Time</th>
+                </tr>
+                {% for comment in question_comments %}
+                    <tr>
+                        <td class="table__cell">{{ comment['message'] }}</td>
+                        <td class="table__cell">{{ comment['submission_time'] }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+
+{#            ANSWERS LIST#}
             {% if answers|length > 0 %}
                 <h3 class="header">Answer list:</h3>
 
@@ -82,6 +97,7 @@
         {% endif %}
     <hr>
 
+    <a href="/question/{{ question['id'] }}/new-comment"><h2 class="header">Add a comment!</h2></a></br>
     <a href="/question/{{ question['id'] }}/new-answer"><h2 class="header">Post a new answer!</h2></a></br>
     <a href="/question/{{ question['id'] }}/edit"><h2 class="header">Edit this question!</h2></a></br>
     <a href="/list"><h2 class="header">Go to questions list page!</h2></a></br>
