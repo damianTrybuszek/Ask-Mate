@@ -139,7 +139,7 @@ def answers_vote_up(answer_id):
     if request.method == "POST":
         if 'vote_up' in request.form:
             data_handling.answer_vote_up(answer)
-    return redirect(f"/question/{answer['question_id']}")
+    return redirect(f"/question/{answer[0]['question_id']}")
 
 @app.route("/answer/<answer_id>/vote_down", methods=["GET", "POST"])
 def answers_vote_down(answer_id):
@@ -147,7 +147,7 @@ def answers_vote_down(answer_id):
     if request.method == "POST":
         if 'vote_down' in request.form:
             data_handling.answer_vote_down(answer)
-    return redirect(f"/question/{answer['question_id']}")
+    return redirect(f"/question/{answer[0]['question_id']}")
 
 
 if __name__ == "__main__":
