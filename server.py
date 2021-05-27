@@ -50,7 +50,8 @@ def add_question():
                 filename = False
         new_question_input = dict(request.form)
         data_handling.save_question(new_question_input, filename)
-        return redirect(f"/question/{new_question_input['id']}")
+        question_id = data_handling.get_last_question()[0]['id']
+        return redirect(f"/question/{question_id}")
     return render_template("add_question.html")
 
 
