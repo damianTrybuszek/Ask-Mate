@@ -184,6 +184,7 @@ def question_vote_up(cursor, voted_question):
     query_params = [voted_question[0]['id']]
     cursor.execute(query, query_params)
 
+
 @database_connection.connection_handler
 def question_vote_down(cursor, voted_question):
     query = """
@@ -215,3 +216,29 @@ def answer_vote_down(cursor, voted_answer):
             """
     query_params = [voted_answer[0]['id']]
     cursor.execute(query, query_params)
+
+
+@database_connection.connection_handler
+def add_comment_to_question(cursor, question_id, comment):
+    sub_time = str(util.get_real_time((util.get_unix_timestamp())))
+    edited = 0
+    query = """
+            INSERT INTO comment
+            (question_id, message, submission_time, edited_count) 
+            VALUES
+            (%s, %s, %s, %s);
+            """
+    query_params = [question_id, comment['message'], sub_time, edited]
+    cursor.execute(query, query_params)
+
+
+@database_connection.connection_handler
+def get_comments_for_question(cursor, question_id):
+    query = """
+            SELECT *
+            FROM comment
+            WHERE question_id = %s;
+            """
+    query_params = [question_id]
+    cursor.execute(query, query_params)
+    return cursor.fetchall()

@@ -1,7 +1,10 @@
+body {
+    padding-left: 20px;
+}
+
 .table__general{
     border-spacing: 0;
     background-color: #58E1F6;
-    margin: 20px;
     width: 50%;
 }
 
@@ -27,24 +30,13 @@
 }
 
 .title__input {
-    margin:20px;
+    margin-bottom:20px;
     font-weight: bold;
 }
 
 .textarea__input {
-    margin:20px;
+    margin-bottom:10px;
     font-weight: bold;
-}
-
-.submit__button{
-    margin:0px;
-    background-color:#97f7cc;
-    color: #0db46a;
-    font-size: 18px;
-}
-
-.reset__button{
-    margin: 20px;
 }
 
 .add_image__button{
@@ -52,15 +44,15 @@
 }
 
 .header{
-    margin: 20px;
+    margin: 0px;
 }
 
 .label{
-    margin-left:20px;
+    margin-left:0px;
     font-weight: bold
 }
 .yes__button{
-    margin:20px;
+    margin:0px;
     color: #0db46a;
     font-size: 18px;
 }

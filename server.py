@@ -29,13 +29,15 @@ def display(question_id):
     headers = data_handling.get_headers_answers()
     answer_list = util.get_answer_to_display(question_id, order_by, order_direction)
     question = util.get_questions_to_display(question_id)
+    question_comments = data_handling.get_comments_for_question(question_id)
 
     if len(question) > 0:
         question_to_display = question[0]
     else:
         question_to_display = question
 
-    return render_template("display.html", question=question_to_display, answers=answer_list, headers=headers)
+    return render_template("display.html", question=question_to_display, answers=answer_list, headers=headers,
+                           question_comments=question_comments)
 
 
 @app.route("/add_question", methods=["POST", "GET"])
@@ -150,6 +152,15 @@ def answers_vote_down(answer_id):
             data_handling.answer_vote_down(answer)
     return redirect(f"/question/{answer[0]['question_id']}")
 
+
+@app.route("/question/<question_id>/new-comment", methods=["GET", "POST"])
+def add_comment_question(question_id):
+    if request.method == "POST":
+        if 'message' in request.form:
+            comment = dict(request.form)
+            data_handling.add_comment_to_question(question_id, comment)
+            return redirect(f"/question/{question_id}")
+    return render_template("new_comment.html")
 
 if __name__ == "__main__":
     app.run(debug=True)
