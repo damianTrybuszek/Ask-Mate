@@ -69,6 +69,7 @@
 
                             {% endif %}
                         {% endfor %}
+                        <th class="table__cell">Edit an answer</th>
                         <th class="table__cell" colspan="2">Delete an answer</th>
                     </tr>
 
@@ -82,7 +83,9 @@
                             {% endif %}
                         {% endfor %}
 
+                        <td class="table__cell" align="center"><a href="/answer/{{ answer['id'] }}/edit">EDIT</a></td>
                         <td class="table__cell" align="center"><a href="/answer/{{ answer['id'] }}/delete">DELETE</a></td>
+
                         <td width="1%"><form action="/answer/{{ answer['id'] }}/vote_up" method="POST">
                             <button class="voteup__button" onclick="alert('Thank you! You have up-voted the answer!')" type="submit" name="vote_up">Vote up</button></form>
                             <form action="/answer/{{ answer['id'] }}/vote_down" method="POST">
