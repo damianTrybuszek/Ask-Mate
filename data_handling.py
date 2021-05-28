@@ -252,3 +252,14 @@ def get_comments_for_question(cursor, question_id):
     query_params = [question_id]
     cursor.execute(query, query_params)
     return cursor.fetchall()
+
+@database_connection.connection_handler
+def add_tag_to_question(cursor, id_of_question, tag):
+    query = """
+            INSERT INTO tag
+            (question_id, name) 
+            VALUES
+            (%s, %s);
+            """
+    query_params = [id_of_question, tag]
+    cursor.execute(query, query_params)

@@ -174,5 +174,17 @@ def add_comment_question(question_id):
             return redirect(f"/question/{question_id}")
     return render_template("new_comment.html")
 
+
+@app.route("/question/<question_id>/new-tag", methods=["GET", "POST"])
+def tag_question(question_id):
+    if request.method == "POST":
+        question = data_handling.get_question_by_id(question_id)
+        tag = dict(request.form)
+        data_handling.add_tag_to_question(question_id, tag)
+        return redirect(f"/question/{question_id}")
+    return render_template("new_tag.html")
+
+
+
 if __name__ == "__main__":
     app.run(debug=True)
