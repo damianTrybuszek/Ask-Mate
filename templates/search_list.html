@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+{% block title %} List questions {% endblock %}
+
+{% block content %}
+
+<h1 class="header">Hello There!</h1>
+
+    <div class="alert alert-success d-flex align-items-center" role="alert">
+  <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
+  <div class="title__input">  Searched phrase exists in the following questions:
+</div>
+</div>
+
+<table class="table table-dark table-striped table-hover table-sm table-bordered border-light">
+
+    <tr class="text-center align-middle" >
+        {% for element in headers %}
+            {%  if element == "image" %}
+                <th class="text-center align-middle" colspan="2">
+                    {{ element }}
+
+                    <form action="/list?order_by={{ element }}&order_direction=asc" method="POST">
+                    <button class="asc__button" type="submit" name="asc"><img class="arrows_up_down" src="/static/graphics/up_arrow.jpg"></button>
+                    </form>
+
+                    <form action="/list?order_by={{ element }}&order_direction=desc" method="POST">
+                    <button class="desc__button" type="submit" name="desc"><img class="arrows_up_down" src="/static/graphics/down_arrow.jpg"></button>
+                    </form>
+                </th>
+            {% else %}
+                <th class="text-center align-middle">
+                    {{ element }}
+
+                    <form action="/list?order_by={{ element }}&order_direction=asc" method="POST">
+                    <button class="asc__button" type="submit" name="asc"><img class="arrows_up_down" src="/static/graphics/up_arrow.jpg"></button>
+                    </form>
+
+                    <form action="/list?order_by={{ element }}&order_direction=desc" method="POST">
+                    <button class="desc__button" type="submit" name="desc"><img class="arrows_up_down" src="/static/graphics/down_arrow.jpg"></button>
+                    </form>
+                </th>
+            {% endif %}
+        {% endfor %}
+    </tr>
+
+        {% for element in question_list %}
+    <tr class="text-center">
+            {% for key in element %}
+                {% if key == "id" %}
+                    <td class="text-center align-middle" ><a href="/question/{{ element[key] }}">{{ element[key] }}</a></td>
+                {% elif key == "image" and element[key] %}
+                    <td class="text-center align-middle"><img src="/static/img/{{ element[key] }}" alt="Question Image" align="center" max-width="100%" width="300"/></td>
+                {% else %}
+                    <td class="text-center align-middle">{{ element[key] }}</td>
+                {% endif %}
+            {% endfor %}
+        <form action="/question/{{ element['id'] }}/vote_up" method="POST">
+            <td class="text-center align-middle"><button class="voteup__button" onclick="alert('Thank you! You have up-voted the question!')" type="submit" name="vote_up">Vote up</button>
+        </form>
+        <form action="/question/{{ element['id'] }}/vote_down" method="POST">
+            <button class="votedown__button" onclick="alert('Thank you! You have down-voted the question!')" type="submit" name="vote_down">Vote down</button></td>
+        </form>
+    </tr>
+        {% endfor %}
+</table>
+
+
+
+
+<div class="alert alert-success d-flex align-items-center" role="alert">
+  <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
+  <div class="title__input">  Searched phrase exists in the following answers:
+</div>
+</div>
+
+
+<table class="table table-dark table-striped table-hover table-sm table-bordered border-light">
+
+    <tr class="text-center align-middle" >
+        {% for element in headers %}
+            {%  if element == "image" %}
+                <th class="text-center align-middle" colspan="2">
+                    {{ element }}
+
+                    <form action="/list?order_by={{ element }}&order_direction=asc" method="POST">
+                    <button class="asc__button" type="submit" name="asc"><img class="arrows_up_down" src="/static/graphics/up_arrow.jpg"></button>
+                    </form>
+
+                    <form action="/list?order_by={{ element }}&order_direction=desc" method="POST">
+                    <button class="desc__button" type="submit" name="desc"><img class="arrows_up_down" src="/static/graphics/down_arrow.jpg"></button>
+                    </form>
+                </th>
+            {% else %}
+                <th class="text-center align-middle">
+                    {{ element }}
+
+                    <form action="/list?order_by={{ element }}&order_direction=asc" method="POST">
+                    <button class="asc__button" type="submit" name="asc"><img class="arrows_up_down" src="/static/graphics/up_arrow.jpg"></button>
+                    </form>
+
+                    <form action="/list?order_by={{ element }}&order_direction=desc" method="POST">
+                    <button class="desc__button" type="submit" name="desc"><img class="arrows_up_down" src="/static/graphics/down_arrow.jpg"></button>
+                    </form>
+                </th>
+            {% endif %}
+        {% endfor %}
+    </tr>
+
+        {% for element in answers_list %}
+    <tr class="text-center">
+            {% for key in element %}
+                {% if key == "id" %}
+                    <td class="text-center align-middle" ><a href="/question/{{ element[key] }}">{{ element[key] }}</a></td>
+                {% elif key == "image" and element[key] %}
+                    <td class="text-center align-middle"><img src="/static/img/{{ element[key] }}" alt="Question Image" align="center" max-width="100%" width="300"/></td>
+                {% else %}
+                    <td class="text-center align-middle">{{ element[key] }}</td>
+                {% endif %}
+            {% endfor %}
+        <form action="/question/{{ element['id'] }}/vote_up" method="POST">
+            <td class="text-center align-middle"><button class="voteup__button" onclick="alert('Thank you! You have up-voted the question!')" type="submit" name="vote_up">Vote up</button>
+        </form>
+        <form action="/question/{{ element['id'] }}/vote_down" method="POST">
+            <button class="votedown__button" onclick="alert('Thank you! You have down-voted the question!')" type="submit" name="vote_down">Vote down</button></td>
+        </form>
+    </tr>
+        {% endfor %}
+
+
+{% endblock %}

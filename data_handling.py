@@ -4,7 +4,9 @@ import database_connection as database_connection
 from psycopg2 import sql
 
 
-UPLOAD_FOLDER = os.getcwd() + "\\static\\img\\"
+UPLOAD_FOLDER 
+
+os.getcwd() + "\\static\\img\\"
 
 
 @database_connection.connection_handler
@@ -148,6 +150,7 @@ def overwrite_question(cursor, question_id, new_data):
     query_params = [new_data['title'], new_data['message'], question_id]
     cursor.execute(query, query_params)
 
+    
 @database_connection.connection_handler
 def overwrite_answer(cursor, answer_id, new_data):
     query = """
@@ -159,6 +162,7 @@ def overwrite_answer(cursor, answer_id, new_data):
     query_params = [new_data['message'], answer_id]
     cursor.execute(query, query_params)
 
+    
 @database_connection.connection_handler
 def delete_answer(cursor, deleted_answer):
     if deleted_answer['image']:
@@ -230,6 +234,17 @@ def answer_vote_down(cursor, voted_answer):
 
 
 @database_connection.connection_handler
+def get_searched_questions(cursor, search_phrase):
+    searched_phrase = f"%{search_phrase}%"
+    query = """
+            SELECT *
+            FROM question 
+            WHERE title LIKE %s or message LIKE %s;
+            """
+    query_params = [searched_phrase, searched_phrase]
+
+    
+@database_connection.connection_handler    
 def add_comment_to_question(cursor, question_id, comment):
     sub_time = str(util.get_real_time((util.get_unix_timestamp())))
     edited = 0
@@ -270,6 +285,18 @@ def get_comments_for_question(cursor, question_id):
 
 
 @database_connection.connection_handler
+def get_searched_answers(cursor, search_phrase):
+    searched_phrase = f"%{search_phrase}%"
+    query = """
+            SELECT *
+            FROM answer 
+            WHERE message LIKE %s;
+            """
+    query_params = [searched_phrase]
+    cursor.execute(query, query_params)
+    return cursor.fetchall()
+
+@database_connection.connection_handler  
 def get_comments_for_answer(cursor, answer_id):
     query = """
             SELECT comment.id, comment.message, comment.submission_time, comment.answer_id
@@ -288,5 +315,3 @@ def get_question_id_from_answer(cursor, answer_id):
     query_params = [int(answer_id)]
     cursor.execute(query, query_params)
     return cursor.fetchall()[0]['question_id']
-
-
