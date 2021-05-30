@@ -84,6 +84,18 @@ def edit_question(question_id):
         return redirect(f"/question/{question_id}")
     return render_template("edit_question.html", question=question, question_id=question_id)
 
+@app.route("/answer/<answer_id>/edit", methods=["GET", "POST"])
+def edit_answer(answer_id):
+    answer = data_handling.get_answer_by_id(answer_id)[0]
+    question_id = answer['question_id']
+    question = data_handling.get_question_by_id(question_id)[0]
+
+    if request.method == "POST":
+        new_data = dict(request.form)
+        data_handling.overwrite_answer(answer_id, new_data)
+        return redirect(f"/question/{question_id}")
+    return render_template("edit_answer.html", answer=answer, question=question)
+
 
 @app.route("/answer/<answer_id>/delete", methods=["GET", "POST"])
 def delete_answer(answer_id):

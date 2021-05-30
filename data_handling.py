@@ -148,6 +148,16 @@ def overwrite_question(cursor, question_id, new_data):
     query_params = [new_data['title'], new_data['message'], question_id]
     cursor.execute(query, query_params)
 
+@database_connection.connection_handler
+def overwrite_answer(cursor, answer_id, new_data):
+    query = """
+            UPDATE answer
+            SET
+            message = %s
+            WHERE id = %s;
+            """
+    query_params = [new_data['message'], answer_id]
+    cursor.execute(query, query_params)
 
 @database_connection.connection_handler
 def delete_answer(cursor, deleted_answer):
