@@ -175,6 +175,26 @@ def delete_answer(cursor, deleted_answer):
 
 
 @database_connection.connection_handler
+def delete_all_comments_from_question(cursor, question_id):
+    query = sql.SQL("DELETE FROM comment WHERE question_id=%s")
+    query_params = [int(question_id)]
+    cursor.execute(query, query_params)
+
+
+@database_connection.connection_handler
+def delete_all_answers_comments_from_question(cursor, question_id):
+    query = sql.SQL("DELETE FROM comment USING answer WHERE answer.id = comment.answer_id AND answer.question_id=%s")
+    query_params = [int(question_id)]
+    cursor.execute(query, query_params)
+
+
+@database_connection.connection_handler
+def delete_all_answers_from_question(cursor, question_id):
+    query = sql.SQL("DELETE FROM answer WHERE question_id=%s")
+    query_params = [int(question_id)]
+    cursor.execute(query, query_params)
+
+@database_connection.connection_handler
 def delete_question(cursor, deleted_question):
     if deleted_question['image']:
         os.remove(f"{UPLOAD_FOLDER}/{deleted_question['image']}")
@@ -316,3 +336,28 @@ def get_question_id_from_answer(cursor, answer_id):
     query_params = [int(answer_id)]
     cursor.execute(query, query_params)
     return cursor.fetchall()[0]['question_id']
+
+
+@database_connection.connection_handler
+def get_question_id_for_answer_comment(cursor, comment_id):
+    query = sql.SQL("SELECT answer.question_id"
+                    " FROM comment JOIN answer on comment.answer_id = answer.id"
+                    " WHERE comment.id=%s")
+    query_params = [int(comment_id)]
+    cursor.execute(query, query_params)
+    return cursor.fetchall()[0]['question_id']
+
+
+@database_connection.connection_handler
+def get_question_id_for_question_comment(cursor, comment_id):
+    query = sql.SQL("SELECT question_id FROM comment WHERE id=%s")
+    query_params = [int(comment_id)]
+    cursor.execute(query, query_params)
+    return cursor.fetchall()[0]['question_id']
+
+
+@database_connection.connection_handler
+def delete_comment(cursor, comment_id):
+    query = sql.SQL("DELETE FROM comment WHERE id=%s")
+    query_params = [int(comment_id)]
+    cursor.execute(query, query_params)

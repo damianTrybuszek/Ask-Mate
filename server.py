@@ -7,13 +7,14 @@ import os
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = data_handling.UPLOAD_FOLDER
 
+
 @app.route("/")
 def hello():
     return render_template('index.html')
 
 
 @app.route("/list", methods=["POST", "GET"])
-def list():
+def display_list():
     order_by = request.args.get('order_by', 'id')
     order_direction = request.args.get('order_direction', 'desc')
     headers = data_handling.get_headers_questions()
@@ -29,6 +30,9 @@ def display(question_id):
     headers = data_handling.get_headers_answers()
     answer_list = util.get_answer_to_display(question_id, order_by, order_direction)
     question = util.get_questions_to_display(question_id)
+    if len(question) == 0:
+        return render_template("wrong_question_id.html")
+
     question_comments = data_handling.get_comments_for_question(question_id)
     answers_comments = data_handling.get_comments_for_answer(question_id)
 
@@ -84,6 +88,7 @@ def edit_question(question_id):
         return redirect(f"/question/{question_id}")
     return render_template("edit_question.html", question=question, question_id=question_id)
 
+
 @app.route("/answer/<answer_id>/edit", methods=["GET", "POST"])
 def edit_answer(answer_id):
     answer = data_handling.get_answer_by_id(answer_id)[0]
@@ -114,19 +119,20 @@ def delete_answer(answer_id):
 
 @app.route("/question/<question_id>/delete", methods=["GET", "POST"])
 def delete_question(question_id):
-    deleted_question = data_handling.get_question_by_id(question_id)[0]
-    if deleted_question:
-        try:
-            if request.method == "POST":
-                if 'yes_button' in request.form:
-                    data_handling.delete_question(deleted_question)
-                    return redirect("/list")
-                else:
-                    return redirect(f"/question/{deleted_question['id']}")
-            return render_template("delete_question.html", question_id=question_id)
-        except:
-            raise KeyError("This question still has answers that are tied to it, you can't just delete it")
-    else:
+    try:
+        deleted_question = data_handling.get_question_by_id(question_id)[0]
+        if request.method == "POST":
+            if 'yes_button' in request.form:
+                # data_handling.delete_all_tags_from_question(question_id)
+                data_handling.delete_all_comments_from_question(question_id)
+                data_handling.delete_all_answers_comments_from_question(question_id)
+                data_handling.delete_all_answers_from_question(question_id)
+                data_handling.delete_question(deleted_question)
+                return redirect("/list")
+            else:
+                return redirect(f"/question/{deleted_question['id']}")
+        return render_template("delete_question.html", question_id=question_id)
+    except:
         return render_template("wrong_question_id.html")
 
 
@@ -203,6 +209,21 @@ def add_comment_answer(answer_id):
             question_id = data_handling.get_question_id_from_answer(answer_id)
             return redirect(f"/question/{question_id}")
     return render_template("new_comment.html")
+
+
+@app.route("/comments/<comment_id>/delete", methods=["GET", "POST"])
+def delete_comment(comment_id):
+    try:
+        question_id = data_handling.get_question_id_for_answer_comment(comment_id)
+    except:
+        question_id = data_handling.get_question_id_for_question_comment(comment_id)
+    if request.method == "POST":
+        if 'yes_button' in request.form:
+            data_handling.delete_comment(comment_id)
+            return redirect(f"/question/{question_id}")
+        else:
+            return redirect(f"/question/{question_id}")
+    return render_template("delete_comment.html",)
 
 
 if __name__ == "__main__":
