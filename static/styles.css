@@ -1,8 +1,10 @@
+
 .table__general{
     border-spacing: 0;
     background-color: #58E1F6;
     margin: 20px;
-    width: 50%;
+    width: 80%
+    align: center;
 }
 
 .table__sortable {
@@ -112,4 +114,25 @@
 .arrows_up_down{
     width: 25px;
     height: 25px;
+}
+.search__button {
+    float: left;
+    width: 20%;
+    padding: 10px;
+    background: #2196F3;
+    color: white;
+    font-size: 17px;
+    border: 1px solid grey;
+    border-left: none; /* Prevent double borders */
+    cursor: pointer;
+}
+
+.search__box{
+    box-sizing: border-box;
+    padding: 10px;
+  font-size: 17px;
+  border: 1px solid grey;
+  float: left;
+  width: 80%;
+  background: #f1f1f1;
 }

@@ -215,3 +215,29 @@ def answer_vote_down(cursor, voted_answer):
             """
     query_params = [voted_answer[0]['id']]
     cursor.execute(query, query_params)
+
+
+@database_connection.connection_handler
+def get_searched_questions(cursor, search_phrase):
+    searched_phrase = f"%{search_phrase}%"
+    query = """
+            SELECT *
+            FROM question 
+            WHERE title LIKE %s or message LIKE %s;
+            """
+    query_params = [searched_phrase, searched_phrase]
+    cursor.execute(query, query_params)
+    return cursor.fetchall()
+
+
+@database_connection.connection_handler
+def get_searched_answers(cursor, search_phrase):
+    searched_phrase = f"%{search_phrase}%"
+    query = """
+            SELECT *
+            FROM answer 
+            WHERE message LIKE %s;
+            """
+    query_params = [searched_phrase]
+    cursor.execute(query, query_params)
+    return cursor.fetchall()
