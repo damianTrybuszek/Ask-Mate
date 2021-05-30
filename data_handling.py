@@ -356,7 +356,7 @@ def get_comments_for_answer(cursor, answer_id):
             SELECT comment.id, comment.message, comment.submission_time, comment.answer_id
             FROM answer
             JOIN comment ON answer.id = comment.answer_id
-            WHERE answer.question_id=%s
+            WHERE answer.question_id=%s;
             """
     query_params = [answer_id]
     cursor.execute(query, query_params)
@@ -365,7 +365,7 @@ def get_comments_for_answer(cursor, answer_id):
 
 @database_connection.connection_handler
 def get_question_id_from_answer(cursor, answer_id):
-    query = sql.SQL("SELECT question_id FROM answer WHERE id=%s")
+    query = sql.SQL("SELECT question_id FROM answer WHERE id=%s;")
     query_params = [int(answer_id)]
     cursor.execute(query, query_params)
     return cursor.fetchall()[0]['question_id']
@@ -379,12 +379,13 @@ def get_latest_questions(cursor):
             """
     cursor.execute(query)
     return cursor.fetchall()
-  
-  
+
+
+@database_connection.connection_handler
 def get_question_id_for_answer_comment(cursor, comment_id):
     query = sql.SQL("SELECT answer.question_id"
                     " FROM comment JOIN answer on comment.answer_id = answer.id"
-                    " WHERE comment.id=%s")
+                    " WHERE comment.id=%s;")
     query_params = [int(comment_id)]
     cursor.execute(query, query_params)
     return cursor.fetchall()[0]['question_id']
@@ -392,7 +393,7 @@ def get_question_id_for_answer_comment(cursor, comment_id):
 
 @database_connection.connection_handler
 def get_question_id_for_question_comment(cursor, comment_id):
-    query = sql.SQL("SELECT question_id FROM comment WHERE id=%s")
+    query = sql.SQL("SELECT question_id FROM comment WHERE id=%s;")
     query_params = [int(comment_id)]
     cursor.execute(query, query_params)
     return cursor.fetchall()[0]['question_id']
@@ -400,6 +401,21 @@ def get_question_id_for_question_comment(cursor, comment_id):
 
 @database_connection.connection_handler
 def delete_comment(cursor, comment_id):
-    query = sql.SQL("DELETE FROM comment WHERE id=%s")
+    query = sql.SQL("DELETE FROM comment WHERE id=%s;")
     query_params = [int(comment_id)]
+    cursor.execute(query, query_params)
+
+
+@database_connection.connection_handler
+def get_comment_by_id(cursor, comment_id):
+    query = sql.SQL("SELECT * FROM comment WHERE id=%s;")
+    query_params = [int(comment_id)]
+    cursor.execute(query, query_params)
+    return cursor.fetchall()[0]
+
+
+@database_connection.connection_handler
+def edit_comment(cursor, comment_id, user_input):
+    query = sql.SQL("UPDATE comment SET message = %s WHERE id = %s;")
+    query_params = [user_input, int(comment_id)]
     cursor.execute(query, query_params)

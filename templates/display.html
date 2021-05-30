@@ -30,12 +30,14 @@
                 <tr >
                     <th>Comment</th>
                     <th>Submission Time</th>
+                    <th>Edit this comment</th>
                     <th>Delete this comment</th>
                 </tr>
                 {% for comment in question_comments %}
                     <tr>
                         <td>{{ comment['message'] }}</td>
                         <td>{{ comment['submission_time'] }}</td>
+                        <td><a href = "/comment/{{ comment['id'] }}/edit">EDIT</a>
                         <td><a href = "/comments/{{ comment['id'] }}/delete">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
                         <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1
@@ -112,7 +114,8 @@
                                 {% for comment in answers_comments %}
                                     {% if comment['answer_id'] == answer['id'] %}
                                        <ul>
-                                           <li>{{ comment['message'] }} || {{ comment['submission_time'] }}
+                                           <li>{{ comment['message'] }} || {{ comment['submission_time'] }} ||
+                                           <a href = "/comment/{{ comment['id'] }}/edit">EDIT</a> ||
                                            <a href = "/comments/{{ comment['id'] }}/delete">
                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
                                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1
