@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %} Edit your answer {% endblock %}
+
+{% block content %}
+    <h1 class="header">This is the answer to the question ID {{ question["id"] }}.</h1>
+
+        <h4 class="header">Question title:</h4>
+        <h4 class="header">{{ question["title"] }}</h4>
+        <hr>
+        <h4 class="header">Question message:</h4>
+        <h5 class="header"><pre>{{ question["message"] }}</pre></h5>
+
+    <h2 class="header">Edit your answer message:</h2>
+    <form action="#" method="POST" enctype="multipart/form-data"><br/>
+        <textarea class="textarea__input" id="message" name="message" rows="20" cols="100">{{ answer['message'] }}</textarea><br/>
+        <button class ="reset__button" type="reset">Reset</button>
+        <button class ="submit__button" onclick="alert('Thank you! Your edits have been submited!')" type="submit">Save</button><br/>
+    </form>
+{% endblock %}

@@ -15,8 +15,9 @@
 
     <tr class="text-center align-middle" >
         {% for element in headers %}
-            {%  if element == "image" %}
-                <th class="text-center align-middle" colspan="2">
+
+            {%  if element == "question_tag" %}
+                <th class="table__cell" colspan="2">
                     {{ element }}
 
                     <form action="/list?order_by={{ element }}&order_direction=asc" method="POST">

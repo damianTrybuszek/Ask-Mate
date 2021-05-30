@@ -29,13 +29,16 @@ def display(question_id):
     headers = data_handling.get_headers_answers()
     answer_list = util.get_answer_to_display(question_id, order_by, order_direction)
     question = util.get_questions_to_display(question_id)
+    question_comments = data_handling.get_comments_for_question(question_id)
+    answers_comments = data_handling.get_comments_for_answer(question_id)
 
     if len(question) > 0:
         question_to_display = question[0]
     else:
         question_to_display = question
 
-    return render_template("display.html", question=question_to_display, answers=answer_list, headers=headers)
+    return render_template("display.html", question=question_to_display, answers=answer_list, headers=headers,
+                           question_comments=question_comments, answers_comments=answers_comments)
 
 
 @app.route("/add_question", methods=["POST", "GET"])
@@ -80,6 +83,18 @@ def edit_question(question_id):
         data_handling.overwrite_question(question_id, new_data)
         return redirect(f"/question/{question_id}")
     return render_template("edit_question.html", question=question, question_id=question_id)
+
+@app.route("/answer/<answer_id>/edit", methods=["GET", "POST"])
+def edit_answer(answer_id):
+    answer = data_handling.get_answer_by_id(answer_id)[0]
+    question_id = answer['question_id']
+    question = data_handling.get_question_by_id(question_id)[0]
+
+    if request.method == "POST":
+        new_data = dict(request.form)
+        data_handling.overwrite_answer(answer_id, new_data)
+        return redirect(f"/question/{question_id}")
+    return render_template("edit_answer.html", answer=answer, question=question)
 
 
 @app.route("/answer/<answer_id>/delete", methods=["GET", "POST"])
@@ -167,6 +182,27 @@ def search_question():
         return render_template("empty_search_list.html")
 
     return render_template("search_list.html", question_list=question_list, headers=headers, answers_list=answers_list)
+
+  
+@app.route("/question/<question_id>/new-comment", methods=["GET", "POST"])
+def add_comment_question(question_id):
+    if request.method == "POST":
+        if 'message' in request.form:
+            comment = dict(request.form)
+            data_handling.add_comment_to_question(question_id, comment)
+            return redirect(f"/question/{question_id}")
+    return render_template("new_comment.html")
+
+
+@app.route("/answer/<answer_id>/new-comment", methods=["GET", "POST"])
+def add_comment_answer(answer_id):
+    if request.method == "POST":
+        if 'message' in request.form:
+            comment = dict(request.form)
+            data_handling.add_comment_to_answer(answer_id, comment)
+            question_id = data_handling.get_question_id_from_answer(answer_id)
+            return redirect(f"/question/{question_id}")
+    return render_template("new_comment.html")
 
 
 if __name__ == "__main__":

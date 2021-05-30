@@ -8,7 +8,7 @@
         <input class="title__input" type="text" id="title" name="title" size="100" value="{{ question['title'] }}"><br/>
         <label class="label" for="message">Message:</label><br/>
         <textarea class="textarea__input" id="message" name="message" rows="20" cols="100">{{ question['message'] }}</textarea><br/>
-        <button class ="reset__button" type="reset">Reset</button>
-        <button class ="submit__button" onclick="alert('Thank you! Your edits have been submited!')" type="submit">Save</button><br/>
+        <button class="btn btn-secondary" type="reset">Reset</button>
+        <button class="btn btn-success" onclick="alert('Thank you! Your edits have been submited!')" type="submit">Save</button><br/>
     </form>
 {% endblock %}
