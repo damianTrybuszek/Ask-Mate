@@ -4,9 +4,7 @@ import database_connection as database_connection
 from psycopg2 import sql
 
 
-UPLOAD_FOLDER 
-
-os.getcwd() + "\\static\\img\\"
+UPLOAD_FOLDER = os.getcwd() + "\\static\\img\\"
 
 
 @database_connection.connection_handler
@@ -242,6 +240,8 @@ def get_searched_questions(cursor, search_phrase):
             WHERE title LIKE %s or message LIKE %s;
             """
     query_params = [searched_phrase, searched_phrase]
+    cursor.execute(query, query_params)
+    return cursor.fetchall()
 
     
 @database_connection.connection_handler    
@@ -256,6 +256,7 @@ def add_comment_to_question(cursor, question_id, comment):
             """
     query_params = [question_id, comment['message'], sub_time, edited]
     cursor.execute(query, query_params)
+
 
 
 @database_connection.connection_handler
