@@ -1,13 +1,14 @@
-body {
-    padding-left: 20px;
-}
+/*body {*/
+/*    padding-left: 20px;*/
+/*}*/
 
 .table__general{
     border-spacing: 0;
     background-color: #58E1F6;
     margin: 20px;
     width: 80%;
-    align: center;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .table__position{
@@ -39,7 +40,6 @@ body {
 }
 
 .title__input {
-    margin-bottom:20px;
     font-weight: bold;
 }
 
