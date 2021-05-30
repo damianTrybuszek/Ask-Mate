@@ -316,3 +316,13 @@ def get_question_id_from_answer(cursor, answer_id):
     query_params = [int(answer_id)]
     cursor.execute(query, query_params)
     return cursor.fetchall()[0]['question_id']
+
+
+@database_connection.connection_handler
+def get_latest_questions(cursor):
+    query = """
+            SELECT * FROM question
+            ORDER BY id DESC LIMIT 5; 
+            """
+    cursor.execute(query)
+    return cursor.fetchall()

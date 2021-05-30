@@ -9,7 +9,9 @@ app.config['UPLOAD_FOLDER'] = data_handling.UPLOAD_FOLDER
 
 @app.route("/")
 def hello():
-    return render_template('index.html')
+    headers = data_handling.get_headers_questions()
+    latest_questions = data_handling.get_latest_questions()
+    return render_template('index.html', latest_questions=latest_questions, headers=headers)
 
 
 @app.route("/list", methods=["POST", "GET"])
