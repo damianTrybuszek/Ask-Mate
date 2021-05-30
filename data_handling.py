@@ -372,6 +372,15 @@ def get_question_id_from_answer(cursor, answer_id):
 
 
 @database_connection.connection_handler
+def get_latest_questions(cursor):
+    query = """
+            SELECT * FROM question
+            ORDER BY id DESC LIMIT 5; 
+            """
+    cursor.execute(query)
+    return cursor.fetchall()
+  
+  
 def get_question_id_for_answer_comment(cursor, comment_id):
     query = sql.SQL("SELECT answer.question_id"
                     " FROM comment JOIN answer on comment.answer_id = answer.id"

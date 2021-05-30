@@ -1,6 +1,6 @@
-body {
-    padding-left: 20px;
-}
+/*body {*/
+/*    padding-left: 20px;*/
+/*}*/
 
 .table__general{
     border-spacing: 0;
@@ -8,7 +8,7 @@ body {
     margin: 20px;
     width: 80%;
     margin-left: auto;
-  margin-right: auto;
+    margin-right: auto;
 }
 
 .table__position{
