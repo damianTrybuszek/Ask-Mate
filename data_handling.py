@@ -1,6 +1,7 @@
 import os
 import util as util
 import database_connection as database_connection
+from psycopg2 import sql
 
 
 UPLOAD_FOLDER = os.getcwd() + "\\static\\img\\"
@@ -233,6 +234,20 @@ def add_comment_to_question(cursor, question_id, comment):
 
 
 @database_connection.connection_handler
+def add_comment_to_answer(cursor, answer_id, comment):
+    sub_time = str(util.get_real_time((util.get_unix_timestamp())))
+    edited = 0
+    query = """
+            INSERT INTO comment
+            (answer_id, message, submission_time, edited_count) 
+            VALUES
+            (%s, %s, %s, %s);
+            """
+    query_params = [answer_id, comment['message'], sub_time, edited]
+    cursor.execute(query, query_params)
+
+
+@database_connection.connection_handler
 def get_comments_for_question(cursor, question_id):
     query = """
             SELECT *
@@ -242,3 +257,26 @@ def get_comments_for_question(cursor, question_id):
     query_params = [question_id]
     cursor.execute(query, query_params)
     return cursor.fetchall()
+
+
+@database_connection.connection_handler
+def get_comments_for_answer(cursor, answer_id):
+    query = """
+            SELECT comment.id, comment.message, comment.submission_time, comment.answer_id
+            FROM answer
+            JOIN comment ON answer.id = comment.answer_id
+            WHERE answer.question_id=%s
+            """
+    query_params = [answer_id]
+    cursor.execute(query, query_params)
+    return cursor.fetchall()
+
+
+@database_connection.connection_handler
+def get_question_id_from_answer(cursor, answer_id):
+    query = sql.SQL("SELECT question_id FROM answer WHERE id=%s")
+    query_params = [int(answer_id)]
+    cursor.execute(query, query_params)
+    return cursor.fetchall()[0]['question_id']
+
+
