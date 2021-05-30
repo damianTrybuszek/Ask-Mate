@@ -30,6 +30,7 @@ def display(question_id):
     answer_list = util.get_answer_to_display(question_id, order_by, order_direction)
     question = util.get_questions_to_display(question_id)
     question_comments = data_handling.get_comments_for_question(question_id)
+    added_tags = data_handling.get_question_tag(question_id)
     answers_comments = data_handling.get_comments_for_answer(question_id)
 
     if len(question) > 0:
@@ -38,7 +39,8 @@ def display(question_id):
         question_to_display = question
 
     return render_template("display.html", question=question_to_display, answers=answer_list, headers=headers,
-                           question_comments=question_comments, answers_comments=answers_comments)
+
+                           question_comments=question_comments, answers_comments=answers_comments, added_tags=', '.join(added_tags))
 
 
 @app.route("/add_question", methods=["POST", "GET"])
@@ -194,6 +196,17 @@ def add_comment_question(question_id):
     return render_template("new_comment.html")
 
 
+@app.route("/question/<question_id>/new-tag", methods=["GET", "POST"])
+def tag_question(question_id):
+    added_tags = data_handling.get_question_tag(question_id)
+    if request.method == "POST":
+        if 'name' in request.form:
+            tag = dict(request.form)
+            data_handling.add_tag_to_question(question_id, tag)
+        return redirect(f"/question/{question_id}")
+    return render_template("new_tag.html", added_tag=', '.join(added_tags))
+
+
 @app.route("/answer/<answer_id>/new-comment", methods=["GET", "POST"])
 def add_comment_answer(answer_id):
     if request.method == "POST":
@@ -203,6 +216,7 @@ def add_comment_answer(answer_id):
             question_id = data_handling.get_question_id_from_answer(answer_id)
             return redirect(f"/question/{question_id}")
     return render_template("new_comment.html")
+
 
 
 if __name__ == "__main__":

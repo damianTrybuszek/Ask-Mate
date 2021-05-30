@@ -38,9 +38,19 @@
                     </tr>
                 {% endfor %}
             </table>
+
+            <hr>
+            {% if added_tags %}
+                <h4 class="header">Tags:</h4>
+            <h3 class="header">{{ added_tags }}</h3>
+            <hr>
+
+            {% endif %}
+{#            ANSWERS LIST#}
             </div>
 
 {#            ANSWERS Table#}
+
             {% if answers|length > 0 %}
                 <div class="table__position">
 
@@ -138,6 +148,7 @@
     <a href="/question/{{ question['id'] }}/new-comment"><h2 class="header">Add a comment!</h2></a></br>
     <a href="/question/{{ question['id'] }}/new-answer"><h2 class="header">Post a new answer!</h2></a></br>
     <a href="/question/{{ question['id'] }}/edit"><h2 class="header">Edit this question!</h2></a></br>
+    <a href="/question/{{ question['id'] }}/new-tag"><h2 class="header">Add tag to this question!</h2></a></br>
     <a href="/list"><h2 class="header">Go to questions list page!</h2></a></br>
     <a href="/question/{{ question['id'] }}/delete"><h2 class="header">Delete this question</h2></a></br>
 
