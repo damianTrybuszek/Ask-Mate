@@ -3,7 +3,6 @@ import util as util
 import database_connection as database_connection
 from psycopg2 import sql
 
-
 UPLOAD_FOLDER = os.getcwd() + "\\static\\img\\"
 
 
@@ -194,6 +193,7 @@ def delete_all_answers_from_question(cursor, question_id):
     query_params = [int(question_id)]
     cursor.execute(query, query_params)
 
+
 @database_connection.connection_handler
 def delete_question(cursor, deleted_question):
     if deleted_question['image']:
@@ -278,7 +278,6 @@ def add_comment_to_question(cursor, question_id, comment):
     cursor.execute(query, query_params)
 
 
-
 @database_connection.connection_handler
 def add_comment_to_answer(cursor, answer_id, comment):
     sub_time = str(util.get_real_time((util.get_unix_timestamp())))
@@ -306,6 +305,39 @@ def get_comments_for_question(cursor, question_id):
 
 
 @database_connection.connection_handler
+def add_tag_to_question(cursor, id_of_question, tag_name):
+    query = """
+            INSERT INTO question_tag
+            (question_id, name) 
+            VALUES
+            (%s, %s);
+            """
+    query_params = [id_of_question, tag_name['name']]
+    cursor.execute(query, query_params)
+
+
+@database_connection.connection_handler
+def get_question_tag(cursor, id_of_question):
+    query = """
+            SELECT *
+            FROM question_tag
+            WHERE question_id = %s;
+            """
+    query_params = [id_of_question]
+    cursor.execute(query, query_params)
+    tags = cursor.fetchall()
+    added_tags = []
+    try:
+        for i in range(len(tags)):
+            # tags[i]['name'].set(added_tags)
+            if tags[i]['name'] not in added_tags:
+                added_tags.append(tags[i]['name'])
+    except:
+        added_tags = None
+    return added_tags
+
+
+@database_connection.connection_handler
 def get_searched_answers(cursor, search_phrase):
     searched_phrase = f"%{search_phrase}%"
     query = """
@@ -316,6 +348,7 @@ def get_searched_answers(cursor, search_phrase):
     query_params = [searched_phrase]
     cursor.execute(query, query_params)
     return cursor.fetchall()
+
 
 @database_connection.connection_handler  
 def get_comments_for_answer(cursor, answer_id):
