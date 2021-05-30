@@ -166,6 +166,24 @@ def answers_vote_down(answer_id):
     return redirect(f"/question/{answer[0]['question_id']}")
 
 
+@app.route("/search", methods=["POST", "GET"])
+def search_question():
+    if request.method == "POST":
+        if "search" in request.form:
+            search_phrase = request.form['search']
+            return redirect(f"/search?q={search_phrase}")
+
+    search_phrase = request.args.get("q", "")
+    headers = data_handling.get_headers_questions()
+    question_list = data_handling.get_searched_questions(search_phrase)
+    answers_list = data_handling.get_searched_answers(search_phrase)
+
+    if len(question_list) == 0 and len(answers_list) == 0:
+        return render_template("empty_search_list.html")
+
+    return render_template("search_list.html", question_list=question_list, headers=headers, answers_list=answers_list)
+
+  
 @app.route("/question/<question_id>/new-comment", methods=["GET", "POST"])
 def add_comment_question(question_id):
     if request.method == "POST":
