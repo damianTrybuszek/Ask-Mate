@@ -49,8 +49,21 @@
                     <tr>
                         {% for element in headers %}
 {#                            {%  if element == "image" %}#}
-                                <th>
+{#                                <th>#}
+{#                                    {{ element }}#}
+{#                                    <form action="/question/{{ question['id'] }}?order_by={{ element }}&order_direction=asc" method="POST">#}
+{#                                        <button class="asc__button" type="submit" name="asc"><img class="arrows_up_down" src="/static/graphics/up_arrow.jpg"></button>#}
+{#                                    </form>#}
+{##}
+{#                                    <form action="/question/{{ question['id'] }}?order_by={{ element }}&order_direction=desc" method="POST">#}
+{#                                        <button class="desc__button" type="submit" name="desc"><img class="arrows_up_down" src="/static/graphics/down_arrow.jpg"></button>#}
+{#                                    </form>#}
+{#                                </th>#}
+                            {% if element != "question_id" %}
+
+                                <th class>
                                     {{ element }}
+
                                     <form action="/question/{{ question['id'] }}?order_by={{ element }}&order_direction=asc" method="POST">
                                         <button class="asc__button" type="submit" name="asc"><img class="arrows_up_down" src="/static/graphics/up_arrow.jpg"></button>
                                     </form>
@@ -59,22 +72,8 @@
                                         <button class="desc__button" type="submit" name="desc"><img class="arrows_up_down" src="/static/graphics/down_arrow.jpg"></button>
                                     </form>
                                 </th>
-{#                            {% elif element != "question_id" %}#}
 
-{#                                <th class="table__cell">#}
-{#                                    {{ element }}#}
-{##}
-{#                                    <form action="/question/{{ question['id'] }}?order_by={{ element }}&order_direction=asc" method="POST">#}
-{#                                        <button class="asc__button" type="submit" name="asc"><img class="arrows_up_down" src="/static/graphics/up_arrow.jpg"></button>#}
-{#                                    </form>#}
-{##}
-{#                                    <form action="/question/{{ question['id'] }}?order_by={{ element }}&order_direction=desc" method="POST">#}
-{#                                        <button class="desc__button" type="submit" name="desc"><img class="arrows_up_down" src="/static/graphics/down_arrow.jpg"></button>#}
-{#                                    </form>#}
-
-{#                                </th>#}
-
-{#                            {% endif %}#}
+                            {% endif %}
 
                         {% endfor %}
                         <th>Comment this question</th>
