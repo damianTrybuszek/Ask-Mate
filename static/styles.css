@@ -5,10 +5,19 @@ body {
 .table__general{
     border-spacing: 0;
     background-color: #58E1F6;
-    width: 50%;
+    margin: 20px;
+    width: 80%;
+    margin-left: auto;
+  margin-right: auto;
+}
+
+.table__position{
+    width: 70%;
+    margin: auto;
 }
 
 .table__sortable {
+    border: 1px solid black;
     border-spacing: 0;
     background-color: #58E1F6;
     width: 70%;
@@ -27,10 +36,10 @@ body {
 
 .table__cell {
     padding: 8px;
+    border: 1px solid black;
 }
 
 .title__input {
-    margin-bottom:20px;
     font-weight: bold;
 }
 
@@ -104,4 +113,25 @@ body {
 .arrows_up_down{
     width: 25px;
     height: 25px;
+}
+.search__button {
+    float: left;
+    width: 20%;
+    padding: 10px;
+    background: #2196F3;
+    color: white;
+    font-size: 17px;
+    border: 1px solid grey;
+    border-left: none; /* Prevent double borders */
+    cursor: pointer;
+}
+
+.search__box{
+    box-sizing: border-box;
+    padding: 10px;
+  font-size: 17px;
+  border: 1px solid grey;
+  float: left;
+  width: 80%;
+  background: #f1f1f1;
 }

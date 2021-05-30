@@ -31,6 +31,7 @@ def display(question_id):
     question = util.get_questions_to_display(question_id)
     question_comments = data_handling.get_comments_for_question(question_id)
     added_tags = data_handling.get_question_tag(question_id)
+    answers_comments = data_handling.get_comments_for_answer(question_id)
 
     if len(question) > 0:
         question_to_display = question[0]
@@ -38,7 +39,8 @@ def display(question_id):
         question_to_display = question
 
     return render_template("display.html", question=question_to_display, answers=answer_list, headers=headers,
-                           question_comments=question_comments, added_tags=', '.join(added_tags))
+
+                           question_comments=question_comments, answers_comments=answers_comments, added_tags=', '.join(added_tags))
 
 
 @app.route("/add_question", methods=["POST", "GET"])
@@ -166,6 +168,24 @@ def answers_vote_down(answer_id):
     return redirect(f"/question/{answer[0]['question_id']}")
 
 
+@app.route("/search", methods=["POST", "GET"])
+def search_question():
+    if request.method == "POST":
+        if "search" in request.form:
+            search_phrase = request.form['search']
+            return redirect(f"/search?q={search_phrase}")
+
+    search_phrase = request.args.get("q", "")
+    headers = data_handling.get_headers_questions()
+    question_list = data_handling.get_searched_questions(search_phrase)
+    answers_list = data_handling.get_searched_answers(search_phrase)
+
+    if len(question_list) == 0 and len(answers_list) == 0:
+        return render_template("empty_search_list.html")
+
+    return render_template("search_list.html", question_list=question_list, headers=headers, answers_list=answers_list)
+
+  
 @app.route("/question/<question_id>/new-comment", methods=["GET", "POST"])
 def add_comment_question(question_id):
     if request.method == "POST":
@@ -185,6 +205,17 @@ def tag_question(question_id):
             data_handling.add_tag_to_question(question_id, tag)
         return redirect(f"/question/{question_id}")
     return render_template("new_tag.html", added_tag=', '.join(added_tags))
+
+
+@app.route("/answer/<answer_id>/new-comment", methods=["GET", "POST"])
+def add_comment_answer(answer_id):
+    if request.method == "POST":
+        if 'message' in request.form:
+            comment = dict(request.form)
+            data_handling.add_comment_to_answer(answer_id, comment)
+            question_id = data_handling.get_question_id_from_answer(answer_id)
+            return redirect(f"/question/{question_id}")
+    return render_template("new_comment.html")
 
 
 

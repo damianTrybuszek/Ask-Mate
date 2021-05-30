@@ -1,6 +1,7 @@
 import os
 import util as util
 import database_connection as database_connection
+from psycopg2 import sql
 
 
 UPLOAD_FOLDER = os.getcwd() + "\\static\\img\\"
@@ -147,6 +148,7 @@ def overwrite_question(cursor, question_id, new_data):
     query_params = [new_data['title'], new_data['message'], question_id]
     cursor.execute(query, query_params)
 
+    
 @database_connection.connection_handler
 def overwrite_answer(cursor, answer_id, new_data):
     query = """
@@ -158,6 +160,7 @@ def overwrite_answer(cursor, answer_id, new_data):
     query_params = [new_data['message'], answer_id]
     cursor.execute(query, query_params)
 
+    
 @database_connection.connection_handler
 def delete_answer(cursor, deleted_answer):
     if deleted_answer['image']:
@@ -229,6 +232,19 @@ def answer_vote_down(cursor, voted_answer):
 
 
 @database_connection.connection_handler
+def get_searched_questions(cursor, search_phrase):
+    searched_phrase = f"%{search_phrase}%"
+    query = """
+            SELECT *
+            FROM question 
+            WHERE title LIKE %s or message LIKE %s;
+            """
+    query_params = [searched_phrase, searched_phrase]
+    cursor.execute(query, query_params)
+    return cursor.fetchall()
+
+    
+@database_connection.connection_handler    
 def add_comment_to_question(cursor, question_id, comment):
     sub_time = str(util.get_real_time((util.get_unix_timestamp())))
     edited = 0
@@ -239,6 +255,21 @@ def add_comment_to_question(cursor, question_id, comment):
             (%s, %s, %s, %s);
             """
     query_params = [question_id, comment['message'], sub_time, edited]
+    cursor.execute(query, query_params)
+
+
+
+@database_connection.connection_handler
+def add_comment_to_answer(cursor, answer_id, comment):
+    sub_time = str(util.get_real_time((util.get_unix_timestamp())))
+    edited = 0
+    query = """
+            INSERT INTO comment
+            (answer_id, message, submission_time, edited_count) 
+            VALUES
+            (%s, %s, %s, %s);
+            """
+    query_params = [answer_id, comment['message'], sub_time, edited]
     cursor.execute(query, query_params)
 
 
@@ -283,3 +314,37 @@ def get_question_tag(cursor, id_of_question):
     except:
         added_tags = None
     return added_tags
+
+
+@database_connection.connection_handler
+def get_searched_answers(cursor, search_phrase):
+    searched_phrase = f"%{search_phrase}%"
+    query = """
+            SELECT *
+            FROM answer 
+            WHERE message LIKE %s;
+            """
+    query_params = [searched_phrase]
+    cursor.execute(query, query_params)
+    return cursor.fetchall()
+
+@database_connection.connection_handler  
+def get_comments_for_answer(cursor, answer_id):
+    query = """
+            SELECT comment.id, comment.message, comment.submission_time, comment.answer_id
+            FROM answer
+            JOIN comment ON answer.id = comment.answer_id
+            WHERE answer.question_id=%s
+            """
+    query_params = [answer_id]
+    cursor.execute(query, query_params)
+    return cursor.fetchall()
+
+
+@database_connection.connection_handler
+def get_question_id_from_answer(cursor, answer_id):
+    query = sql.SQL("SELECT question_id FROM answer WHERE id=%s")
+    query_params = [int(answer_id)]
+    cursor.execute(query, query_params)
+    return cursor.fetchall()[0]['question_id']
+
