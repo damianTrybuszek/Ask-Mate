@@ -239,7 +239,24 @@ def delete_comment(comment_id):
             return redirect(f"/question/{question_id}")
         else:
             return redirect(f"/question/{question_id}")
-    return render_template("delete_comment.html",)
+    return render_template("delete_comment.html", question_id=question_id)
+
+
+@app.route("/comment/<comment_id>/edit", methods=["GET", "POST"])
+def edit_comment(comment_id):
+    comment = data_handling.get_comment_by_id(comment_id)
+
+    try:
+        question_id = data_handling.get_question_id_for_answer_comment(comment_id)
+    except:
+        question_id = data_handling.get_question_id_for_question_comment(comment_id)
+
+    if request.method == "POST":
+        if 'message' in request.form:
+            user_input = dict(request.form)['message']
+            data_handling.edit_comment(comment_id, user_input)
+            return redirect(f"/question/{question_id}")
+    return render_template("edit_comment.html", comment=comment)
 
 
 if __name__ == "__main__":
