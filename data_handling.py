@@ -254,12 +254,32 @@ def get_comments_for_question(cursor, question_id):
     return cursor.fetchall()
 
 @database_connection.connection_handler
-def add_tag_to_question(cursor, id_of_question, tag):
+def add_tag_to_question(cursor, id_of_question, tag_name):
     query = """
-            INSERT INTO tag
+            INSERT INTO question_tag
             (question_id, name) 
             VALUES
             (%s, %s);
             """
-    query_params = [id_of_question, tag]
+    query_params = [id_of_question, tag_name['name']]
     cursor.execute(query, query_params)
+
+@database_connection.connection_handler
+def get_question_tag(cursor, id_of_question):
+    query = """
+            SELECT *
+            FROM question_tag
+            WHERE question_id = %s;
+            """
+    query_params = [id_of_question]
+    cursor.execute(query, query_params)
+    tags = cursor.fetchall()
+    added_tags = []
+    try:
+        for i in range(len(tags)):
+            # tags[i]['name'].set(added_tags)
+            if tags[i]['name'] not in added_tags:
+                added_tags.append(tags[i]['name'])
+    except:
+        added_tags = None
+    return added_tags

@@ -5,8 +5,15 @@
     <h1 class="header">Post the tag:</h1>
     <form action="#" method="POST" enctype="multipart/form-data"><br/>
         <label class="label" for="message">tag:</label><br/>
-        <textarea class="textarea__input" id="message" name="message" rows="20" cols="100"></textarea><br/>
+        <textarea class="textarea__input" id="message" name="name" rows="5" cols="20"></textarea><br/>
         <button class="btn btn-secondary" type="reset">Reset</button>
         <button class="btn btn-success" onclick="alert('Thank you! Your tag has been submited!')" type="submit">Save</button><br/>
     </form>
+
+
+    {% if added_tag %}
+            <h4 class="header">Tags already added to the question :</h4>
+            <h3 class="header">{{ added_tag }}</h3>
+
+    {% endif %}
 {% endblock %}
