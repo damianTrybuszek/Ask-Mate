@@ -21,11 +21,11 @@
                     {{ element }}
 
                     <form action="/list?order_by={{ element }}&order_direction=asc" method="POST">
-                    <button class="asc__button" type="submit" name="asc"><img class="arrows_up_down" src="/static/graphics/up_arrow.jpg"></button>
+                    <button class="asc__button" type="submit" name="asc"><img class="arrows_up_down" alt="Arrow up image" src="/static/graphics/up_arrow.jpg"></button>
                     </form>
 
                     <form action="/list?order_by={{ element }}&order_direction=desc" method="POST">
-                    <button class="desc__button" type="submit" name="desc"><img class="arrows_up_down" src="/static/graphics/down_arrow.jpg"></button>
+                    <button class="desc__button" type="submit" name="desc"><img class="arrows_up_down" alt="Arrow down image" src="/static/graphics/down_arrow.jpg"></button>
                     </form>
                 </th>
             {% else %}
@@ -33,11 +33,11 @@
                     {{ element }}
 
                     <form action="/list?order_by={{ element }}&order_direction=asc" method="POST">
-                    <button class="asc__button" type="submit" name="asc"><img class="arrows_up_down" src="/static/graphics/up_arrow.jpg"></button>
+                    <button class="asc__button" type="submit" name="asc"><img class="arrows_up_down" alt="Arrow up image" src="/static/graphics/up_arrow.jpg"></button>
                     </form>
 
                     <form action="/list?order_by={{ element }}&order_direction=desc" method="POST">
-                    <button class="desc__button" type="submit" name="desc"><img class="arrows_up_down" src="/static/graphics/down_arrow.jpg"></button>
+                    <button class="desc__button" type="submit" name="desc"><img class="arrows_up_down" alt="Arrow down image" src="/static/graphics/down_arrow.jpg"></button>
                     </form>
                 </th>
             {% endif %}

@@ -30,17 +30,35 @@
                 <tr >
                     <th>Comment</th>
                     <th>Submission Time</th>
+                    <th>Delete this comment</th>
                 </tr>
                 {% for comment in question_comments %}
                     <tr>
                         <td>{{ comment['message'] }}</td>
                         <td>{{ comment['submission_time'] }}</td>
+                        <td><a href = "/comments/{{ comment['id'] }}/delete">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                        <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1
+                        0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/><path fill-rule="evenodd"
+                        d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1
+                        0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1
+                        1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/></svg></a></td>
                     </tr>
                 {% endfor %}
             </table>
+
+            <hr>
+            {% if added_tags %}
+                <h4 class="header">Tags:</h4>
+            <h3 class="header">{{ added_tags }}</h3>
+            <hr>
+
+            {% endif %}
+{#            ANSWERS LIST#}
             </div>
 
 {#            ANSWERS Table#}
+
             {% if answers|length > 0 %}
                 <div class="table__position">
 
@@ -48,33 +66,21 @@
                     <th colspan="100%" class="lead text-center">Answers list</th>
                     <tr>
                         {% for element in headers %}
-{#                            {%  if element == "image" %}#}
-                                <th>
+                            {% if element != "question_id" %}
+
+                                <th class>
                                     {{ element }}
+
                                     <form action="/question/{{ question['id'] }}?order_by={{ element }}&order_direction=asc" method="POST">
-                                        <button class="asc__button" type="submit" name="asc"><img class="arrows_up_down" src="/static/graphics/up_arrow.jpg"></button>
+                                        <button class="asc__button" type="submit" name="asc"><img class="arrows_up_down" alt="Arrow up image" src="/static/graphics/up_arrow.jpg"></button>
                                     </form>
 
                                     <form action="/question/{{ question['id'] }}?order_by={{ element }}&order_direction=desc" method="POST">
-                                        <button class="desc__button" type="submit" name="desc"><img class="arrows_up_down" src="/static/graphics/down_arrow.jpg"></button>
+                                        <button class="desc__button" type="submit" name="desc"><img class="arrows_up_down" alt="Arrow down image" src="/static/graphics/down_arrow.jpg"></button>
                                     </form>
                                 </th>
-{#                            {% elif element != "question_id" %}#}
 
-{#                                <th class="table__cell">#}
-{#                                    {{ element }}#}
-{##}
-{#                                    <form action="/question/{{ question['id'] }}?order_by={{ element }}&order_direction=asc" method="POST">#}
-{#                                        <button class="asc__button" type="submit" name="asc"><img class="arrows_up_down" src="/static/graphics/up_arrow.jpg"></button>#}
-{#                                    </form>#}
-{##}
-{#                                    <form action="/question/{{ question['id'] }}?order_by={{ element }}&order_direction=desc" method="POST">#}
-{#                                        <button class="desc__button" type="submit" name="desc"><img class="arrows_up_down" src="/static/graphics/down_arrow.jpg"></button>#}
-{#                                    </form>#}
-
-{#                                </th>#}
-
-{#                            {% endif %}#}
+                            {% endif %}
 
                         {% endfor %}
                         <th>Comment this question</th>
@@ -99,31 +105,26 @@
                                 <button class="votedown__button" onclick="alert('Thank you! You have down-voted the answer!')" type="submit" name="vote_down">Vote down</button></form></td>
                         </tr>
 
-                {# Answer Comments #}
+{#                 Display Comments for answers #}
                         <tr>
                             <td colspan="100%">
-                                <table class="table-primary">
-                                    <tr>
-                                        <th colspan="100%">Comments</th>
-                                    </tr>
-                                    <tr>
-                                         <th>
-                                            <td>ID</td>
-                                            <td>Message</td>
-                                            <td>Submission Time</td>
-                                            <td>Question ID</td>
-                                         </th>
-                                    </tr>
-                                        {% for comment in answers_comments %}
-                                            {% if comment['answer_id'] == answer['id'] %}
-                                               <tr>
-                                                    {% for key in comment %}
-                                                        <td>{{ comment[key] }}</td>
-                                                    {% endfor %}
-                                               </tr>
-                                            {% endif %}
-                                       {% endfor %}
-                                </table>
+                                Comments
+                                {% for comment in answers_comments %}
+                                    {% if comment['answer_id'] == answer['id'] %}
+                                       <ul>
+                                           <li>{{ comment['message'] }} || {{ comment['submission_time'] }}
+                                           <a href = "/comments/{{ comment['id'] }}/delete">
+                                           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                           <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1
+                                            0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/><path fill-rule="evenodd"
+                                           d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1
+                                            0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1
+                                             1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/></svg></a>
+                                           </li>
+{#                                       Longest line broken into 5 lines = trash bin icon :)#}
+                                       </ul>
+                                    {% endif %}
+                                {% endfor %}
                              </td>
                         </tr>
                     {% endfor %}
@@ -139,6 +140,7 @@
     <a href="/question/{{ question['id'] }}/new-comment"><h2 class="header">Add a comment!</h2></a></br>
     <a href="/question/{{ question['id'] }}/new-answer"><h2 class="header">Post a new answer!</h2></a></br>
     <a href="/question/{{ question['id'] }}/edit"><h2 class="header">Edit this question!</h2></a></br>
+    <a href="/question/{{ question['id'] }}/new-tag"><h2 class="header">Add tag to this question!</h2></a></br>
     <a href="/list"><h2 class="header">Go to questions list page!</h2></a></br>
     <a href="/question/{{ question['id'] }}/delete"><h2 class="header">Delete this question</h2></a></br>
 

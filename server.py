@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect
 import data_handling as data_handling
 import util as util
 from werkzeug.utils import secure_filename
@@ -6,6 +6,7 @@ import os
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = data_handling.UPLOAD_FOLDER
+
 
 @app.route("/")
 def hello():
@@ -15,7 +16,7 @@ def hello():
 
 
 @app.route("/list", methods=["POST", "GET"])
-def list():
+def display_list():
     order_by = request.args.get('order_by', 'id')
     order_direction = request.args.get('order_direction', 'desc')
     headers = data_handling.get_headers_questions()
@@ -31,7 +32,11 @@ def display(question_id):
     headers = data_handling.get_headers_answers()
     answer_list = util.get_answer_to_display(question_id, order_by, order_direction)
     question = util.get_questions_to_display(question_id)
+    if len(question) == 0:
+        return render_template("wrong_question_id.html")
+
     question_comments = data_handling.get_comments_for_question(question_id)
+    added_tags = data_handling.get_question_tag(question_id)
     answers_comments = data_handling.get_comments_for_answer(question_id)
 
     if len(question) > 0:
@@ -40,7 +45,9 @@ def display(question_id):
         question_to_display = question
 
     return render_template("display.html", question=question_to_display, answers=answer_list, headers=headers,
-                           question_comments=question_comments, answers_comments=answers_comments)
+
+                           question_comments=question_comments, answers_comments=answers_comments,
+                           added_tags=', '.join(added_tags))
 
 
 @app.route("/add_question", methods=["POST", "GET"])
@@ -73,7 +80,7 @@ def post_an_answer(question_id):
                 filename = False
         answer = dict(request.form)
         data_handling.save_answer(question_id, answer, filename)
-        return redirect( f"/question/{answer['question_id']}")
+        return redirect(f"/question/{answer['question_id']}")
     return render_template("post_an_answer.html", question_id=question_id)
 
 
@@ -85,6 +92,7 @@ def edit_question(question_id):
         data_handling.overwrite_question(question_id, new_data)
         return redirect(f"/question/{question_id}")
     return render_template("edit_question.html", question=question, question_id=question_id)
+
 
 @app.route("/answer/<answer_id>/edit", methods=["GET", "POST"])
 def edit_answer(answer_id):
@@ -116,19 +124,20 @@ def delete_answer(answer_id):
 
 @app.route("/question/<question_id>/delete", methods=["GET", "POST"])
 def delete_question(question_id):
-    deleted_question = data_handling.get_question_by_id(question_id)[0]
-    if deleted_question:
-        try:
-            if request.method == "POST":
-                if 'yes_button' in request.form:
-                    data_handling.delete_question(deleted_question)
-                    return redirect("/list")
-                else:
-                    return redirect(f"/question/{deleted_question['id']}")
-            return render_template("delete_question.html", question_id=question_id)
-        except:
-            raise KeyError("This question still has answers that are tied to it, you can't just delete it")
-    else:
+    try:
+        deleted_question = data_handling.get_question_by_id(question_id)[0]
+        if request.method == "POST":
+            if 'yes_button' in request.form:
+                # data_handling.delete_all_tags_from_question(question_id)
+                data_handling.delete_all_comments_from_question(question_id)
+                data_handling.delete_all_answers_comments_from_question(question_id)
+                data_handling.delete_all_answers_from_question(question_id)
+                data_handling.delete_question(deleted_question)
+                return redirect("/list")
+            else:
+                return redirect(f"/question/{deleted_question['id']}")
+        return render_template("delete_question.html", question_id=question_id)
+    except:
         return render_template("wrong_question_id.html")
 
 
@@ -196,6 +205,17 @@ def add_comment_question(question_id):
     return render_template("new_comment.html")
 
 
+@app.route("/question/<question_id>/new-tag", methods=["GET", "POST"])
+def tag_question(question_id):
+    added_tags = data_handling.get_question_tag(question_id)
+    if request.method == "POST":
+        if 'name' in request.form:
+            tag = dict(request.form)
+            data_handling.add_tag_to_question(question_id, tag)
+        return redirect(f"/question/{question_id}")
+    return render_template("new_tag.html", added_tag=', '.join(added_tags))
+
+
 @app.route("/answer/<answer_id>/new-comment", methods=["GET", "POST"])
 def add_comment_answer(answer_id):
     if request.method == "POST":
@@ -205,6 +225,21 @@ def add_comment_answer(answer_id):
             question_id = data_handling.get_question_id_from_answer(answer_id)
             return redirect(f"/question/{question_id}")
     return render_template("new_comment.html")
+
+
+@app.route("/comments/<comment_id>/delete", methods=["GET", "POST"])
+def delete_comment(comment_id):
+    try:
+        question_id = data_handling.get_question_id_for_answer_comment(comment_id)
+    except:
+        question_id = data_handling.get_question_id_for_question_comment(comment_id)
+    if request.method == "POST":
+        if 'yes_button' in request.form:
+            data_handling.delete_comment(comment_id)
+            return redirect(f"/question/{question_id}")
+        else:
+            return redirect(f"/question/{question_id}")
+    return render_template("delete_comment.html",)
 
 
 if __name__ == "__main__":
