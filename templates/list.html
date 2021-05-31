@@ -10,14 +10,14 @@
     </div>
 
 <hr>
-<div class="table__general">
-<table class="table table-dark table-striped table-hover table-sm table-bordered border-light ">
+<div class="mx-auto" style="width: 80%">
+<table class="table table-dark table-striped table-hover table-sm table-bordered border-light">
 
     <tr class="text-center align-middle" >
-        {% for element in headers %}
+        {% for element in correct_order %}
 
-            {%  if element == "question_tag" %}
-                <th class="table__cell" colspan="2">
+            {%  if element == "submission_time" %}
+                <th class="text-center align-middle" colspan="2">
                     {{ element }}
 
                     <form action="/list?order_by={{ element }}&order_direction=asc" method="POST">
@@ -28,6 +28,7 @@
                     <button class="desc__button" type="submit" name="desc"><img class="arrows_up_down" alt="Arrow down image" src="/static/graphics/down_arrow.jpg"></button>
                     </form>
                 </th>
+
             {% else %}
                 <th class="text-center align-middle">
                     {{ element }}
@@ -64,6 +65,7 @@
     </tr>
         {% endfor %}
 </table>
+</div>
 
 
 {% endblock %}
