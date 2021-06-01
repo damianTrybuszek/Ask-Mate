@@ -8,7 +8,7 @@ UPLOAD_FOLDER = os.getcwd() + "\\static\\img\\"
 
 @database_connection.connection_handler
 def get_questions(cursor, order_by, order_direction):
-    query = f"SELECT * FROM question ORDER BY {order_by} {order_direction};"
+    query = f"SELECT id, title, message, image, view_number, vote_number, submission_time FROM question ORDER BY {order_by} {order_direction};"
     # query_params = [order_by, order_direction] - won't work for some reason
     cursor.execute(query)
     return cursor.fetchall()
@@ -255,7 +255,7 @@ def answer_vote_down(cursor, voted_answer):
 def get_searched_questions(cursor, search_phrase):
     searched_phrase = f"%{search_phrase}%"
     query = """
-            SELECT *
+            SELECT id, title, message, image, view_number, vote_number, submission_time
             FROM question 
             WHERE title LIKE %s or message LIKE %s;
             """
@@ -329,9 +329,9 @@ def get_question_tag(cursor, id_of_question):
     added_tags = []
     try:
         for i in range(len(tags)):
-            # tags[i]['name'].set(added_tags)
             if tags[i]['name'] not in added_tags:
                 added_tags.append(tags[i]['name'])
+        added_tags = ', '.join(added_tags)
     except:
         added_tags = None
     return added_tags
@@ -341,7 +341,7 @@ def get_question_tag(cursor, id_of_question):
 def get_searched_answers(cursor, search_phrase):
     searched_phrase = f"%{search_phrase}%"
     query = """
-            SELECT *
+            SELECT id, message, image, vote_number, submission_time
             FROM answer 
             WHERE message LIKE %s;
             """
@@ -350,13 +350,13 @@ def get_searched_answers(cursor, search_phrase):
     return cursor.fetchall()
 
 
-@database_connection.connection_handler  
+@database_connection.connection_handler
 def get_comments_for_answer(cursor, answer_id):
     query = """
             SELECT comment.id, comment.message, comment.submission_time, comment.answer_id
             FROM answer
             JOIN comment ON answer.id = comment.answer_id
-            WHERE answer.question_id=%s
+            WHERE answer.question_id=%s;
             """
     query_params = [answer_id]
     cursor.execute(query, query_params)
@@ -365,7 +365,7 @@ def get_comments_for_answer(cursor, answer_id):
 
 @database_connection.connection_handler
 def get_question_id_from_answer(cursor, answer_id):
-    query = sql.SQL("SELECT question_id FROM answer WHERE id=%s")
+    query = sql.SQL("SELECT question_id FROM answer WHERE id=%s;")
     query_params = [int(answer_id)]
     cursor.execute(query, query_params)
     return cursor.fetchall()[0]['question_id']
@@ -374,17 +374,18 @@ def get_question_id_from_answer(cursor, answer_id):
 @database_connection.connection_handler
 def get_latest_questions(cursor):
     query = """
-            SELECT * FROM question
+            SELECT id, title, message, image, view_number, vote_number, submission_time FROM question
             ORDER BY id DESC LIMIT 5; 
             """
     cursor.execute(query)
     return cursor.fetchall()
-  
-  
+
+
+@database_connection.connection_handler
 def get_question_id_for_answer_comment(cursor, comment_id):
     query = sql.SQL("SELECT answer.question_id"
                     " FROM comment JOIN answer on comment.answer_id = answer.id"
-                    " WHERE comment.id=%s")
+                    " WHERE comment.id=%s;")
     query_params = [int(comment_id)]
     cursor.execute(query, query_params)
     return cursor.fetchall()[0]['question_id']
@@ -392,7 +393,7 @@ def get_question_id_for_answer_comment(cursor, comment_id):
 
 @database_connection.connection_handler
 def get_question_id_for_question_comment(cursor, comment_id):
-    query = sql.SQL("SELECT question_id FROM comment WHERE id=%s")
+    query = sql.SQL("SELECT question_id FROM comment WHERE id=%s;")
     query_params = [int(comment_id)]
     cursor.execute(query, query_params)
     return cursor.fetchall()[0]['question_id']
@@ -400,6 +401,22 @@ def get_question_id_for_question_comment(cursor, comment_id):
 
 @database_connection.connection_handler
 def delete_comment(cursor, comment_id):
-    query = sql.SQL("DELETE FROM comment WHERE id=%s")
+    query = sql.SQL("DELETE FROM comment WHERE id=%s;")
     query_params = [int(comment_id)]
+    cursor.execute(query, query_params)
+
+
+@database_connection.connection_handler
+def get_comment_by_id(cursor, comment_id):
+    query = sql.SQL("SELECT * FROM comment WHERE id=%s;")
+    query_params = [int(comment_id)]
+    cursor.execute(query, query_params)
+    return cursor.fetchall()[0]
+
+
+@database_connection.connection_handler
+def edit_comment(cursor, comment_id, user_input):
+    sub_time = str(util.get_real_time((util.get_unix_timestamp())))
+    query = sql.SQL("UPDATE comment SET message = %s, submission_time = %s, edited_count = edited_count + 1 WHERE id = %s;")
+    query_params = [user_input, sub_time, int(comment_id)]
     cursor.execute(query, query_params)

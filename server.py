@@ -12,7 +12,9 @@ app.config['UPLOAD_FOLDER'] = data_handling.UPLOAD_FOLDER
 def hello():
     headers = data_handling.get_headers_questions()
     latest_questions = data_handling.get_latest_questions()
-    return render_template('index.html', latest_questions=latest_questions, headers=headers)
+    correct_table_order = ["id", "title", "message", "image", "view_number", "vote_number", "submission_time"]
+    return render_template('index.html', latest_questions=latest_questions, headers=headers,
+                           correct_order=correct_table_order)
 
 
 @app.route("/list", methods=["POST", "GET"])
@@ -21,8 +23,10 @@ def display_list():
     order_direction = request.args.get('order_direction', 'desc')
     headers = data_handling.get_headers_questions()
     question_list = data_handling.get_questions(order_by, order_direction)
+    correct_table_order = ["id", "title", "message", "image", "view_number", "vote_number", "submission_time"]
 
-    return render_template("list.html", question_list=question_list, headers=headers)
+    return render_template("list.html", question_list=question_list, headers=headers,
+                           correct_order=correct_table_order)
 
 
 @app.route("/question/<question_id>", methods=["POST", "GET"])
@@ -38,6 +42,7 @@ def display(question_id):
     question_comments = data_handling.get_comments_for_question(question_id)
     added_tags = data_handling.get_question_tag(question_id)
     answers_comments = data_handling.get_comments_for_answer(question_id)
+    correct_table_order = ["id", "message", "image", "vote_number", "submission_time"]
 
     if len(question) > 0:
         question_to_display = question[0]
@@ -45,9 +50,8 @@ def display(question_id):
         question_to_display = question
 
     return render_template("display.html", question=question_to_display, answers=answer_list, headers=headers,
-
                            question_comments=question_comments, answers_comments=answers_comments,
-                           added_tags=', '.join(added_tags))
+                           added_tags=added_tags, correct_order=correct_table_order)
 
 
 @app.route("/add_question", methods=["POST", "GET"])
@@ -188,11 +192,15 @@ def search_question():
     headers = data_handling.get_headers_questions()
     question_list = data_handling.get_searched_questions(search_phrase)
     answers_list = data_handling.get_searched_answers(search_phrase)
+    correct_questions_table_order = ["id", "title", "message", "image", "view_number", "vote_number", "submission_time"]
+    correct_table_order = ["id", "message", "image", "vote_number", "submission_time"]
 
     if len(question_list) == 0 and len(answers_list) == 0:
         return render_template("empty_search_list.html")
 
-    return render_template("search_list.html", question_list=question_list, headers=headers, answers_list=answers_list)
+    return render_template("search_list.html", question_list=question_list, headers=headers, answers_list=answers_list,
+                           correct_order_questions=correct_questions_table_order,
+                           correct_order_answers=correct_table_order)
 
   
 @app.route("/question/<question_id>/new-comment", methods=["GET", "POST"])
@@ -239,7 +247,24 @@ def delete_comment(comment_id):
             return redirect(f"/question/{question_id}")
         else:
             return redirect(f"/question/{question_id}")
-    return render_template("delete_comment.html",)
+    return render_template("delete_comment.html", question_id=question_id)
+
+
+@app.route("/comment/<comment_id>/edit", methods=["GET", "POST"])
+def edit_comment(comment_id):
+    comment = data_handling.get_comment_by_id(comment_id)
+
+    try:
+        question_id = data_handling.get_question_id_for_answer_comment(comment_id)
+    except:
+        question_id = data_handling.get_question_id_for_question_comment(comment_id)
+
+    if request.method == "POST":
+        if 'message' in request.form:
+            user_input = dict(request.form)['message']
+            data_handling.edit_comment(comment_id, user_input)
+            return redirect(f"/question/{question_id}")
+    return render_template("edit_comment.html", comment=comment)
 
 
 if __name__ == "__main__":
