@@ -92,8 +92,16 @@ def post_an_answer(question_id):
 def edit_question(question_id):
     question = data_handling.get_question_by_id(question_id)[0]
     if request.method == "POST":
+        if "file" in request.files:
+            file = request.files['file']
+            filename = secure_filename(file.filename)
+            if filename:
+                file.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
+                os.remove(os.path.join(app.config['UPLOAD_FOLDER'], question['image']))
+            else:
+                filename = False
         new_data = dict(request.form)
-        data_handling.overwrite_question(question_id, new_data)
+        data_handling.overwrite_question(question_id, new_data, filename)
         return redirect(f"/question/{question_id}")
     return render_template("edit_question.html", question=question, question_id=question_id)
 

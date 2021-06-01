@@ -10,5 +10,11 @@
         <textarea class="textarea__input" id="message" name="message" rows="20" cols="100">{{ question['message'] }}</textarea><br/>
         <button class="btn btn-secondary" type="reset">Reset</button>
         <button class="btn btn-success" onclick="alert('Thank you! Your edits have been submited!')" type="submit">Save</button><br/>
+
+        <label class="label" for="file">Choose image to upload</label>
+        <input class = "add_image__button" type="file" accept=".jpg, .jpeg, .png" name="file">
+        <button type="reset" class="btn btn-secondary">Reset</button>
+        <button autofocus onclick="alert('Your question has been submitted! Thank you!')" type="submit"
+            class ="btn btn-success">Submit</button>
     </form>
 {% endblock %}
