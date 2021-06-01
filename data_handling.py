@@ -136,18 +136,23 @@ def save_answer(cursor, question_id, new_answer, filename):
 
 
 @database_connection.connection_handler
-def overwrite_question(cursor, question_id, new_data):
+def overwrite_question(cursor, question_id, new_data, filename):
+    if filename:
+        new_data['image'] = filename
+    else:
+        new_data['image'] = None
     query = """
             UPDATE question
             SET
             title = %s,
-            message = %s
+            message = %s,
+            image = %s
             WHERE id = %s;
             """
-    query_params = [new_data['title'], new_data['message'], question_id]
+    query_params = [new_data['title'], new_data['message'], new_data['image'], question_id]
     cursor.execute(query, query_params)
 
-    
+
 @database_connection.connection_handler
 def overwrite_answer(cursor, answer_id, new_data):
     query = """
