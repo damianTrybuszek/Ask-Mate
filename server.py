@@ -227,9 +227,9 @@ def tag_question(question_id):
     if request.method == "POST":
         if 'name' in request.form:
             tag = dict(request.form)
-            data_handling.add_tag_to_question(question_id, tag)
+            data_handling.add_tag_to_the_question(question_id, tag)
         return redirect(f"/question/{question_id}")
-    return render_template("new_tag.html", added_tag=', '.join(added_tags))
+    return render_template("new_tag.html", added_tag=added_tags)
 
 
 @app.route("/answer/<answer_id>/new-comment", methods=["GET", "POST"])
