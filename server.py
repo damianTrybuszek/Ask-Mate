@@ -92,8 +92,16 @@ def post_an_answer(question_id):
 def edit_question(question_id):
     question = data_handling.get_question_by_id(question_id)[0]
     if request.method == "POST":
+        if "file" in request.files:
+            file = request.files['file']
+            filename = secure_filename(file.filename)
+            if filename:
+                file.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
+                os.remove(os.path.join(app.config['UPLOAD_FOLDER'], question['image']))
+            else:
+                filename = False
         new_data = dict(request.form)
-        data_handling.overwrite_question(question_id, new_data)
+        data_handling.overwrite_question(question_id, new_data, filename)
         return redirect(f"/question/{question_id}")
     return render_template("edit_question.html", question=question, question_id=question_id)
 
@@ -132,7 +140,7 @@ def delete_question(question_id):
         deleted_question = data_handling.get_question_by_id(question_id)[0]
         if request.method == "POST":
             if 'yes_button' in request.form:
-                # data_handling.delete_all_tags_from_question(question_id)
+                data_handling.delete_all_tags_from_question(question_id)
                 data_handling.delete_all_comments_from_question(question_id)
                 data_handling.delete_all_answers_comments_from_question(question_id)
                 data_handling.delete_all_answers_from_question(question_id)
@@ -219,9 +227,20 @@ def tag_question(question_id):
     if request.method == "POST":
         if 'name' in request.form:
             tag = dict(request.form)
-            data_handling.add_tag_to_question(question_id, tag)
+            data_handling.add_tag_to_the_question(question_id, tag)
         return redirect(f"/question/{question_id}")
-    return render_template("new_tag.html", added_tag=', '.join(added_tags))
+    return render_template("new_tag.html", added_tag=added_tags)
+
+@app.route("/question/<question_id>/tag/<tag_id>/delete", methods=["GET", "POST"])
+def delete_tag(question_id, tag_id):
+    if request.method == "POST":
+        if 'yes_button' in request.form:
+            data_handling.delete_tag(question_id, tag_id)
+            return redirect(f"/question/{question_id}")
+        else:
+            return redirect(f"/question/{question_id}")
+    return render_template("delete_tag.html", question_id=question_id)
+
 
 
 @app.route("/answer/<answer_id>/new-comment", methods=["GET", "POST"])
