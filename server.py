@@ -140,7 +140,7 @@ def delete_question(question_id):
         deleted_question = data_handling.get_question_by_id(question_id)[0]
         if request.method == "POST":
             if 'yes_button' in request.form:
-                # data_handling.delete_all_tags_from_question(question_id)
+                data_handling.delete_all_tags_from_question(question_id)
                 data_handling.delete_all_comments_from_question(question_id)
                 data_handling.delete_all_answers_comments_from_question(question_id)
                 data_handling.delete_all_answers_from_question(question_id)
@@ -230,6 +230,17 @@ def tag_question(question_id):
             data_handling.add_tag_to_the_question(question_id, tag)
         return redirect(f"/question/{question_id}")
     return render_template("new_tag.html", added_tag=added_tags)
+
+@app.route("/question/<question_id>/tag/<tag_id>/delete", methods=["GET", "POST"])
+def delete_tag(question_id, tag_id):
+    if request.method == "POST":
+        if 'yes_button' in request.form:
+            data_handling.delete_tag(question_id, tag_id)
+            return redirect(f"/question/{question_id}")
+        else:
+            return redirect(f"/question/{question_id}")
+    return render_template("delete_tag.html", question_id=question_id)
+
 
 
 @app.route("/answer/<answer_id>/new-comment", methods=["GET", "POST"])
