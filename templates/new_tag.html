@@ -13,7 +13,10 @@
 
     {% if added_tag %}
             <h4 class="header">Tags already added to the question :</h4>
-            <h3 class="header">{{ added_tag }}</h3>
+            {% for tag in added_tag %}
+            <h3 class="header">{{ tag['name'] }}</h3>
+
+            {% endfor %}
 
     {% endif %}
 {% endblock %}
