@@ -206,6 +206,10 @@ def search_question():
     if len(question_list) == 0 and len(answers_list) == 0:
         return render_template("empty_search_list.html")
 
+    question_list = util.text_highlighted(question_list, search_phrase, 'title')
+    question_list = util.text_highlighted(question_list, search_phrase, 'message')
+    answers_list = util.text_highlighted(answers_list, search_phrase, 'message')
+
     return render_template("search_list.html", question_list=question_list, headers=headers, answers_list=answers_list,
                            correct_order_questions=correct_questions_table_order,
                            correct_order_answers=correct_table_order)
@@ -231,6 +235,7 @@ def tag_question(question_id):
         return redirect(f"/question/{question_id}")
     return render_template("new_tag.html", added_tag=added_tags)
 
+
 @app.route("/question/<question_id>/tag/<tag_id>/delete", methods=["GET", "POST"])
 def delete_tag(question_id, tag_id):
     if request.method == "POST":
@@ -240,7 +245,6 @@ def delete_tag(question_id, tag_id):
         else:
             return redirect(f"/question/{question_id}")
     return render_template("delete_tag.html", question_id=question_id)
-
 
 
 @app.route("/answer/<answer_id>/new-comment", methods=["GET", "POST"])

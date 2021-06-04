@@ -507,3 +507,5 @@ def edit_comment(cursor, comment_id, user_input):
     query = sql.SQL("UPDATE comment SET message = %s, submission_time = %s, edited_count = edited_count + 1 WHERE id = %s;")
     query_params = [user_input, sub_time, int(comment_id)]
     cursor.execute(query, query_params)
+
+
