@@ -198,6 +198,38 @@ def delete_all_answers_from_question(cursor, question_id):
     query_params = [int(question_id)]
     cursor.execute(query, query_params)
 
+@database_connection.connection_handler
+def get_tag_to_delete(cursor, question_id):
+    query = sql.SQL("SELECT tag_id FROM question_tag WHERE question_id=%s")
+    query_params = [int(question_id)]
+    cursor.execute(query, query_params)
+    tags_id = cursor.fetchall()
+    tags_id_list = []
+    for i in range(len(tags_id)):
+        tags_id_list.append(tags_id[i]['tag_id'])
+    return tags_id_list
+
+@database_connection.connection_handler
+def delete_all_tags_by_id(cursor, question_id):
+    tag_id_list = tuple(get_tag_to_delete(question_id))
+    query = """
+                DELETE FROM tag WHERE id IN %s;
+            """
+    query_params = [tag_id_list]
+    cursor.execute(query, query_params)
+
+@database_connection.connection_handler
+def delete_all_tags_by_question_id(cursor, question_id):
+    query = """
+            DELETE FROM  question_tag WHERE question_id=%s; 
+            """
+    query_params = [int(question_id)]
+    cursor.execute(query, query_params)
+
+def delete_all_tags_from_question(question_id):
+    delete_all_tags_by_id(question_id)
+    delete_all_tags_by_question_id(question_id)
+
 
 @database_connection.connection_handler
 def delete_question(cursor, deleted_question):
@@ -308,6 +340,13 @@ def get_comments_for_question(cursor, question_id):
     cursor.execute(query, query_params)
     return cursor.fetchall()
 
+@database_connection.connection_handler
+def delete_tag(cursor, question_id, tag_id):
+    query = sql.SQL("DELETE FROM  question_tag WHERE question_id=%s and tag_id = %s ;"
+                    "DELETE FROM  tag WHERE id=%s ;")
+    query_params = [int(question_id), int(tag_id), int(tag_id)]
+    cursor.execute(query, query_params)
+
 # @database_connection.connection_handler
 # def get_all_tags(cursor):
 #     query = """
@@ -353,7 +392,7 @@ def get_latest_tag_id(cursor):
 @database_connection.connection_handler
 def get_question_tag(cursor, id_of_question):
     query = """
-            SELECT name
+            SELECT *
             FROM tag
             JOIN question_tag ON tag.id = question_tag.tag_id
             WHERE question_tag.question_id = %s;
@@ -365,8 +404,8 @@ def get_question_tag(cursor, id_of_question):
     try:
         for i in range(len(tags)):
             if tags[i]['name'] not in added_tags:
-                added_tags.append(tags[i]['name'])
-        added_tags = ', '.join(added_tags)
+                added_tags.append(tags[i])
+        # added_tags = ', '.join(added_tags)
     except:
         added_tags = None
     return added_tags
@@ -384,7 +423,6 @@ def add_tag_to_the_question(cursor, current_question_id, tag):
             """
     query_params = [current_question_id, latest_tag_id[0]['id']]
     cursor.execute(query, query_params)
-
 
 @database_connection.connection_handler
 def get_searched_answers(cursor, search_phrase):
