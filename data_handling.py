@@ -507,3 +507,12 @@ def edit_comment(cursor, comment_id, user_input):
     cursor.execute(query, query_params)
 
 
+@database_connection.connection_handler
+def add_view_number(cursor, question_id):
+    query = """
+            UPDATE question
+            SET view_number = view_number + 1
+            WHERE id = %s;
+            """
+    query_params = [question_id]
+    cursor.execute(query, query_params)

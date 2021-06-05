@@ -31,7 +31,7 @@ def display_list():
 
 @app.route("/question/<question_id>", methods=["POST", "GET"])
 def display(question_id):
-
+    data_handling.add_view_number(question_id)
     order_by = request.args.get('order_by', 'vote_number')
     order_direction = request.args.get('order_direction', 'asc')
     headers = data_handling.get_headers_answers()
