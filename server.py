@@ -125,6 +125,7 @@ def delete_answer(answer_id):
     if deleted_answer:
         if request.method == "POST":
             if 'yes_button' in request.form:
+                data_handling.delete_all_answers_comments_from_question(deleted_answer['question_id'])
                 data_handling.delete_answer(deleted_answer)
                 return redirect(f"/question/{deleted_answer['question_id']}")
             else:

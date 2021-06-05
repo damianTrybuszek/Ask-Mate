@@ -213,9 +213,9 @@ def get_tag_to_delete(cursor, question_id):
 def delete_all_tags_by_id(cursor, question_id):
     tag_id_list = tuple(get_tag_to_delete(question_id))
     query = """
-                DELETE FROM tag WHERE id IN %s;
+                DELETE FROM tag WHERE id=%s;
             """
-    query_params = [tag_id_list]
+    query_params = tag_id_list + (0,)
     cursor.execute(query, query_params)
 
 @database_connection.connection_handler
