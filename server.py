@@ -31,6 +31,7 @@ def display_list():
 
 @app.route("/question/<question_id>", methods=["POST", "GET"])
 def display(question_id):
+
     order_by = request.args.get('order_by', 'vote_number')
     order_direction = request.args.get('order_direction', 'asc')
     headers = data_handling.get_headers_answers()
@@ -95,11 +96,14 @@ def edit_question(question_id):
         if "file" in request.files:
             file = request.files['file']
             filename = secure_filename(file.filename)
-            if filename:
+            if len(filename) != 0:
                 file.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
-                os.remove(os.path.join(app.config['UPLOAD_FOLDER'], question['image']))
+                try:
+                    os.remove(os.path.join(app.config['UPLOAD_FOLDER'], question['image']))
+                except:
+                    print('Well, you should not be looking around, should you?')
             else:
-                filename = False
+                filename = question['image']
         new_data = dict(request.form)
         data_handling.overwrite_question(question_id, new_data, filename)
         return redirect(f"/question/{question_id}")

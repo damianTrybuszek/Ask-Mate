@@ -139,8 +139,6 @@ def save_answer(cursor, question_id, new_answer, filename):
 def overwrite_question(cursor, question_id, new_data, filename):
     if filename:
         new_data['image'] = filename
-    else:
-        new_data['image'] = None
     query = """
             UPDATE question
             SET
