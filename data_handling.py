@@ -213,8 +213,10 @@ def delete_all_tags_by_id(cursor, question_id):
     query = """
                 DELETE FROM tag WHERE id=%s;
             """
-    query_params = tag_id_list + (0,)
-    cursor.execute(query, query_params)
+    temp_query_params = tag_id_list + (0,)
+    for param in temp_query_params:
+        query_params = [param]
+        cursor.execute(query, query_params)
 
 @database_connection.connection_handler
 def delete_all_tags_by_question_id(cursor, question_id):
