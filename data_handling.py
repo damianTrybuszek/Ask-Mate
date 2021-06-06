@@ -2,6 +2,7 @@ import os
 import util as util
 import database_connection as database_connection
 from psycopg2 import sql
+# import bcrypt
 
 UPLOAD_FOLDER = os.getcwd() + "\\static\\img\\"
 
@@ -518,3 +519,11 @@ def add_view_number(cursor, question_id):
             """
     query_params = [question_id]
     cursor.execute(query, query_params)
+
+@database_connection.connection_handler
+def check_user_login(cursor, username, password):
+    password_hash = bcrypt(password.encode('UTF-8'), bcrypt.gensalt())
+    query = 'select username from users where username = %s'
+    query_params = [username]
+    cursor.execute(query, query_params)
+    return bcrypt.checkpw(cursor.fetchall()[0]['password'].encode('utf-8'), password_hash)
