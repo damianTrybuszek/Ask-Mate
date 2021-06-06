@@ -135,3 +135,12 @@
   width: 80%;
   background: #f1f1f1;
 }
+.question__title{
+    margin-left: 20px;
+    margin-right: auto;
+}
+
+.comments__table{
+    margin-left: 100px;
+    margin-right: auto;
+}
