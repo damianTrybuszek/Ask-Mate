@@ -2,33 +2,33 @@
 {% block title %} Display a question {% endblock %}
 
 {% block content %}
-    <div class="d-flex p-2 bd-highlight">
+    <div class="d-inline-flex p-2 bd-highlight">
     {% if question["image"] %}
     <img src="/static/img/{{ question["image"] }}" alt="Question Image" align="center" max-width="100%" width="500"/>
     {% endif %}
 
-    <h1 class="text-center font-weight-bold"><u>{{ question["title"] }}</u></h1>
+    <h1 class="text-center font-weight-bold m-3 text-white">{{ question["title"] }}</h1>
     </div>
 
-    <hr>
+    <hr color="white">
 
-    <h2 class="text-center font-weight-bold">{{ question["message"] }}</h2>
+    <h2 class="text-center font-weight-bold text-white">{{ question["message"] }}</h2>
 
-    <hr>
+    <hr color="white">
 
-    <div class="d-flex p-2 bd-highlight">
-    <div class="btn-group-vertical btn-group-sm" role="group" aria-label="Action buttons">
-    <button type="button" class="btn btn-outline-primary" style="width: 200%"><a href="/question/{{ question['id'] }}/new-comment">Add a comment!</a></button>
-    <button type="button" class="btn btn-outline-secondary" style="width: 200%"><a href="/question/{{ question['id'] }}/new-answer">Post a new answer!</a></button>
-    <button type="button" class="btn btn-outline-success" style="width: 200%"><a href="/question/{{ question['id'] }}/edit">Edit this question!</a></button>
-    <button type="button" class="btn btn-outline-info" style="width: 200%"><a href="/question/{{ question['id'] }}/new-tag">Add tag to this question!</a></button>
-    <button type="button" class="btn btn-outline-warning" style="width: 200%"><a href="/list">Go to questions list page!</a></button>
-    <button type="button" class="btn btn-outline-danger" style="width: 200%"><a href="/question/{{ question['id'] }}/delete">Delete this question</a></button>
+    <div class="d-flex bd-highlight">
+    <div class="btn-group-sn" role="group" aria-label="Action buttons" style="width: 40%; margin-left: 10%">
+    <button type="button" class="btn-lg btn-dark rounded-0" style="width: 100%"><a href="/question/{{ question['id'] }}/new-comment">Add a comment!</a></button>
+    <button type="button" class="btn-lg btn-dark rounded-0" style="width: 100%"><a href="/question/{{ question['id'] }}/new-answer">Post a new answer!</a></button>
+    <button type="button" class="btn-lg btn-dark rounded-0" style="width: 100%"><a href="/question/{{ question['id'] }}/edit">Edit this question!</a></button>
+    <button type="button" class="btn-lg btn-dark rounded-0" style="width: 100%"><a href="/question/{{ question['id'] }}/new-tag">Add tag to this question!</a></button>
+    <button type="button" class="btn-lg btn-dark rounded-0" style="width: 100%"><a href="/list">Go to questions list page!</a></button>
+    <button type="button" class="btn-lg btn-dark rounded-0" style="width: 100%"><a href="/question/{{ question['id'] }}/delete">Delete this question</a></button>
     </div>
 
 {#            Question Comments#}
-    <div class="mx-auto">
-        <table class="table table-light table-striped table-hover table-sm table-bordered border-light">
+    <div style="width:100%; margin-right: 10%">
+        <table class="table table-dark table-striped table-hover table-sm table-bordered border-light">
             <tr>
                 <th colspan="100%" class="lead text-center">Question comments</th>
             </tr>
@@ -56,25 +56,10 @@
             {% endfor %}
         </table>
 
-        <hr>
-        {% if added_tags %}
-            <h4 class="header"> Tags: </h4>
-            {% for tag in added_tags %}
-        <h3 class="header">{{ tag['name']}}
-                <a href = "/question/{{ question['id'] }}/tag/{{ tag['id'] }}/delete">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
-                    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1
-                    0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/><path fill-rule="evenodd"
-                    d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1
-                    0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1
-                    1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/></svg></a></h3>
-            {% endfor %}
-        <hr>
-        {% endif %}
     </div>
     </div>
 
-    <hr>
+    <hr color="white">
 
 {#            ANSWERS Table#}
     {% if answers|length > 0 %}
@@ -160,9 +145,22 @@
         {% else %}
             <h2 class="header">There is no answer yet! </h2>
     {% endif %}
-    <hr>
-
-
+        <hr color="white">
+        {% if added_tags %}
+            <h5 class="header text-white m-3"> Tags: </h5>
+            <p class="text-white ml-5">
+                {% for tag in added_tags %}
+                <button type="button" class="d-inline-flex btn-sm btn-dark" disabled>{{ tag['name'] }}
+                <a href = "/question/{{ question['id'] }}/tag/{{ tag['id'] }}/delete">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                        <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1
+                    0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/><path fill-rule="evenodd"
+                                                                                          d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1
+                    0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1
+                    1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/></svg></a></button>
+                {% endfor %}</p>
+        <hr>
+        {% endif %}
 
 
     </div>

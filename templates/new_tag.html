@@ -1,22 +1,27 @@
 {% extends "base.html" %}
 {% block title %} Post new tag {% endblock %}
 
+<div class="body">
 {% block content %}
-    <h1 class="header">Post the tag:</h1>
+    <h1 class="header text-white">Post the tag:</h1>
     <form action="#" method="POST" enctype="multipart/form-data"><br/>
-        <label class="label" for="message">tag:</label><br/>
-        <textarea class="textarea__input" id="message" name="name" rows="5" cols="20"></textarea><br/>
+        <label class="label text-white" for="message">tag:</label><br/>
+        <textarea class="textarea__input" id="message" name="name" rows="8" cols="30"></textarea><br/>
         <button class="btn btn-secondary" type="reset">Reset</button>
         <button class="btn btn-success" onclick="alert('Thank you! Your tag has been submited!')" type="submit">Save</button><br/>
     </form>
 
 
     {% if added_tag %}
-            <h4 class="header">Tags already added to the question :</h4>
+            <h4 class="header text-white">Tags already added to the question :</h4>
             {% for tag in added_tag %}
-            <h3 class="header">{{ tag['name'] }}</h3>
+            <h3 class="header text-white">{{ tag['name'] }}</h3>
 
             {% endfor %}
 
     {% endif %}
 {% endblock %}
+
+
+
+</div>
