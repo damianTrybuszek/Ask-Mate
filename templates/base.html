@@ -56,8 +56,17 @@
             </ul>
 
         </div>
+
         <div>
-          <form class="d-flex mr-auto" action="/search" method="POST" name="search_form" enctype="multipart/form-data">
+          <form class="d-flex mr-auto" method="POST" name="login_buttons" enctype="multipart/form-data">
+              <button class="btn btn-outline-success mr-1" type="submit"><a href="#" class="link-success">Login</a></button>
+              <button class="btn btn-outline-success mr-3" type="submit"><a href="/registration" class="link-success">Register</a></button>
+          </form>
+        </div>
+
+        <div>
+          <form class="d-flex mx-auto" action="/search" method="POST" name="search_form" enctype="multipart/form-data">
+
             <input class="form-control me-2" type="text" placeholder="Search..." aria-label="Search" align="right" name="search" required >
               <button class="btn btn-outline-success" type="submit">Search</button>
           </form>
