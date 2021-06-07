@@ -3,7 +3,7 @@ import data_handling as data_handling
 from datetime import datetime
 import copy
 import database_connection as database_connection
-
+import bcrypt
 
 def get_unix_timestamp():
     time_stamp = time.time()
@@ -55,3 +55,9 @@ def text_highlighted(question_list, search_phrase, column):
         if str(search_phrase.lower()) in (element[column]).lower():
             element[column] = element[column].replace(search_phrase, f"<mark>{search_phrase}</mark>")
     return question_list
+
+
+def hash_password(password):
+    salt = bcrypt.gensalt()
+    hashed_password = bcrypt.hashpw(password.encode('UTF-8'), salt)
+    return hashed_password

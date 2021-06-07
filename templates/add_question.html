@@ -3,21 +3,21 @@
 
 {% block content %}
 
-<h2 class="header">Please input your question</h2>
+<h2 class="header text-white">Please input your question</h2>
 <p>
 <form action="#" method="POST" enctype="multipart/form-data">
-    <div class="title__input">
+    <div class="title__input text-white">
         <label for="title">Title: </label><br/>
         <input type="text" name="title" id="title" placeholder="The title of the question" required>
     </div>
 
     <div class="textarea__input">
-        <label for="message">Your question: </label><br/>
+        <label class="label text-white" for="message"> Your question: </label><br/>
         <textarea type="text" name="message" id="message" placeholder="Type your question here" cols="100" rows="25" required></textarea>
     </div>
 
-    <label class="label" for="file">Choose image to upload</label>
-    <input class = "add_image__button" type="file" accept=".jpg, .jpeg, .png" name="file">
+    <label class="label text-white" for="file text-white">Choose image to upload</label>
+    <input class = "add_image__button text-white" type="file" accept=".jpg, .jpeg, .png" name="file">
     <button type="reset" class="btn btn-secondary">Reset</button>
     <button autofocus onclick="alert('Your question has been submitted! Thank you!')" type="submit"
             class ="btn btn-success">

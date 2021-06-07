@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, url_for
 import data_handling as data_handling
 import util as util
 from werkzeug.utils import secure_filename
@@ -31,6 +31,7 @@ def display_list():
 
 @app.route("/question/<question_id>", methods=["POST", "GET"])
 def display(question_id):
+    data_handling.add_view_number(question_id)
     order_by = request.args.get('order_by', 'vote_number')
     order_direction = request.args.get('order_direction', 'asc')
     headers = data_handling.get_headers_answers()
@@ -95,11 +96,14 @@ def edit_question(question_id):
         if "file" in request.files:
             file = request.files['file']
             filename = secure_filename(file.filename)
-            if filename:
+            if len(filename) != 0:
                 file.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
-                os.remove(os.path.join(app.config['UPLOAD_FOLDER'], question['image']))
+                try:
+                    os.remove(os.path.join(app.config['UPLOAD_FOLDER'], question['image']))
+                except:
+                    print('Well, you should not be looking around, should you?')
             else:
-                filename = False
+                filename = question['image']
         new_data = dict(request.form)
         data_handling.overwrite_question(question_id, new_data, filename)
         return redirect(f"/question/{question_id}")
@@ -125,6 +129,7 @@ def delete_answer(answer_id):
     if deleted_answer:
         if request.method == "POST":
             if 'yes_button' in request.form:
+                data_handling.delete_all_answers_comments_from_question(deleted_answer['question_id'])
                 data_handling.delete_answer(deleted_answer)
                 return redirect(f"/question/{deleted_answer['question_id']}")
             else:
@@ -288,6 +293,20 @@ def edit_comment(comment_id):
             data_handling.edit_comment(comment_id, user_input)
             return redirect(f"/question/{question_id}")
     return render_template("edit_comment.html", comment=comment)
+
+
+@app.route("/registration", methods=["GET", "POST"])
+def user_registration():
+    if request.method == "POST":
+        first_name = request.form['first_name']
+        last_name = request.form['last_name']
+        email = request.form['email']
+        password = request.form['password']
+        hashed_password = util.hash_password(password)
+        data_handling.save_user(first_name, last_name, email, hashed_password)
+        return redirect(url_for("hello"))
+
+    return render_template("registration.html")
 
 
 if __name__ == "__main__":

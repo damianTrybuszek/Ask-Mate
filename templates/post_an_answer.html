@@ -2,13 +2,13 @@
 {% block title %} New Answer {% endblock %}
 
 {% block content %}
-    <h1 class="header">Please submit your answer</h1>
+    <h1 class="header text-white">Please submit your answer</h1>
     <form action="#" method="POST" enctype="multipart/form-data">
-        <label class="label" for="message">Answer:</label><br/>
-        <textarea class="textarea__input" name="message" placeholder="Please type your answer here" cols="100" rows="25" required></textarea><br/>
+        <label class="label text-white" for="message">Answer:</label><br/>
+        <textarea class="textarea__input name="message" placeholder="Please type your answer here" cols="100" rows="25" required></textarea><br/>
 
-        <label class="label" for="file">Choose image to upload</label>
-        <input class = "add_image__button" type="file" accept=".jpg, .jpeg, .png" name="file">
+        <label class="label text-white" for="file">Choose image to upload</label>
+        <input class = "add_image__button text-white" type="file" accept=".jpg, .jpeg, .png" name="file">
         <button class="btn btn-secondary" type="reset">Reset</button>
         <button class="btn btn-success" onclick="alert('Thank you! You answer has been submitted!')" type="submit">Save</button>
     </form>

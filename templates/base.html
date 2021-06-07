@@ -6,14 +6,24 @@
     <title>{% block title %} {% endblock %}</title>
     <link rel="icon" href="/static/img/happier.png" type="image/icon type">
 
+
     <style>
         body {
-            background-image: url('/static/img/happy.png');
-            background: #fff1eb;
-            background: -webkit-linear-gradient(to bottom, rgba(230, 233, 240, 0.45), rgba(238, 241, 245, 0.45));
-            background: linear-gradient(to bottom, rgba(230, 233, 240, 0.45), rgba(238, 241, 245, 0.45))
+background: #232526;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to top, #414345, #232526);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to top, #414345, #232526); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+
         }
+        header {
+background: #232526;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to top, #414345, #232526);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to top, #414345, #232526); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ *
+
+  }
+
     </style>
+
 
    <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
   <symbol id="check-circle-fill" fill="currentColor" viewBox="0 0 16 16">
@@ -50,8 +60,16 @@
             </ul>
 
         </div>
+
         <div>
-          <form class="d-flex mr-auto" action="/search" method="POST" name="search_form" enctype="multipart/form-data">
+          <form class="d-flex mr-auto" method="POST" name="login_buttons" enctype="multipart/form-data">
+              <button class="btn btn-outline-success mr-1" type="submit"><a href="#" class="link-success">Login</a></button>
+              <button class="btn btn-outline-success mr-3" type="submit"><a href="/registration" class="link-success">Register</a></button>
+          </form>
+        </div>
+
+        <div>
+          <form class="d-flex mx-auto" action="/search" method="POST" name="search_form" enctype="multipart/form-data">
             <input class="form-control me-2" type="text" placeholder="Search..." aria-label="Search" align="right" name="search" required >
               <button class="btn btn-outline-success" type="submit">Search</button>
           </form>

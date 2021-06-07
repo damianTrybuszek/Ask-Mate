@@ -2,6 +2,7 @@ import os
 import util as util
 import database_connection as database_connection
 from psycopg2 import sql
+import bcrypt
 
 UPLOAD_FOLDER = os.getcwd() + "\\static\\img\\"
 
@@ -139,8 +140,6 @@ def save_answer(cursor, question_id, new_answer, filename):
 def overwrite_question(cursor, question_id, new_data, filename):
     if filename:
         new_data['image'] = filename
-    else:
-        new_data['image'] = None
     query = """
             UPDATE question
             SET
@@ -213,10 +212,12 @@ def get_tag_to_delete(cursor, question_id):
 def delete_all_tags_by_id(cursor, question_id):
     tag_id_list = tuple(get_tag_to_delete(question_id))
     query = """
-                DELETE FROM tag WHERE id IN %s;
+                DELETE FROM tag WHERE id=%s;
             """
-    query_params = [tag_id_list]
-    cursor.execute(query, query_params)
+    temp_query_params = tag_id_list + (0,)
+    for param in temp_query_params:
+        query_params = [param]
+        cursor.execute(query, query_params)
 
 @database_connection.connection_handler
 def delete_all_tags_by_question_id(cursor, question_id):
@@ -509,3 +510,32 @@ def edit_comment(cursor, comment_id, user_input):
     cursor.execute(query, query_params)
 
 
+@database_connection.connection_handler
+def add_view_number(cursor, question_id):
+    query = """
+            UPDATE question
+            SET view_number = view_number + 1
+            WHERE id = %s;
+            """
+    query_params = [question_id]
+    cursor.execute(query, query_params)
+
+
+@database_connection.connection_handler
+def check_user_login(cursor, username, password):
+    password_hash = bcrypt(password.encode('UTF-8'), bcrypt.gensalt())
+    query = 'select username from users where username = %s'
+    query_params = [username]
+    cursor.execute(query, query_params)
+    return bcrypt.checkpw(cursor.fetchall()[0]['password'].encode('utf-8'), password_hash)
+
+
+@database_connection.connection_handler
+def save_user(cursor, first_name, last_name, email, hashed_password):
+    registration_time = str(util.get_real_time((util.get_unix_timestamp())))
+    query = sql.SQL("INSERT INTO users "
+                    "(first_name, last_name, email, password, registration_date) "
+                    "VALUES "
+                    "(%s, %s, %s, %s, %s);")
+    query_params = [first_name, last_name, email, hashed_password, registration_time]
+    cursor.execute(query, query_params)
