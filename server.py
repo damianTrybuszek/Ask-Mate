@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, url_for
 import data_handling as data_handling
 import util as util
 from werkzeug.utils import secure_filename
@@ -294,6 +294,19 @@ def edit_comment(comment_id):
             return redirect(f"/question/{question_id}")
     return render_template("edit_comment.html", comment=comment)
 
+
+@app.route("/registration", methods=["GET", "POST"])
+def user_registration():
+    if request.method == "POST":
+        first_name = request.form['first_name']
+        last_name = request.form['last_name']
+        email = request.form['email']
+        password = request.form['password']
+        hashed_password = util.hash_password(password)
+        data_handling.save_user(first_name, last_name, email, hashed_password)
+        return redirect(url_for("hello"))
+
+    return render_template("registration.html")
 
 
 if __name__ == "__main__":
