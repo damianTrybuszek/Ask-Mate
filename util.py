@@ -50,4 +50,8 @@ def get_question_list_with_real_time(question_list):
     return new_question_list
 
 
-
+def text_highlighted(question_list, search_phrase, column):
+    for element in question_list:
+        if str(search_phrase.lower()) in (element[column]).lower():
+            element[column] = element[column].replace(search_phrase, f"<mark>{search_phrase}</mark>")
+    return question_list
