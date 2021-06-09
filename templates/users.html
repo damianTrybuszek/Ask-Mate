@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %} Edit your question {% endblock %}
+{% block title %} Users List {% endblock %}
 
 {% block content %}
 <div class="mx-auto" style="width: 80%">
@@ -9,16 +9,9 @@
         {% for element in headers %}
             <th class="text-center align-middle">
                 {{ element }}
-
-                <form action="/list?order_by={{ element }}&order_direction=asc" method="POST">
-                <button class="asc__button" type="submit" name="asc"><img class="arrows_up_down" alt="Arrow up image" src="/static/graphics/up_arrow.jpg"></button>
-                </form>
-
-                <form action="/list?order_by={{ element }}&order_direction=desc" method="POST">
-                <button class="desc__button" type="submit" name="desc"><img class="arrows_up_down" alt="Arrow down image" src="/static/graphics/down_arrow.jpg"></button>
-                </form>
             </th>
         {% endfor %}
+        <th>User Profile</th>
     </tr>
 
     {% for element in users_data %}
@@ -26,6 +19,7 @@
             {% for key in element %}
                 <td class="text-center align-middle">{{ element[key] }}</td>
             {% endfor %}
+            <td><a href="/user/{{ element['id'] }}">CLICK</a></td>
         </tr>
     {% endfor %}
 </table>

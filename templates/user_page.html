@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %} User Profile {% endblock %}
+
+{% block content %}
+<div class="mx-auto" style="width: 80%">
+    <p>User ID: {{ user['id'] }}</p>
+    <p>First name: {{ user['first_name'] }}</p>
+    <p>Last name: {{ user['last_name'] }}</p>
+    <p>Username: {{ user['email'] }}</p>
+    <p>Registration date: {{ user['registration_date'] }}</p>
+    <p>Asked questions: {{ user['id'] }}</p>
+    <p>Answers given: {{ user['id'] }}</p>
+    <p>Comments given: {{ user['id'] }}</p>
+    <p>Reputation: {{ user['reputation'] }}</p>
+</div>
+
+<div class="mx-auto" style="width: 80%">
+<h1>Questions asked</h1>
+<ul class="list-group">
+    {% for question in questions_asked %}
+        <li class="list-group-item">{{ question['id'] }}:{{ question['title'] }}</li>
+    {% endfor %}
+</ul>
+</div>
+
+<div class="mx-auto" style="width: 80%">
+<h1>Answers given</h1>
+<ul class="list-group">
+    {% for answer in answers_given %}
+        <li class="list-group-item">{{ answer['id'] }}:{{ answer['message'] }}</li>
+    {% endfor %}
+</ul>
+</div>
+
+<div class="mx-auto" style="width: 80%">
+<h1>Comments given</h1>
+<ul class="list-group">
+    {% for comment in comments_given %}
+        <li class="list-group-item">{{ comment['id'] }}:{{ comment['message'] }}</li>
+    {% endfor %}
+</ul>
+</div>
+
+
+
+{% endblock %}

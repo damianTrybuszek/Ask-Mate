@@ -575,3 +575,46 @@ def update_answer_accepted(cursor, answer_id):
     cursor.execute(query, query_params)
 
 
+@database_connection.connection_handler
+def get_single_user_data(cursor, user_id):
+    query = sql.SQL("SELECT "
+                    "users.first_name,"
+                    "users.last_name,"
+                    "users.email,"
+                    "users.registration_date,"
+                    "COUNT(question.user_id),"
+                    "COUNT(answer.user_id),"
+                    "COUNT(comment.user_id) "
+                    "users.reputation "
+                    "FROM users "
+                    "JOIN question on users.id=question.user_id "
+                    "JOIN answer on users.id=answer.user_id "
+                    "JOIN comment on users.id=comment.user_id "
+                    "WHERE users.id=%s;")
+    query_params = [user_id]
+    cursor.execute(query, query_params)
+    return cursor.fetchall()
+
+
+@database_connection.connection_handler
+def get_user_questions(cursor, user_id):
+    query = sql.SQL("SELECT id, title  FROM question WHERE user_id=%s")
+    query_params = [user_id]
+    cursor.execute(query, query_params)
+    return cursor.fetchall()
+
+
+@database_connection.connection_handler
+def get_user_answers(cursor, user_id):
+    query = sql.SQL("SELECT id, message  FROM answer WHERE user_id=%s")
+    query_params = [user_id]
+    cursor.execute(query, query_params)
+    return cursor.fetchall()
+
+
+@database_connection.connection_handler
+def get_user_comments(cursor, user_id):
+    query = sql.SQL("SELECT id, message  FROM comment WHERE user_id=%s")
+    query_params = [user_id]
+    cursor.execute(query, query_params)
+    return cursor.fetchall()

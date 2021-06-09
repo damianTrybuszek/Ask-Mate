@@ -323,5 +323,15 @@ def accept_answer(answer_id, question_id):
     return redirect(f"/question/{question_id}")
 
 
+@app.route("/user/<user_id>", methods=["GET", "POST"])
+def user_page(user_id):
+    user_data = data_handling.get_single_user_data(user_id)
+    questions_asked = data_handling.get_user_questions(user_id)
+    answers_given = data_handling.get_user_answers(user_id)
+    comments_given = data_handling.get_user_comments(user_id)
+    return render_template("user_page.html", user=user_data, questions_asked=questions_asked,
+                           answers_given=answers_given, comments_given=comments_given)
+
+
 if __name__ == "__main__":
     app.run(debug=True)
