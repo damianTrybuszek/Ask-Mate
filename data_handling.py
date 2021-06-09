@@ -522,12 +522,13 @@ def add_view_number(cursor, question_id):
 
 
 @database_connection.connection_handler
-def check_user_login(cursor, username, password):
-    password_hash = bcrypt(password.encode('UTF-8'), bcrypt.gensalt())
-    query = 'select username from users where username = %s'
-    query_params = [username]
+def check_user_login(cursor, email, password):
+    query = sql.SQL("SELECT password from users where email = %s")
+    query_params = [email]
     cursor.execute(query, query_params)
-    return bcrypt.checkpw(cursor.fetchall()[0]['password'].encode('utf-8'), password_hash)
+    user_password = cursor.fetchall()[0]['password']
+
+    return bcrypt.checkpw(password.encode('UTF-8'), user_password.encode('UTF-8'))
 
 
 @database_connection.connection_handler

@@ -1,11 +1,14 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, flash, session
 import data_handling as data_handling
 import util as util
 from werkzeug.utils import secure_filename
 import os
 
+
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = data_handling.UPLOAD_FOLDER
+app.secret_key = os.environ.get('SECRET_KEY', 'dev')
+
 
 
 @app.route("/")
@@ -219,7 +222,7 @@ def search_question():
                            correct_order_questions=correct_questions_table_order,
                            correct_order_answers=correct_table_order)
 
-  
+
 @app.route("/question/<question_id>/new-comment", methods=["GET", "POST"])
 def add_comment_question(question_id):
     if request.method == "POST":
@@ -307,6 +310,22 @@ def user_registration():
         return redirect(url_for("hello"))
 
     return render_template("registration.html")
+
+
+@app.route("/login", methods=["GET", "POST"])
+def user_login():
+    if request.method == "POST":
+        email = request.form['email']
+        password = request.form['password']
+        if data_handling.check_user_login(email, password):
+            session['username'] = request.form['email']
+            flash('You were successfully logged in')
+            return redirect(url_for("hello"))
+        else:
+            flash('Login failed. Try again!')
+            return redirect(url_for("user_login"))
+
+    return render_template("login.html")
 
 
 if __name__ == "__main__":
