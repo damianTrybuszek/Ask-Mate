@@ -539,3 +539,39 @@ def save_user(cursor, first_name, last_name, email, hashed_password):
                     "(%s, %s, %s, %s, %s);")
     query_params = [first_name, last_name, email, hashed_password, registration_time]
     cursor.execute(query, query_params)
+
+
+@database_connection.connection_handler
+def get_users_data(cursor):
+    query = sql.SQL("SELECT "
+                    "users.first_name,"
+                    "users.last_name,"
+                    "users.email,"
+                    "users.registration_date,"
+                    "COUNT(question.user_id),"
+                    "COUNT(answer.user_id),"
+                    "COUNT(comment.user_id) "
+                    "FROM users "
+                    "JOIN question on users.id=question.user_id "
+                    "JOIN answer on users.id=answer.user_id "
+                    "JOIN comment on users.id=comment.user_id "
+                    "GROUP BY users.id;")
+    cursor.execute(query)
+    return cursor.fetchall()
+
+
+@database_connection.connection_handler
+def update_answer_accepted(cursor, answer_id):
+    query = sql.SQL("SELECT is_accepted FROM answer WHERE id=%s")
+    query_params = [answer_id]
+    cursor.execute(query, query_params)
+    accepted_state = cursor.fetchall()[0]['is_accepted']
+
+    if accepted_state:
+        query = sql.SQL("UPDATE answer SET is_accepted=FALSE WHERE id=%s")
+    else:
+        query = sql.SQL("UPDATE answer SET is_accepted=TRUE WHERE id=%s")
+
+    cursor.execute(query, query_params)
+
+

@@ -309,5 +309,19 @@ def user_registration():
     return render_template("registration.html")
 
 
+@app.route("/users", methods=["GET", "POST"])
+def users_list():
+    user_columns = ['Name', 'Last Name', 'Username', 'Registration Date', 'Questions', 'Answers',
+                    'Comments', 'Reputation']
+    users_data = data_handling.get_users_data()
+    return render_template("users.html", headers=user_columns, users_data=users_data)
+
+
+@app.route("/accept-answer/<answer_id>/<question_id>", methods=["GET"])
+def accept_answer(answer_id, question_id):
+    data_handling.update_answer_accepted(answer_id)
+    return redirect(f"/question/{question_id}")
+
+
 if __name__ == "__main__":
     app.run(debug=True)

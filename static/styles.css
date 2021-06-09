@@ -1,6 +1,10 @@
 /*body {*/
 /*    padding-left: 20px;*/
 /*}*/
+.accepted__answer{
+    color: rgba(152, 251, 152, 0.6);
+}
+
 
 .table__general{
     border-spacing: 0;
