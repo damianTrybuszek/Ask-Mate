@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="/static/styles.css"/>
@@ -9,19 +10,14 @@
 
     <style>
         body {
-background: #232526;  /* fallback for old browsers */
-background: -webkit-linear-gradient(to top, #414345, #232526);  /* Chrome 10-25, Safari 5.1-6 */
-background: linear-gradient(to top, #414345, #232526); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-
+            height:100%;
+    background: #232526;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to left, #414345, #232526);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to left, #414345, #232526); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    background-size: cover;
+    -webkit-background-size: cover;
 
         }
-        header {
-background: #232526;  /* fallback for old browsers */
-background: -webkit-linear-gradient(to top, #414345, #232526);  /* Chrome 10-25, Safari 5.1-6 */
-background: linear-gradient(to top, #414345, #232526); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ *
-
-  }
-
     </style>
 
 
@@ -58,19 +54,27 @@ background: linear-gradient(to top, #414345, #232526); /* W3C, IE 10+/ Edge, Fir
               <a class="nav-link" href="/add_question">Add question</a>
             </li>
             </ul>
-
         </div>
 
-        <div>
-          <form class="d-flex mr-auto" method="POST" name="login_buttons" enctype="multipart/form-data">
-              <button class="btn btn-outline-success mr-1" type="submit"><a href="/login" class="link-success">Login</a></button>
-              <button class="btn btn-outline-success mr-3" type="submit"><a href="/registration" class="link-success">Register</a></button>
-              <button class="btn btn-outline-success mr-3" type="submit"><a href="/logout" class="link-success">Logout</a></button>
-          </form>
+         <div>
+            <form class="d-inline mr-auto" method="GET" action="#"
+                  name="login_buttons" enctype="multipart/form-data">
+                <button class="btn btn-outline-success mr-1" type="submit">Login</button>
+            </form>
+            <form class="d-inline mr-auto" method="GET" action="/registration"
+                  name="register_button" enctype="multipart/form-data">
+                <button class="btn btn-outline-success mr-3" type="submit">Register</button>
+            </form>
+           <form class="d-inline mr-auto" method="GET" action="/logout"
+                  name="logout_button" enctype="multipart/form-data">
+                <button class="btn btn-outline-success mr-3" type="submit">Logout</button>
+            </form>
+
         </div>
 
         <div>
           <form class="d-flex mx-auto" action="/search" method="POST" name="search_form" enctype="multipart/form-data">
+
             <input class="form-control me-2" type="text" placeholder="Search..." aria-label="Search" align="right" name="search" required >
               <button class="btn btn-outline-success" type="submit">Search</button>
           </form>

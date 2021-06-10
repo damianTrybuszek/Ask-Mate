@@ -348,6 +348,35 @@ def logout():
 
     return redirect(url_for("user_login"))
 
+  
+@app.route("/users", methods=["GET", "POST"])
+def users_list():
+    users_data = data_handling.get_users_data()
+    return render_template("users.html", users_data=users_data)
+
+
+@app.route("/accept-answer/<answer_id>/<question_id>", methods=["GET"])
+def accept_answer(answer_id, question_id):
+    data_handling.update_answer_accepted(answer_id)
+    return redirect(f"/question/{question_id}")
+
+
+@app.route("/user/<user_id>", methods=["GET", "POST"])
+def user_page(user_id):
+    user_data = data_handling.get_single_user_data(user_id)
+    questions_asked = data_handling.get_user_questions(user_id)
+    answers_given = data_handling.get_user_answers(user_id)
+    comments_given = data_handling.get_user_comments(user_id)
+    return render_template("user_page.html", user=user_data, questions_asked=questions_asked,
+                           answers_given=answers_given, comments_given=comments_given)
+
+
+@app.route("/tags", methods=["GET", "POST"])
+def display_tags():
+    tags_list = data_handling.get_all_tags()
+    return render_template("tags.html", tags_list=tags_list)
+
+
 
 if __name__ == "__main__":
     app.run(debug=True)
