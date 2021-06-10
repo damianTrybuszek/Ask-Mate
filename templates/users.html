@@ -6,19 +6,27 @@
 <table class="table table-dark table-striped table-hover table-sm table-bordered border-light">
 
     <tr class="text-center align-middle" >
-        {% for element in headers %}
-            <th class="text-center align-middle">
-                {{ element }}
-            </th>
-        {% endfor %}
-        <th>User Profile</th>
+        <th class="text-center align-middle">Name</th>
+        <th class="text-center align-middle">Last Name</th>
+        <th class="text-center align-middle">Username</th>
+        <th class="text-center align-middle">Registration Date</th>
+        <th class="text-center align-middle">Questions</th>
+        <th class="text-center align-middle">Answers</th>
+        <th class="text-center align-middle">Comments</th>
+        <th class="text-center align-middle">Reputation</th>
+        <th class="text-center align-middle">User Profile</th>
     </tr>
 
     {% for element in users_data %}
         <tr class="text-center">
-            {% for key in element %}
-                <td class="text-center align-middle">{{ element[key] }}</td>
-            {% endfor %}
+            <td class="text-center align-middle">{{ element['first_name'] }}</td>
+            <td class="text-center align-middle">{{ element['last_name'] }}</td>
+            <td class="text-center align-middle">{{ element['email'] }}</td>
+            <td class="text-center align-middle">{{ element['registration_date'] }}</td>
+            <td class="text-center align-middle">{{ element['questions'] }}</td>
+            <td class="text-center align-middle">{{ element['answers'] }}</td>
+            <td class="text-center align-middle">{{ element['comments'] }}</td>
+            <td class="text-center align-middle">{{ element['reputation'] }}</td>
             <td><a href="/user/{{ element['id'] }}">CLICK</a></td>
         </tr>
     {% endfor %}

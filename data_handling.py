@@ -543,21 +543,56 @@ def save_user(cursor, first_name, last_name, email, hashed_password):
 
 @database_connection.connection_handler
 def get_users_data(cursor):
+    # query = sql.SQL("SELECT "
+    #                 "users.first_name,"
+    #                 "users.last_name,"
+    #                 "users.email,"
+    #                 "users.registration_date,"
+    #                 "COUNT(question.user_id),"
+    #                 "COUNT(answer.user_id),"
+    #                 "COUNT(comment.user_id) "
+    #                 "FROM users "
+    #                 "JOIN question on users.id=question.user_id "
+    #                 "JOIN answer on users.id=answer.user_id "
+    #                 "JOIN comment on users.id=comment.user_id "
+    #                 "GROUP BY users.id;")
+    # cursor.execute(query)
+    # return cursor.fetchall()
     query = sql.SQL("SELECT "
-                    "users.first_name,"
-                    "users.last_name,"
-                    "users.email,"
-                    "users.registration_date,"
-                    "COUNT(question.user_id),"
-                    "COUNT(answer.user_id),"
-                    "COUNT(comment.user_id) "
+                    "users.id, users.first_name, users.last_name, users.email,"
+                    " users.registration_date::date, users.reputation, "
+                    "COUNT(question.id) AS questions "
                     "FROM users "
                     "JOIN question on users.id=question.user_id "
-                    "JOIN answer on users.id=answer.user_id "
-                    "JOIN comment on users.id=comment.user_id "
                     "GROUP BY users.id;")
     cursor.execute(query)
-    return cursor.fetchall()
+    user_details = cursor.fetchall()
+
+    for user in user_details:
+        user_id = user['id']
+        query = sql.SQL("SELECT "
+                        "COUNT(answer.id) AS answers "
+                        "FROM users "
+                        "JOIN answer on users.id=answer.user_id "
+                        "GROUP BY users.id "
+                        "HAVING users.id=%s;")
+        query_params = [user_id]
+        cursor.execute(query, query_params)
+        user['answers'] = cursor.fetchall()[0]['answers']
+
+    for user in user_details:
+        user_id = user['id']
+        query = sql.SQL("SELECT "
+                        "COUNT(comment.id) AS comments "
+                        "FROM users "
+                        "JOIN comment on users.id=comment.user_id "
+                        "GROUP BY users.id "
+                        "HAVING users.id=%s;")
+        query_params = [user_id]
+        cursor.execute(query, query_params)
+        user['comments'] = cursor.fetchall()[0]['comments']
+
+    return user_details
 
 
 @database_connection.connection_handler
