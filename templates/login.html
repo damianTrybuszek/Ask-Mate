@@ -1,17 +1,10 @@
 {% extends "base.html" %}
-{% block title %}Register{% endblock %}
+{% block title %}Login{% endblock %}
 
 {% block content %}
-   <div class="row g-3">
+    <div class="row g-3">
       <div class="col-sm-3">
         <form action="#" method="POST" enctype="multipart/form-data">
-        <label for="first_name" class="form-label text-white">First Name</label>
-        <input type="text" class="form-control" placeholder="First Name" name="first_name"
-               id="first_name" aria-label="first_name" required>
-
-        <label for="last_name" class="form-label text-white">Last Name</label>
-        <input type="text" class="form-control" placeholder="Last Name" name="last_name"
-               id="last_name" aria-label="first_name" required>
 
         <label for="email" class="form-label text-white">Email</label>
         <input type="email" class="form-control" placeholder="Email" name="email"
@@ -22,10 +15,12 @@
                id="password" aria-label="first_name" required>
 
         <button class ="btn btn-secondary" type="reset">Reset</button>
-        <button class ="btn btn-success" onclick="alert('Thank you! Your data has been submited!')" type="submit">Submit</button>
+        <button class ="btn btn-success" type="submit">Submit</button>
         </form>
       </div>
 
    </div>
+
+
 
 {% endblock %}
