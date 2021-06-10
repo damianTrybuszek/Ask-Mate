@@ -618,3 +618,11 @@ def get_user_comments(cursor, user_id):
     query_params = [user_id]
     cursor.execute(query, query_params)
     return cursor.fetchall()
+
+
+@database_connection.connection_handler
+def get_all_tags(cursor):
+    query = sql.SQL("SELECT *  FROM tag")
+    cursor.execute(query)
+    return cursor.fetchall()
+

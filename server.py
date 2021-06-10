@@ -333,5 +333,11 @@ def user_page(user_id):
                            answers_given=answers_given, comments_given=comments_given)
 
 
+@app.route("/tags", methods=["GET", "POST"])
+def display_tags():
+    tags_list = data_handling.get_all_tags()
+    return render_template("tags.html", tags_list=tags_list)
+
+
 if __name__ == "__main__":
     app.run(debug=True)
