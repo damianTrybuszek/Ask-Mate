@@ -61,4 +61,4 @@ def text_highlighted(question_list, search_phrase, column):
 def hash_password(password):
     salt = bcrypt.gensalt()
     hashed_password = bcrypt.hashpw(password.encode('UTF-8'), salt)
-    return hashed_password
+    return hashed_password.decode('UTF-8')

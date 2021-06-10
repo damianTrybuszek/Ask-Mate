@@ -84,7 +84,7 @@ def get_answers(cursor):
 
 
 @database_connection.connection_handler
-def save_question(cursor, new_question_input, filename):
+def save_question(cursor, new_question_input, filename, user_id):
     new_question_input["submission_time"] = str(util.get_real_time((util.get_unix_timestamp())))
     new_question_input["view_number"] = "0"
     new_question_input["vote_number"] = "0"
@@ -94,13 +94,13 @@ def save_question(cursor, new_question_input, filename):
         new_question_input['image'] = None
     query = """
             INSERT INTO question
-            (submission_time, view_number, vote_number, title, message, image)
+            (submission_time, view_number, vote_number, title, message, image, user_id)
             VALUES 
-            (%s, %s, %s, %s, %s, %s);
+            (%s, %s, %s, %s, %s, %s, %s);
             """
     query_params = [new_question_input['submission_time'], new_question_input['view_number'],
                     new_question_input['vote_number'], new_question_input['title'],
-                    new_question_input['message'], new_question_input['image']]
+                    new_question_input['message'], new_question_input['image'], user_id]
     cursor.execute(query, query_params)
 
     
@@ -197,6 +197,7 @@ def delete_all_answers_from_question(cursor, question_id):
     query_params = [int(question_id)]
     cursor.execute(query, query_params)
 
+
 @database_connection.connection_handler
 def get_tag_to_delete(cursor, question_id):
     query = sql.SQL("SELECT tag_id FROM question_tag WHERE question_id=%s")
@@ -207,6 +208,7 @@ def get_tag_to_delete(cursor, question_id):
     for i in range(len(tags_id)):
         tags_id_list.append(tags_id[i]['tag_id'])
     return tags_id_list
+
 
 @database_connection.connection_handler
 def delete_all_tags_by_id(cursor, question_id):
@@ -219,6 +221,7 @@ def delete_all_tags_by_id(cursor, question_id):
         query_params = [param]
         cursor.execute(query, query_params)
 
+
 @database_connection.connection_handler
 def delete_all_tags_by_question_id(cursor, question_id):
     query = """
@@ -226,6 +229,7 @@ def delete_all_tags_by_question_id(cursor, question_id):
             """
     query_params = [int(question_id)]
     cursor.execute(query, query_params)
+
 
 def delete_all_tags_from_question(question_id):
     delete_all_tags_by_id(question_id)
@@ -522,12 +526,13 @@ def add_view_number(cursor, question_id):
 
 
 @database_connection.connection_handler
-def check_user_login(cursor, username, password):
-    password_hash = bcrypt(password.encode('UTF-8'), bcrypt.gensalt())
-    query = 'select username from users where username = %s'
-    query_params = [username]
+def check_user_login(cursor, email, password):
+    query = sql.SQL("SELECT password from users where email = %s")
+    query_params = [email]
     cursor.execute(query, query_params)
-    return bcrypt.checkpw(cursor.fetchall()[0]['password'].encode('utf-8'), password_hash)
+    user_password = cursor.fetchall()[0]['password']
+
+    return bcrypt.checkpw(password.encode('UTF-8'), user_password.encode('UTF-8'))
 
 
 @database_connection.connection_handler
@@ -539,6 +544,22 @@ def save_user(cursor, first_name, last_name, email, hashed_password):
                     "(%s, %s, %s, %s, %s);")
     query_params = [first_name, last_name, email, hashed_password, registration_time]
     cursor.execute(query, query_params)
+
+
+@database_connection.connection_handler
+def get_user_id(cursor, email):
+    query = sql.SQL("SELECT id from users where email = %s")
+    query_params = [email]
+    cursor.execute(query, query_params)
+    return cursor.fetchall()[0]['id']
+
+
+@database_connection.connection_handler
+def get_session_user(cursor, email):
+    query = sql.SQL("SELECT first_name from users where email = %s")
+    query_params = [email]
+    cursor.execute(query, query_params)
+    return cursor.fetchall()[0]['first_name']
 
 
 @database_connection.connection_handler
@@ -661,4 +682,5 @@ def get_all_tags(cursor):
     query = sql.SQL("SELECT *  FROM tag")
     cursor.execute(query)
     return cursor.fetchall()
+
 

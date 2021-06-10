@@ -62,9 +62,14 @@
                 <button class="btn btn-outline-success mr-1" type="submit">Login</button>
             </form>
             <form class="d-inline mr-auto" method="GET" action="/registration"
-                  name="login_buttons" enctype="multipart/form-data">
+                  name="register_button" enctype="multipart/form-data">
                 <button class="btn btn-outline-success mr-3" type="submit">Register</button>
             </form>
+           <form class="d-inline mr-auto" method="GET" action="/logout"
+                  name="logout_button" enctype="multipart/form-data">
+                <button class="btn btn-outline-success mr-3" type="submit">Logout</button>
+            </form>
+
         </div>
 
         <div>
@@ -79,6 +84,15 @@
 
 </head>
 <body>
+
+{#Messages flashing#}
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        {% for msg in messages %}
+            <p class="text-white">{{ msg }}</p>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
 
     {% block content %}
     {% endblock %}

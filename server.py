@@ -1,12 +1,14 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, flash, session
 import data_handling as data_handling
 import util as util
 from werkzeug.utils import secure_filename
 import os
+from datetime import timedelta
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = data_handling.UPLOAD_FOLDER
-
+app.secret_key = os.environ.get('SECRET_KEY', 'dev')
+app.permanent_session_lifetime= timedelta(days=1)
 
 @app.route("/")
 def hello():
@@ -14,7 +16,7 @@ def hello():
     latest_questions = data_handling.get_latest_questions()
     correct_table_order = ["id", "title", "message", "image", "view_number", "vote_number", "submission_time"]
     return render_template('index.html', latest_questions=latest_questions, headers=headers,
-                           correct_order=correct_table_order)
+                           correct_order=correct_table_order,)
 
 
 @app.route("/list", methods=["POST", "GET"])
@@ -66,9 +68,16 @@ def add_question():
             else:
                 filename = False
         new_question_input = dict(request.form)
-        data_handling.save_question(new_question_input, filename)
-        question_id = data_handling.get_last_question()[0]['id']
-        return redirect(f"/question/{question_id}")
+        try:
+            email = session['username']
+            user_id = data_handling.get_user_id(email)
+
+            data_handling.save_question(new_question_input, filename, user_id)
+            question_id = data_handling.get_last_question()[0]['id']
+            return redirect(f"/question/{question_id}")
+        except:
+            flash("Adding question failed! Please log in!")
+            return redirect(url_for("user_login"))
     return render_template("add_question.html")
 
 
@@ -219,7 +228,7 @@ def search_question():
                            correct_order_questions=correct_questions_table_order,
                            correct_order_answers=correct_table_order)
 
-  
+
 @app.route("/question/<question_id>/new-comment", methods=["GET", "POST"])
 def add_comment_question(question_id):
     if request.method == "POST":
@@ -309,6 +318,37 @@ def user_registration():
     return render_template("registration.html")
 
 
+@app.route("/login", methods=["GET", "POST"])
+def user_login():
+    if request.method == "POST":
+        email = request.form['email']
+        password = request.form['password']
+        try:
+            data_handling.check_user_login(email, password)
+            session['username'] = request.form['email']
+            if "username" in session:
+                session['user'] = data_handling.get_session_user(email)
+                session['id'] = data_handling.get_user_id(email)
+                flash(f"You were successfully logged in, {session['user']}")
+                return redirect(f"/user/{session['id']}")
+            else:
+                flash('Login failed. Try again!')
+                return redirect(url_for("user_login"))
+        except:
+            flash('Login failed. Try again!')
+            return redirect(url_for("user_login"))
+    return render_template("login.html")
+
+
+@app.route("/logout")
+def logout():
+    if "username" in session:
+        flash(f"You've been logged out!, {session['user']}")
+    session.pop("username", None)
+
+    return redirect(url_for("user_login"))
+
+  
 @app.route("/users", methods=["GET", "POST"])
 def users_list():
     users_data = data_handling.get_users_data()
@@ -335,6 +375,7 @@ def user_page(user_id):
 def display_tags():
     tags_list = data_handling.get_all_tags()
     return render_template("tags.html", tags_list=tags_list)
+
 
 
 if __name__ == "__main__":
