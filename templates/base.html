@@ -54,14 +54,17 @@
               <a class="nav-link" href="/add_question">Add question</a>
             </li>
             </ul>
-
         </div>
 
-        <div>
-          <form class="d-flex mr-auto" method="POST" name="login_buttons" enctype="multipart/form-data">
-              <button class="btn btn-outline-success mr-1" type="submit"><a href="#" class="link-success">Login</a></button>
-              <button class="btn btn-outline-success mr-3" type="submit"><a href="/registration" class="link-success">Register</a></button>
-          </form>
+         <div>
+            <form class="d-inline mr-auto" method="GET" action="#"
+                  name="login_buttons" enctype="multipart/form-data">
+                <button class="btn btn-outline-success mr-1" type="submit">Login</button>
+            </form>
+            <form class="d-inline mr-auto" method="GET" action="/registration"
+                  name="login_buttons" enctype="multipart/form-data">
+                <button class="btn btn-outline-success mr-3" type="submit">Register</button>
+            </form>
         </div>
 
         <div>

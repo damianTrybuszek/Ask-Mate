@@ -539,3 +539,126 @@ def save_user(cursor, first_name, last_name, email, hashed_password):
                     "(%s, %s, %s, %s, %s);")
     query_params = [first_name, last_name, email, hashed_password, registration_time]
     cursor.execute(query, query_params)
+
+
+@database_connection.connection_handler
+def get_users_data(cursor):
+    query = sql.SQL("SELECT "
+                    "users.id, users.first_name, users.last_name, users.email,"
+                    " users.registration_date::date, users.reputation, "
+                    "COUNT(question.id) AS questions "
+                    "FROM users "
+                    "JOIN question on users.id=question.user_id "
+                    "GROUP BY users.id;")
+    cursor.execute(query)
+    user_details = cursor.fetchall()
+
+    for user in user_details:
+        user_id = user['id']
+        query = sql.SQL("SELECT "
+                        "COUNT(answer.id) AS answers "
+                        "FROM users "
+                        "JOIN answer on users.id=answer.user_id "
+                        "GROUP BY users.id "
+                        "HAVING users.id=%s;")
+        query_params = [user_id]
+        cursor.execute(query, query_params)
+        user['answers'] = cursor.fetchall()[0]['answers']
+
+    for user in user_details:
+        user_id = user['id']
+        query = sql.SQL("SELECT "
+                        "COUNT(comment.id) AS comments "
+                        "FROM users "
+                        "JOIN comment on users.id=comment.user_id "
+                        "GROUP BY users.id "
+                        "HAVING users.id=%s;")
+        query_params = [user_id]
+        cursor.execute(query, query_params)
+        user['comments'] = cursor.fetchall()[0]['comments']
+
+    return user_details
+
+
+@database_connection.connection_handler
+def update_answer_accepted(cursor, answer_id):
+    query = sql.SQL("SELECT is_accepted FROM answer WHERE id=%s")
+    query_params = [answer_id]
+    cursor.execute(query, query_params)
+    accepted_state = cursor.fetchall()[0]['is_accepted']
+
+    if accepted_state:
+        query = sql.SQL("UPDATE answer SET is_accepted=FALSE WHERE id=%s")
+    else:
+        query = sql.SQL("UPDATE answer SET is_accepted=TRUE WHERE id=%s")
+
+    cursor.execute(query, query_params)
+
+
+@database_connection.connection_handler
+def get_single_user_data(cursor, user_id):
+    query = sql.SQL("SELECT "
+                    "users.id, users.first_name, users.last_name, users.email,"
+                    " users.registration_date::date, users.reputation, "
+                    "COUNT(question.id) AS questions "
+                    "FROM users "
+                    "JOIN question on users.id=question.user_id "
+                    "GROUP BY users.id "
+                    "HAVING users.id=%s;")
+    query_params = [user_id]
+    cursor.execute(query, query_params)
+    user_details = cursor.fetchall()
+
+    query = sql.SQL("SELECT "
+                    "COUNT(answer.id) AS answers "
+                    "FROM users "
+                    "JOIN answer on users.id=answer.user_id "
+                    "GROUP BY users.id "
+                    "HAVING users.id=%s;")
+    query_params = [user_id]
+    cursor.execute(query, query_params)
+    user_details[0]['answers'] = cursor.fetchall()[0]['answers']
+
+    query = sql.SQL("SELECT "
+                    "COUNT(comment.id) AS comments "
+                    "FROM users "
+                    "JOIN comment on users.id=comment.user_id "
+                    "GROUP BY users.id "
+                    "HAVING users.id=%s;")
+    query_params = [user_id]
+    cursor.execute(query, query_params)
+    user_details[0]['comments'] = cursor.fetchall()[0]['comments']
+
+    return user_details[0]
+
+
+@database_connection.connection_handler
+def get_user_questions(cursor, user_id):
+    query = sql.SQL("SELECT id, title  FROM question WHERE user_id=%s")
+    query_params = [user_id]
+    cursor.execute(query, query_params)
+    return cursor.fetchall()
+
+
+@database_connection.connection_handler
+def get_user_answers(cursor, user_id):
+    query = sql.SQL("SELECT id, message  FROM answer WHERE user_id=%s")
+    query_params = [user_id]
+    cursor.execute(query, query_params)
+    return cursor.fetchall()
+
+
+@database_connection.connection_handler
+def get_user_comments(cursor, user_id):
+    query = sql.SQL("SELECT id, message  FROM comment WHERE user_id=%s")
+    query_params = [user_id]
+    cursor.execute(query, query_params)
+    return cursor.fetchall()
+
+
+@database_connection.connection_handler
+def get_all_tags(cursor):
+    query = sql.SQL("SELECT *  FROM tag")
+    cursor.execute(query)
+    return cursor.fetchall()
+
