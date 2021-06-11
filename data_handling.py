@@ -115,7 +115,7 @@ def get_last_question(cursor):
 
 
 @database_connection.connection_handler
-def save_answer(cursor, question_id, new_answer, filename):
+def save_answer(cursor, question_id, new_answer, filename, user_id):
     new_answer["submission_time"] = str(util.get_real_time((util.get_unix_timestamp())))
     new_answer['vote_number'] = "0"
     new_answer['question_id'] = question_id
@@ -126,13 +126,13 @@ def save_answer(cursor, question_id, new_answer, filename):
 
     query = """
             INSERT INTO answer
-            (submission_time, vote_number, question_id, message, image) 
+            (submission_time, vote_number, question_id, message, image, user_id) 
             VALUES 
-            (%s, %s, %s, %s, %s);
+            (%s, %s, %s, %s, %s, %s);
             """
     query_params = [new_answer['submission_time'], new_answer['vote_number'],
                     new_answer['question_id'], new_answer['message'],
-                    new_answer['image']]
+                    new_answer['image'], user_id]
     cursor.execute(query, query_params)
 
 
@@ -250,7 +250,7 @@ def delete_question(cursor, deleted_question):
 
 
 @database_connection.connection_handler
-def question_vote_up(cursor, voted_question):
+def question_vote_up(cursor, voted_question, user_id):
     query = """
             UPDATE question
             SET vote_number = vote_number + 1
@@ -259,9 +259,17 @@ def question_vote_up(cursor, voted_question):
     query_params = [voted_question[0]['id']]
     cursor.execute(query, query_params)
 
+    query = """
+                UPDATE users
+                SET reputation = reputation + 5
+                WHERE id = %s;
+                """
+    query_params = [user_id]
+    cursor.execute(query, query_params)
+
 
 @database_connection.connection_handler
-def question_vote_down(cursor, voted_question):
+def question_vote_down(cursor, voted_question, user_id):
     query = """
             UPDATE question
             SET vote_number = vote_number - 1
@@ -270,9 +278,17 @@ def question_vote_down(cursor, voted_question):
     query_params = [voted_question[0]['id']]
     cursor.execute(query, query_params)
 
+    query = """
+                UPDATE users
+                SET reputation = reputation - 2
+                WHERE id = %s;
+                """
+    query_params = [user_id]
+    cursor.execute(query, query_params)
+
 
 @database_connection.connection_handler
-def answer_vote_up(cursor, voted_answer):
+def answer_vote_up(cursor, voted_answer, user_id):
     query = """
             UPDATE answer
             SET vote_number = vote_number + 1
@@ -281,15 +297,31 @@ def answer_vote_up(cursor, voted_answer):
     query_params = [voted_answer[0]['id']]
     cursor.execute(query, query_params)
 
+    query = """
+                UPDATE users
+                SET reputation = reputation + 10
+                WHERE id = %s;
+                """
+    query_params = [user_id]
+    cursor.execute(query, query_params)
+
 
 @database_connection.connection_handler
-def answer_vote_down(cursor, voted_answer):
+def answer_vote_down(cursor, voted_answer, user_id):
     query = """
             UPDATE answer
             SET vote_number = vote_number - 1
             WHERE id = %s;
             """
     query_params = [voted_answer[0]['id']]
+    cursor.execute(query, query_params)
+
+    query = """
+            UPDATE users
+            SET reputation = reputation - 2
+            WHERE id = %s;
+            """
+    query_params = [user_id]
     cursor.execute(query, query_params)
 
 
@@ -307,30 +339,30 @@ def get_searched_questions(cursor, search_phrase):
 
     
 @database_connection.connection_handler    
-def add_comment_to_question(cursor, question_id, comment):
+def add_comment_to_question(cursor, question_id, comment, user_id):
     sub_time = str(util.get_real_time((util.get_unix_timestamp())))
     edited = 0
     query = """
             INSERT INTO comment
-            (question_id, message, submission_time, edited_count) 
+            (question_id, message, submission_time, edited_count, user_id) 
             VALUES
-            (%s, %s, %s, %s);
+            (%s, %s, %s, %s, %s);
             """
-    query_params = [question_id, comment['message'], sub_time, edited]
+    query_params = [question_id, comment['message'], sub_time, edited, user_id]
     cursor.execute(query, query_params)
 
 
 @database_connection.connection_handler
-def add_comment_to_answer(cursor, answer_id, comment):
+def add_comment_to_answer(cursor, answer_id, comment, user_id):
     sub_time = str(util.get_real_time((util.get_unix_timestamp())))
     edited = 0
     query = """
             INSERT INTO comment
-            (answer_id, message, submission_time, edited_count) 
+            (answer_id, message, submission_time, edited_count, user_id) 
             VALUES
-            (%s, %s, %s, %s);
+            (%s, %s, %s, %s, %s);
             """
-    query_params = [answer_id, comment['message'], sub_time, edited]
+    query_params = [answer_id, comment['message'], sub_time, edited, user_id]
     cursor.execute(query, query_params)
 
 
@@ -684,3 +716,47 @@ def get_all_tags(cursor):
     return cursor.fetchall()
 
 
+@database_connection.connection_handler
+def get_user_id_from_question(cursor, question_id):
+    query = sql.SQL("SELECT user_id FROM question WHERE id=%s")
+    query_params = [question_id]
+    cursor.execute(query, query_params)
+    return cursor.fetchall()[0]['user_id']
+
+
+@database_connection.connection_handler
+def get_user_id_from_answer(cursor, answer_id):
+    query = sql.SQL("SELECT user_id FROM answer WHERE id=%s")
+    query_params = [answer_id]
+    cursor.execute(query, query_params)
+    return cursor.fetchall()[0]['user_id']
+
+
+@database_connection.connection_handler
+def accepted_status_check(cursor, answer_id):
+    query = sql.SQL("SELECT is_accepted FROM answer WHERE id=%s")
+    query_params = [answer_id]
+    cursor.execute(query, query_params)
+    return cursor.fetchall()[0]['is_accepted']
+
+
+@database_connection.connection_handler
+def accepted_rep_up(cursor, user_id):
+    query = """
+            UPDATE users
+            SET reputation = reputation + 15
+            WHERE id = %s;
+            """
+    query_params = [user_id]
+    cursor.execute(query, query_params)
+
+
+@database_connection.connection_handler
+def accepted_rep_down(cursor, user_id):
+    query = """
+            UPDATE users
+            SET reputation = reputation - 15
+            WHERE id = %s;
+            """
+    query_params = [user_id]
+    cursor.execute(query, query_params)
