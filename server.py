@@ -10,6 +10,16 @@ app.config['UPLOAD_FOLDER'] = data_handling.UPLOAD_FOLDER
 app.secret_key = os.environ.get('SECRET_KEY', 'dev')
 app.permanent_session_lifetime= timedelta(days=1)
 
+
+def login_required(function):
+    def wrapper(*args, **kwargs):
+        if 'username' not in session:
+            flash("You must be logged in to do this!")
+            return redirect(url_for('user_login'))
+        return function(*args, **kwargs)
+    return wrapper
+
+
 @app.route("/")
 def hello():
     headers = data_handling.get_headers_questions()
@@ -58,6 +68,7 @@ def display(question_id):
 
 
 @app.route("/add_question", methods=["POST", "GET"])
+@login_required
 def add_question():
     if request.method == "POST":
         if "file" in request.files:
@@ -68,16 +79,14 @@ def add_question():
             else:
                 filename = False
         new_question_input = dict(request.form)
-        try:
-            email = session['username']
-            user_id = data_handling.get_user_id(email)
 
-            data_handling.save_question(new_question_input, filename, user_id)
-            question_id = data_handling.get_last_question()[0]['id']
-            return redirect(f"/question/{question_id}")
-        except:
-            flash("You must log in to post a question!")
-            return redirect(url_for("user_login"))
+        email = session['username']
+        user_id = data_handling.get_user_id(email)
+
+        data_handling.save_question(new_question_input, filename, user_id)
+        question_id = data_handling.get_last_question()[0]['id']
+        return redirect(f"/question/{question_id}")
+
     return render_template("add_question.html")
 
 
@@ -405,6 +414,7 @@ def user_page(user_id):
 def display_tags():
     tags_list = data_handling.get_all_tags()
     return render_template("tags.html", tags_list=tags_list)
+
 
 
 

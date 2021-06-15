@@ -148,3 +148,10 @@
     margin-left: 100px;
     margin-right: auto;
 }
+.grid-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 20px;
+    justify-content: center;
+    align-items: center;
+}
