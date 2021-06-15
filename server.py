@@ -17,6 +17,7 @@ def login_required(function):
             flash("You must be logged in to do this!")
             return redirect(url_for('user_login'))
         return function(*args, **kwargs)
+    wrapper.__name__ = function.__name__
     return wrapper
 
 
@@ -91,24 +92,21 @@ def add_question():
 
 
 @app.route("/question/<question_id>/new-answer", methods=["GET", "POST"])
+@login_required
 def post_an_answer(question_id):
     if request.method == "POST":
-        try:
-            if "file" in request.files:
-                file = request.files['file']
-                filename = secure_filename(file.filename)
-                if filename:
-                    filename = str(question_id) + "_" + filename
-                    file.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
-                else:
-                    filename = False
-            answer = dict(request.form)
-            user_id = session['id']
-            data_handling.save_answer(question_id, answer, filename, user_id)
-            return redirect(f"/question/{answer['question_id']}")
-        except:
-            flash("You must log in to post an answer!")
-            return redirect(url_for("user_login"))
+        if "file" in request.files:
+            file = request.files['file']
+            filename = secure_filename(file.filename)
+            if filename:
+                filename = str(question_id) + "_" + filename
+                file.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
+            else:
+                filename = False
+        answer = dict(request.form)
+        user_id = session['id']
+        data_handling.save_answer(question_id, answer, filename, user_id)
+        return redirect(f"/question/{answer['question_id']}")
 
     return render_template("post_an_answer.html", question_id=question_id)
 
@@ -249,17 +247,14 @@ def search_question():
 
 
 @app.route("/question/<question_id>/new-comment", methods=["GET", "POST"])
+@login_required
 def add_comment_question(question_id):
     if request.method == "POST":
-        try:
-            if 'message' in request.form:
-                comment = dict(request.form)
-                user_id = session['id']
-                data_handling.add_comment_to_question(question_id, comment, user_id)
-                return redirect(f"/question/{question_id}")
-        except:
-            flash("You must log in to post a comment!")
-            return redirect(url_for("user_login"))
+        if 'message' in request.form:
+            comment = dict(request.form)
+            user_id = session['id']
+            data_handling.add_comment_to_question(question_id, comment, user_id)
+            return redirect(f"/question/{question_id}")
 
     return render_template("new_comment.html")
 
@@ -287,18 +282,15 @@ def delete_tag(question_id, tag_id):
 
 
 @app.route("/answer/<answer_id>/new-comment", methods=["GET", "POST"])
+@login_required
 def add_comment_answer(answer_id):
     if request.method == "POST":
-        try:
-            if 'message' in request.form:
-                user_id = session['id']
-                comment = dict(request.form)
-                data_handling.add_comment_to_answer(answer_id, comment, user_id)
-                question_id = data_handling.get_question_id_from_answer(answer_id)
-                return redirect(f"/question/{question_id}")
-        except:
-            flash("You must log in to post a comment!")
-            return redirect(url_for("user_login"))
+        if 'message' in request.form:
+            user_id = session['id']
+            comment = dict(request.form)
+            data_handling.add_comment_to_answer(answer_id, comment, user_id)
+            question_id = data_handling.get_question_id_from_answer(answer_id)
+            return redirect(f"/question/{question_id}")
 
     return render_template("new_comment.html")
 
