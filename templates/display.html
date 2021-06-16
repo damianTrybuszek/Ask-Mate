@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %} Display a question {% endblock %}
+{% block title %}Display a question {% endblock %}
 
 {% block content %}
 <div class="d-inline-flex p-2 bd-highlight">
@@ -13,7 +13,7 @@
 
 <hr color="white">
 
-<h2 class="text-center font-weight-bold text-white">{{ question["message"] }}</h2>
+    <h2 class="text-center font-weight-bold text-white">{{ question["message"] }}</h2>
 
 <hr color="white">
 
@@ -100,16 +100,16 @@
             {% endif %}
             {% for key in answer %}
                 {% if key == "image" and answer[key] == None %}
-                    <td class="table__cell" align="center" ></td>
+                    <td class="table__cell text-center"></td>
                 {% elif key == "image" and answer[key] %}
-                    <td class="table__cell" align="center"><img src="/static/img/{{ answer[key] }}" alt="Answer Image" align="center" max-width="100%" width="300"/></td>
-                {% elif key != "question_id"  %}
-                    <td class="table__cell" align="center" >{{ answer[key] }}</td>
+                    <td class="table__cell text-center"><img src="/static/img/{{ answer[key] }}" alt="Answer Image" align="center" max-width="100%" width="300"/></td>
+                {% elif key != "question_id" and key != "is_accepted" %}
+                    <td class="table__cell text-center">{{ answer[key] }}</td>
                 {% endif %}
             {% endfor %}
-                <td align="center"><a href="/accept-answer/{{ answer['id'] }}/{{ question['id'] }}">Mark as accepted</a></td>
-                <td align="center"><a href="/answer/{{ answer['id'] }}/new-comment">COMMENT</a></td>
-                <td align="center"><a href="/answer/{{ answer['id'] }}/delete">
+                <td class="text-center"><a href="/accept-answer/{{ answer['id'] }}/{{ question['id'] }}">Mark as accepted</a></td>
+                <td class="text-center"><a href="/answer/{{ answer['id'] }}/new-comment">COMMENT</a></td>
+                <td class="text-center"><a href="/answer/{{ answer['id'] }}/delete">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
                     <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1
                     0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/><path fill-rule="evenodd"
@@ -118,9 +118,9 @@
                     1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/></svg></a></td>
                 <td width="1%">
                 <form action="/answer/{{ answer['id'] }}/vote_up" method="POST">
-                <button class="voteup__button" onclick="alert('Thank you! You have up-voted the answer!')" type="submit" name="vote_up">Vote up</button></form>
+                <button class="btn btn-success" onclick="alert('Thank you! You have up-voted the answer!')" type="submit" name="vote_up">Vote up</button></form>
                 <form action="/answer/{{ answer['id'] }}/vote_down" method="POST">
-                <button class="votedown__button" onclick="alert('Thank you! You have down-voted the answer!')" type="submit" name="vote_down">Vote down</button></form></td>
+                <button class="btn btn-danger" onclick="alert('Thank you! You have down-voted the answer!')" type="submit" name="vote_down">Vote down</button></form></td>
             </tr>
 
 {#                 Display Comments for answers #}

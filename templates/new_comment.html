@@ -2,11 +2,17 @@
 {% block title %} Post new comment {% endblock %}
 
 {% block content %}
-    <h1 class="header text-white>Post your comment:"></h1>
-    <form action="#" method="POST" enctype="multipart/form-data"><br/>
-        <label class="label text-white " for="message">Comment:</label><br/>
-        <textarea class="textarea__input" id="message" name="message" rows="8" cols="30"></textarea><br/>
-        <button class="btn btn-secondary" type="reset">Reset</button>
-        <button class="btn btn-success" onclick="alert('Thank you! Your comment has been submited!')" type="submit">Save</button><br/>
-    </form>
+
+    <div class="grid-container">
+            <h3 class="header text-white ml-5">Post your comment</h3>
+    <div class="grid-child d-flex justify-content-left">
+
+        <form action="#" method="POST" enctype="multipart/form-data"><br/>
+{#            <label class="label text-white " for="message">Comment:</label><br/>#}
+            <textarea class="textarea__input" id="message" name="message" rows="10" cols="80" placeholder="Type your comment here..."></textarea><br/>
+            <button class="btn btn-secondary" type="reset">Reset</button>
+            <button class="btn btn-success" onclick="alert('Thank you! Your comment has been submitted!')" type="submit">Submit</button><br/>
+        </form>
+    </div>
+    </div>
 {% endblock %}

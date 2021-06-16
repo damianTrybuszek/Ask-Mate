@@ -36,7 +36,7 @@ def display_list():
     order_direction = request.args.get('order_direction', 'desc')
     headers = data_handling.get_headers_questions()
     question_list = data_handling.get_questions(order_by, order_direction)
-    correct_table_order = ["id", "title", "message", "image", "view_number", "vote_number", "submission_time"]
+    correct_table_order = ["id", "title", "message", "image", "views", "votes", "posted"]
 
     return render_template("list.html", question_list=question_list, headers=headers,
                            correct_order=correct_table_order)
@@ -375,6 +375,7 @@ def logout():
 
   
 @app.route("/users", methods=["GET", "POST"])
+@login_required
 def users_list():
     users_data = data_handling.get_users_data()
     return render_template("users.html", users_data=users_data)
@@ -382,13 +383,17 @@ def users_list():
 
 @app.route("/accept-answer/<answer_id>/<question_id>", methods=["GET"])
 def accept_answer(answer_id, question_id):
-    data_handling.update_answer_accepted(answer_id)
-    accepted_status = data_handling.accepted_status_check(answer_id)
     user_id = data_handling.get_user_id_from_answer(answer_id)
-    if accepted_status:
-        data_handling.accepted_rep_up(user_id)
+    if session['id'] == user_id:
+        data_handling.update_answer_accepted(answer_id)
+        accepted_status = data_handling.accepted_status_check(answer_id)
+        if accepted_status:
+            data_handling.accepted_rep_up(user_id)
+        else:
+            data_handling.accepted_rep_down(user_id)
     else:
-        data_handling.accepted_rep_down(user_id)
+        flash('Only person who created the question can accept it.')
+        return redirect(f"/question/{question_id}")
     return redirect(f"/question/{question_id}")
 
 
