@@ -58,12 +58,14 @@
                     <td class="text-center align-middle">{{ element[key] }}</td>
                 {% endif %}
             {% endfor %}
-        <form action="/question/{{ element['id'] }}/vote_up" method="POST">
-            <td class="text-center align-middle"><button class="btn btn-success" onclick="alert('Thank you! You have up-voted the question!')" type="submit" name="vote_up">Vote up</button>
-        </form>
-        <form action="/question/{{ element['id'] }}/vote_down" method="POST">
-            <button class="btn btn-danger" onclick="alert('Thank you! You have down-voted the question!')" type="submit" name="vote_down">Vote down</button></td>
-        </form>
+            <td class="text-center align-middle">
+                <form action="/question/{{ element['id'] }}/vote_up" method="POST">
+                    <button class="btn btn-success btn-sm btn-block" onclick="alert('Thank you! You have up-voted the question!')" type="submit" name="vote_up">Vote up</button>
+                </form>
+                <form action="/question/{{ element['id'] }}/vote_down" method="POST">
+                    <button class="btn btn-danger btn-sm btn-block" onclick="alert('Thank you! You have down-voted the question!')" type="submit" name="vote_down">Vote down</button>
+                </form>
+            </td>
     </tr>
         {% endfor %}
 </table>

@@ -498,7 +498,8 @@ def get_question_id_from_answer(cursor, answer_id):
 @database_connection.connection_handler
 def get_latest_questions(cursor):
     query = """
-            SELECT id, title, message, image, view_number, vote_number, submission_time FROM question
+            SELECT id, title, message, image, view_number AS views, vote_number AS votes, submission_time AS posted
+            FROM question
             ORDER BY id DESC LIMIT 5; 
             """
     cursor.execute(query)

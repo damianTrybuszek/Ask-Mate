@@ -74,7 +74,7 @@
     <tr class="text-center align-middle" >
         {% for element in correct_order %}
 
-            {%  if element == "submission_time" %}
+            {%  if element == "posted" %}
                 <th class="text-center align-middle" colspan="2">
                     {{ element }}
 
@@ -109,21 +109,26 @@
                 {% if key == "id" %}
                     <td class="text-center align-middle" ><a href="/question/{{ element[key] }}">{{ element[key] }}</a></td>
                 {% elif key == "image" and element[key] == None %}
-                    <td class="table__cell" align="center" >   </td>
+                    <td class="text-center align-middle" ></td>
                 {% elif key == "image" and element[key] %}
-                    <td class="text-center align-middle"><img src="/static/img/{{ element[key] }}" alt="Question Image" align="center" max-width="100%" width="300"/></td>
+                    <td class="text-center align-middle"><img src="/static/img/{{ element[key] }}" alt="Question Image"
+                                                              max-width="100%" width="200"/></td>
                 {% else %}
                     <td class="text-center align-middle">{{ element[key] }}</td>
                 {% endif %}
             {% endfor %}
-        <form action="/question/{{ element['id'] }}/vote_up" method="POST">
-            <td class="text-center align-middle"><button class="btn btn-success" onclick="alert('Thank you! You have up-voted the question!')" type="submit" name="vote_up">Vote up</button>
-        </form>
-        <form action="/question/{{ element['id'] }}/vote_down" method="POST">
-            <button class="btn btn-danger" onclick="alert('Thank you! You have down-voted the question!')" type="submit" name="vote_down">Vote down</button></td>
-        </form>
-         </tr>
-    {% endfor %}
+            <td class="text-center align-middle">
+                <form action="/question/{{ element['id'] }}/vote_up" method="POST">
+                    <button class="btn btn-success btn-sm btn-block" onclick="alert('Thank you! You have up-voted the question!')"
+                            type="submit" name="vote_up">Vote up</button>
+                </form>
+                <form action="/question/{{ element['id'] }}/vote_down" method="POST">
+                    <button class="btn btn-danger btn-sm btn-block" onclick="alert('Thank you! You have down-voted the question!')"
+                            type="submit" name="vote_down">Vote down</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
 </table>
 
 
