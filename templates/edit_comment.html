@@ -2,10 +2,16 @@
 {% block title %} Edit your comment {% endblock %}
 
 {% block content %}
-    <h2 class="header text-white">Edit your comment:</h2>
-    <form action="#" method="POST" enctype="multipart/form-data"><br/>
-        <textarea class="textarea__input" id="message" name="message" rows="20" cols="100">{{ comment['message'] }}</textarea><br/>
-        <button class ="btn btn-secondary" type="reset">Reset</button>
-        <button class ="btn btn-success" onclick="alert('Thank you! Your edits have been submited!')" type="submit">Save</button><br/>
-    </form>
+
+    <div class="grid-container">
+            <h3 class="header text-white ml-5">Edit your comment</h3>
+    <div class="grid-child d-flex justify-content-left">
+
+        <form action="#" method="POST" enctype="multipart/form-data"><br/>
+            <textarea class="textarea__input" id="message" name="message" rows="10" cols="80">{{ comment['message'] }}</textarea><br/>
+            <button class ="btn btn-secondary" type="reset">Reset</button>
+            <button class ="btn btn-success" onclick="alert('Thank you! Your edits have been submitted!')" type="submit">Submit</button><br/>
+        </form>
+    </div>
+    </div>
 {% endblock %}

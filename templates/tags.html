@@ -2,8 +2,9 @@
 {% block title %} Tags {% endblock %}
 
 {% block content %}
-<div class="mx-auto" style="width: 40%">
-    <h1 class="text-white">List of all available tags</h1>
+
+<div class="mx-auto mt-3" style="width: 40%">
+    <h3 class="text-white text-center">List of all available tags</h3>
     <ul class="list-group">
         {% for tag in tags_list %}
             <li class="list-group-item ">{{ tag['name'] }}</li>

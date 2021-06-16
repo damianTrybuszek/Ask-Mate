@@ -2,15 +2,15 @@
 {% block title %} User Profile {% endblock %}
 
 {% block content %}
-<div class="mx-auto" style="width: 80%">
+<div class="mx-auto mt-3" style="width: 80%">
     <p class="text-white">User ID: <b>{{ user['id'] }}</b></p>
     <p class="text-white">First name: <b>{{ user['first_name'] }}</b></p>
     <p class="text-white">Last name: <b>{{ user['last_name'] }}</b></p>
     <p class="text-white">Username: <b>{{ user['email'] }}</b></p>
     <p class="text-white">Registration date: <b>{{ user['registration_date'] }}</b></p>
-    <p class="text-white">Asked questions: <b>{{ user['id'] }}</b></p>
-    <p class="text-white">Answers given: <b>{{ user['id'] }}</b></p>
-    <p class="text-white">Comments given: <b>{{ user['id'] }}</b></p>
+    <p class="text-white">Asked questions: <b>{{ user['questions'] }}</b></p>
+    <p class="text-white">Answers given: <b>{{ user['answers'] }}</b></p>
+    <p class="text-white">Comments given: <b>{{ user['comments'] }}</b></p>
     <p class="text-white">Reputation: <b>{{ user['reputation'] }}</b></p>
 </div>
 

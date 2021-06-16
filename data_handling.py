@@ -9,7 +9,8 @@ UPLOAD_FOLDER = os.getcwd() + "\\static\\img\\"
 
 @database_connection.connection_handler
 def get_questions(cursor, order_by, order_direction):
-    query = f"SELECT id, title, message, image, view_number, vote_number, submission_time FROM question ORDER BY {order_by} {order_direction};"
+    query = f"SELECT id, title, message, image, view_number AS views, vote_number AS votes, submission_time AS posted " \
+            f"FROM question ORDER BY {order_by} {order_direction};"
     # query_params = [order_by, order_direction] - won't work for some reason
     cursor.execute(query)
     return cursor.fetchall()
@@ -138,8 +139,7 @@ def save_answer(cursor, question_id, new_answer, filename, user_id):
 
 @database_connection.connection_handler
 def overwrite_question(cursor, question_id, new_data, filename):
-    if filename:
-        new_data['image'] = filename
+    new_data['image'] = filename
     query = """
             UPDATE question
             SET

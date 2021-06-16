@@ -62,6 +62,12 @@
                 <div class="d-inline mr-auto">
                     <span class="navbar-brand mb-0 h1">Hello, {{ session['user'] }}!</span>
                 </div>
+
+                 <form class="d-inline mr-auto" method="GET" action="/user/{{ session['id'] }}"
+                        name="my_profile" enctype="multipart/form-data">
+                    <button class="btn btn-outline-success mr-3" type="submit">My Profile</button>
+                </form>
+
                 <form class="d-inline mr-auto" method="GET" action="/logout"
                         name="logout_button" enctype="multipart/form-data">
                     <button class="btn btn-outline-success mr-3" type="submit">Logout</button>
@@ -98,7 +104,7 @@
 {% with messages = get_flashed_messages() %}
     {% if messages %}
         {% for msg in messages %}
-            <p class="text-white">{{ msg }}</p>
+            <p class="text-white text-center">{{ msg }}</p>
         {% endfor %}
     {% endif %}
 {% endwith %}

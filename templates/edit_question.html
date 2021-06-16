@@ -1,20 +1,28 @@
 {% extends "base.html" %}
-{% block title %} Edit your question {% endblock %}
+{% block title %}Edit your question {% endblock %}
 
 {% block content %}
-    <h1 class="header text-white">Edit your question:</h1>
-    <form action="#" method="POST" enctype="multipart/form-data"><br/>
-        <label class="label text-white" for="title">Title:</label><br/>
-        <input class="title__input" type="text" id="title" name="title" size="100" value="{{ question['title'] }}"><br/>
-        <label class="label text-white" for="message">Message:</label><br/>
-        <textarea class="textarea__input" id="message" name="message" rows="20" cols="100">{{ question['message'] }}</textarea><br/>
-        <button class="btn btn-secondary" type="reset">Reset</button>
-        <button class="btn btn-success" onclick="alert('Thank you! Your edits have been submited!')" type="submit">Save</button><br/>
 
-        <label class="label text-white text-white" for="file">Choose image to upload</label>
-        <input class = "add_image__button text-white" type="file" accept=".jpg, .jpeg, .png" name="file">
-        <button type="reset" class="btn btn-secondary">Reset</button>
-        <button autofocus onclick="alert('Your question has been submitted! Thank you!')" type="submit"
-            class ="btn btn-success">Submit</button>
-    </form>
+<div class="grid-container">
+    <h3 class="header text-white ml-5">Edit your question</h3>
+        <div class="grid-child d-flex justify-content-left">
+
+            <form action="#" method="POST" enctype="multipart/form-data"><br/>
+{#                <label class="label text-white" for="title">Title:</label><br/>#}
+                <input type="text" id="title" name="title" value="{{ question['title'] }}"><br/>
+{#                <label class="label text-white" for="message">Message:</label><br/>#}
+                <br>
+                <textarea id="message" name="message" rows="10" cols="80">{{ question['message'] }}</textarea><br/>
+
+                <label class="label text-white" for="file">Choose image to upload</label>
+                <input class = "add_image__button text-white" type="file" accept=".jpg, .jpeg, .png" name="file">
+                <div>
+                    <button type="reset" class="btn btn-secondary">Reset</button>
+                    <button autofocus onclick="alert('Your question has been submitted! Thank you!')" type="submit"
+                        class ="btn btn-success">Submit</button>
+                </div>
+            </form>
+        </div>
+</div>
+
 {% endblock %}
