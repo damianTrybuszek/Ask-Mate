@@ -1,27 +1,43 @@
 {% extends "base.html" %}
-{% block title %} Post new tag {% endblock %}
+{% block title %}Post new tag {% endblock %}
 
-<div class="body">
 {% block content %}
-    <h1 class="header text-white">Post the tag:</h1>
-    <form action="#" method="POST" enctype="multipart/form-data"><br/>
-        <label class="label text-white" for="message">tag:</label><br/>
-        <textarea class="textarea__input" id="message" name="name" rows="8" cols="30"></textarea><br/>
-        <button class="btn btn-secondary" type="reset">Reset</button>
-        <button class="btn btn-success" onclick="alert('Thank you! Your tag has been submited!')" type="submit">Save</button><br/>
-    </form>
 
+<div class="grid-container">
+    <h3 class="header text-white ml-5">Post a tag</h3>
+    <div class="grid-child d-flex justify-content-left">
 
-    {% if added_tag %}
-            <h4 class="header text-white">Tags already added to the question :</h4>
-            {% for tag in added_tag %}
-            <h3 class="header text-white">{{ tag['name'] }}</h3>
+        <form action="#" method="POST" enctype="multipart/form-data"><br>
+    {#        <label class="label text-white" for="message">tag:</label><br/>#}
+            <textarea id="message" name="name" rows="10" cols="80" placeholder="Type a tag here..." required></textarea>
+            <br><br>
+            <button class="btn btn-secondary" type="reset">Reset</button>
+            <button class="btn btn-success" onclick="alert('Thank you! Your tag has been submitted!')" type="submit">Submit</button><br>
+        </form>
+    </div>
+</div>
 
-            {% endfor %}
+{% if added_tag %}
+    <div class="container ml-5">
+        <div class="row">
+            <div class="col">
+                <h4 class="header text-white">Tags already added to this question:</h4>
+            </div>
+        </div>
 
-    {% endif %}
+        <div class="row">
+            <div class="col">
+                <ul>
+                    {% for tag in added_tag %}
+                        <li class="header text-white">{{ tag['name'] }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+{% endif %}
+
 {% endblock %}
 
 
 
-</div>

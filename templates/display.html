@@ -2,13 +2,20 @@
 {% block title %}Display a question {% endblock %}
 
 {% block content %}
-<div class="d-inline-flex p-2 bd-highlight">
-    {% if question["image"] %}
-        <img src="/static/img/{{ question["image"] }}" alt="Question Image" align="center"
-             max-width="100%" width="500"/>
-    {% endif %}
 
-    <h1 class="text-center font-weight-bold m-3 text-white">{{ question["title"] }}</h1>
+<div class="container">
+    <div class="row align-items-center">
+        {% if question["image"] %}
+            <div class="col-3">
+                    <img src="/static/img/{{ question["image"] }}" alt="Question Image"
+                         max-width="100%" width="250"/>
+            </div>
+        {% endif %}
+
+        <div class="col">
+           <h1 class="font-weight-bold m-3 text-white text-center">{{ question["title"] }}</h1>
+        </div>
+    </div>
 </div>
 
 <hr color="white">
@@ -31,23 +38,23 @@
 {#            Question Comments#}
 <div style="width:100%; margin-right: 10%">
     <table class="table table-dark table-striped table-hover table-sm table-bordered border-light">
-        <tr>
+        <tr class="text-center align-middle">
             <th colspan="100%" class="lead text-center">Question comments</th>
         </tr>
         <tr class="text-center">
-            <th>Comment</th>
-            <th>Submission Time</th>
-            <th>Editions</th>
-            <th>Edit this comment</th>
-            <th>Delete this comment</th>
+            <th class="align-middle">Comment</th>
+            <th class="align-middle">Submission Time</th>
+            <th class="align-middle">Editions</th>
+            <th class="align-middle">Edit this comment</th>
+            <th class="align-middle">Delete this comment</th>
         </tr>
         {% for comment in question_comments %}
             <tr class="text-center">
-                <td>{{ comment['message'] }}</td>
-                <td>{{ comment['submission_time'] }}</td>
-                <td>Edited: {{ comment['edited_count'] }} times</td>
-                <td><a href = "/comment/{{ comment['id'] }}/edit">EDIT</a>
-                <td><a href = "/comments/{{ comment['id'] }}/delete">
+                <td class="align-middle">{{ comment['message'] }}</td>
+                <td class="align-middle">{{ comment['submission_time'] }}</td>
+                <td class="align-middle">Edited: {{ comment['edited_count'] }} times</td>
+                <td class="align-middle"><a href = "/comment/{{ comment['id'] }}/edit">EDIT</a>
+                <td class="align-middle"><a href = "/comments/{{ comment['id'] }}/delete">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
                 <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1
                 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/><path fill-rule="evenodd"
@@ -72,7 +79,7 @@
         <tr class="text-center">
             {% for element in correct_order %}
                 {% if element != "question_id" %}
-                    <th>
+                    <th class="align-middle">
                         {{ element }}
 
                         <form action="/question/{{ question['id'] }}?order_by={{ element }}&order_direction=asc" method="POST">
@@ -87,9 +94,9 @@
                 {% endif %}
 
             {% endfor %}
-            <th>Mark as accepted</th>
-            <th>Comment this question</th>
-            <th colspan="2">Delete an answer</th>
+            <th class="align-middle">Mark as accepted</th>
+            <th class="align-middle">Comment this question</th>
+            <th class="align-middle" colspan="2">Delete an answer</th>
         </tr>
 
         {% for answer in answers %}
@@ -100,16 +107,16 @@
             {% endif %}
             {% for key in answer %}
                 {% if key == "image" and answer[key] == None %}
-                    <td class="table__cell text-center"></td>
+                    <td class="align-middle text-center"></td>
                 {% elif key == "image" and answer[key] %}
-                    <td class="table__cell text-center"><img src="/static/img/{{ answer[key] }}" alt="Answer Image" align="center" max-width="100%" width="300"/></td>
+                    <td class="align-middle text-center"><img src="/static/img/{{ answer[key] }}" alt="Answer Image" align="center" max-width="100%" width="300"/></td>
                 {% elif key != "question_id" and key != "is_accepted" %}
-                    <td class="table__cell text-center">{{ answer[key] }}</td>
+                    <td class="align-middle text-center">{{ answer[key] }}</td>
                 {% endif %}
             {% endfor %}
-                <td class="text-center"><a href="/accept-answer/{{ answer['id'] }}/{{ question['id'] }}">Mark as accepted</a></td>
-                <td class="text-center"><a href="/answer/{{ answer['id'] }}/new-comment">COMMENT</a></td>
-                <td class="text-center"><a href="/answer/{{ answer['id'] }}/delete">
+                <td class="text-center align-middle"><a href="/accept-answer/{{ answer['id'] }}/{{ question['id'] }}">Mark as accepted</a></td>
+                <td class="text-center align-middle"><a href="/answer/{{ answer['id'] }}/new-comment">COMMENT</a></td>
+                <td class="text-center align-middle"><a href="/answer/{{ answer['id'] }}/delete">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
                     <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1
                     0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/><path fill-rule="evenodd"
@@ -170,14 +177,5 @@
     <hr>
     {% endif %}
 
-
 </div>
-
-{#    <a href="/question/{{ question['id'] }}/new-comment"><h2 class="header">Add a comment!</h2></a></br>#}
-{#    <a href="/question/{{ question['id'] }}/new-answer"><h2 class="header">Post a new answer!</h2></a></br>#}
-{#    <a href="/question/{{ question['id'] }}/edit"><h2 class="header">Edit this question!</h2></a></br>#}
-{#    <a href="/question/{{ question['id'] }}/new-tag"><h2 class="header">Add tag to this question!</h2></a></br>#}
-{#    <a href="/list"><h2 class="header">Go to questions list page!</h2></a></br>#}
-{#    <a href="/question/{{ question['id'] }}/delete"><h2 class="header">Delete this question</h2></a></br>#}
-
 {% endblock %}

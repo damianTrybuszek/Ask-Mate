@@ -1,11 +1,17 @@
 {% extends "base.html" %}
 
-{% block title %} Delete a question {% endblock %}
+{% block title %}Delete a question {% endblock %}
 
 {% block content %}
-    <form action="#" method="POST"><br>
-        <h1 class="header text-white">Would you like to delete this question?</h1>
-        <button class="btn btn-success" onclick="alert('Thank you! This question has been deleted!')" type="submit" name="yes_button" value="yes">YES</button>
-        <button class="btn btn-secondary" type="submit" name="no_button" value="no">NO</button><br>
-    </form>
+
+    <div class="header text-white ml-5 pt-5">
+        <h3 class="header text-white">Would you like to delete this question?</h3>
+    </div>
+
+    <div class="ml-5 pb-5">
+        <form action="#" method="POST"><br>
+            <button class="btn btn-success" onclick="alert('Thank you! This question has been deleted!')" type="submit" name="yes_button" value="yes">YES</button>
+            <button class="btn btn-secondary" type="submit" name="no_button" value="no">NO</button><br>
+        </form>
+    </div>
 {% endblock %}
