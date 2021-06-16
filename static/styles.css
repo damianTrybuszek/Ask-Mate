@@ -1,65 +1,14 @@
-/*body {*/
-/*    padding-left: 20px;*/
-/*}*/
 .accepted__answer{
     color: rgba(152, 251, 152, 0.6);
 }
-
-/*.table__sortable {*/
-/*    border: 1px solid black;*/
-/*    border-spacing: 0;*/
-/*    background-color: #58E1F6;*/
-/*    width: 70%;*/
-/*    margin-left: auto;*/
-/*    margin-right: auto;*/
-/*}*/
-
-.table__row:nth-child(even) {
-    background-color: #e5e5e5;
-}
-
-.table__cell {
-    padding: 8px;
-    border: 1px solid black;
-}
-
-.title__input {
-    font-weight: bold;
-}
-
-/*.textarea__input {*/
-/*    margin-bottom:10px;*/
-/*    font-weight: bold;*/
-/*}*/
 
 .add_image__button{
     margin: 30px;
 }
 
-.header{
-    margin: 0px;
-}
-
 .label{
     margin-left:0px;
     font-weight: bold
-}
-
-.voteup__button{
-    text-align: center;
-    color: #0db46a;
-    width: 55px;
-    height: 55px;
-    font-weight: bold;
-    margin: 5px 5px 10px 5px;
-}
-
-.votedown__button{
-    text-align: center;
-    width: 55px;
-    height: 55px;
-    font-weight: bold;
-    margin: 10px 5px 5px 5px;
 }
 
 .asc__button{
@@ -89,6 +38,73 @@
     width: 25px;
     height: 25px;
 }
+
+.grid-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 20px;
+    justify-content: center;
+    align-items: center;
+}
+
+/*body {*/
+/*    padding-left: 20px;*/
+/*}*/
+
+
+/*.table__sortable {*/
+/*    border: 1px solid black;*/
+/*    border-spacing: 0;*/
+/*    background-color: #58E1F6;*/
+/*    width: 70%;*/
+/*    margin-left: auto;*/
+/*    margin-right: auto;*/
+/*}*/
+
+/*.table__row:nth-child(even) {*/
+/*    background-color: #e5e5e5;*/
+/*}*/
+
+/*.table__cell {*/
+/*    padding: 8px;*/
+/*    border: 1px solid black;*/
+/*}*/
+
+/*.title__input {*/
+/*    font-weight: bold;*/
+/*}*/
+
+/*.textarea__input {*/
+/*    margin-bottom:10px;*/
+/*    font-weight: bold;*/
+/*}*/
+
+
+
+/*.header{*/
+/*    margin: 0px;*/
+/*}*/
+
+
+
+/*.voteup__button{*/
+/*    text-align: center;*/
+/*    color: #0db46a;*/
+/*    width: 55px;*/
+/*    height: 55px;*/
+/*    font-weight: bold;*/
+/*    margin: 5px 5px 10px 5px;*/
+/*}*/
+
+/*.votedown__button{*/
+/*    text-align: center;*/
+/*    width: 55px;*/
+/*    height: 55px;*/
+/*    font-weight: bold;*/
+/*    margin: 10px 5px 5px 5px;*/
+/*}*/
+
+
 /*.search__button {*/
 /*    float: left;*/
 /*    width: 20%;*/
@@ -119,11 +135,3 @@
 /*    margin-left: 100px;*/
 /*    margin-right: auto;*/
 /*}*/
-
-.grid-container {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-gap: 20px;
-    justify-content: center;
-    align-items: center;
-}

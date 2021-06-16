@@ -25,7 +25,7 @@ def login_required(function):
 def hello():
     headers = data_handling.get_headers_questions()
     latest_questions = data_handling.get_latest_questions()
-    correct_table_order = ["id", "title", "message", "image", "view_number", "vote_number", "submission_time"]
+    correct_table_order = ["id", "title", "message", "image", "views", "votes", "posted"]
     return render_template('index.html', latest_questions=latest_questions, headers=headers,
                            correct_order=correct_table_order,)
 
