@@ -2,25 +2,36 @@
 {% block title %}Login{% endblock %}
 
 {% block content %}
-    <div class="row g-3">
-      <div class="col-sm-3">
+    <div class="grid-container">
+
+    <div class="grid-child d-flex justify-content-center">
+        <h1 class="text-white">Happy Questions</h1>
+        <br>
+{#        <h5 class="text-white">Connect with other music enthusiasts around the world!</h5>#}
+    </div>
+
+    <div class="grid-child d-flex justify-content-center ">
+
         <form action="#" method="POST" enctype="multipart/form-data">
-
-        <label for="email" class="form-label text-white">Email</label>
-        <input type="email" class="form-control" placeholder="Email" name="email"
+            <br>
+            <br>
+            <br>
+            <br>
+{#        <label for="email" class="col-sm-2 col-form-label text-white">Email</label>#}
+        <input type="email" class="form-control align-self-center" placeholder="Email" name="email"
                id="email" aria-label="first_name" required>
-
-        <label for="password" class="form-label text-white">Password</label>
+            <br>
+{#        <label for="password" class="col-sm-2 col-form-label text-white">Password</label>#}
         <input type="password" class="form-control" placeholder="Password" name="password"
                id="password" aria-label="first_name" required>
+<br>
+<div class="form-check">
 
         <button class ="btn btn-secondary" type="reset">Reset</button>
         <button class ="btn btn-success" type="submit">Submit</button>
+</div>
         </form>
       </div>
-
-   </div>
-
-
+</div>
 
 {% endblock %}

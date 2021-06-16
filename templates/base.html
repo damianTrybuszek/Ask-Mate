@@ -53,22 +53,37 @@
             <li class="nav-item">
               <a class="nav-link" href="/add_question">Add question</a>
             </li>
+
             </ul>
         </div>
 
          <div>
-            <form class="d-inline mr-auto" method="GET" action="#"
-                  name="login_buttons" enctype="multipart/form-data">
-                <button class="btn btn-outline-success mr-1" type="submit">Login</button>
-            </form>
-            <form class="d-inline mr-auto" method="GET" action="/registration"
-                  name="register_button" enctype="multipart/form-data">
-                <button class="btn btn-outline-success mr-3" type="submit">Register</button>
-            </form>
-           <form class="d-inline mr-auto" method="GET" action="/logout"
-                  name="logout_button" enctype="multipart/form-data">
-                <button class="btn btn-outline-success mr-3" type="submit">Logout</button>
-            </form>
+             {% if 'username' in session %}
+                <div class="d-inline mr-auto">
+                    <span class="navbar-brand mb-0 h1">Hello, {{ session['user'] }}!</span>
+                </div>
+
+                 <form class="d-inline mr-auto" method="GET" action="/user/{{ session['id'] }}"
+                        name="my_profile" enctype="multipart/form-data">
+                    <button class="btn btn-outline-success mr-3" type="submit">My Profile</button>
+                </form>
+
+                <form class="d-inline mr-auto" method="GET" action="/logout"
+                        name="logout_button" enctype="multipart/form-data">
+                    <button class="btn btn-outline-success mr-3" type="submit">Logout</button>
+                </form>
+
+             {% else %}
+
+                <form class="d-inline mr-auto" method="GET" action="/login"
+                      name="login_buttons" enctype="multipart/form-data">
+                    <button class="btn btn-outline-success mr-1" type="submit">Login</button>
+                </form>
+                <form class="d-inline mr-auto" method="GET" action="/registration"
+                      name="register_button" enctype="multipart/form-data">
+                    <button class="btn btn-outline-success mr-3" type="submit">Register</button>
+                </form>
+            {% endif %}
 
         </div>
 
@@ -89,7 +104,7 @@
 {% with messages = get_flashed_messages() %}
     {% if messages %}
         {% for msg in messages %}
-            <p class="text-white">{{ msg }}</p>
+            <p class="text-white text-center">{{ msg }}</p>
         {% endfor %}
     {% endif %}
 {% endwith %}

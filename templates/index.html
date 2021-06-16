@@ -45,11 +45,11 @@
     <button type="button" class="btn btn-dark btn-lg btn-block">
         <h4 class="header"><a href="/list">Questions List</a></h4>
     </button>
-
-    <button type="button" class="btn btn-dark btn-lg btn-block">
-        <h4 class="header"><a href="/users">See All Users</a></h4>
-    </button>
-
+    {% if 'username' in session %}
+        <button type="button" class="btn btn-dark btn-lg btn-block">
+            <h4 class="header"><a href="/users">See All Users</a></h4>
+        </button>
+    {% endif %}
 {#    <button type="button" class="btn btn-dark btn-lg btn-block">#}
 {#        <h4 class="header"><a href="/user/{{ user['id'] }}">User Profile</a></h4>#}
 {#    </button>#}
@@ -117,10 +117,10 @@
                 {% endif %}
             {% endfor %}
         <form action="/question/{{ element['id'] }}/vote_up" method="POST">
-            <td class="text-center align-middle"><button class="voteup__button" onclick="alert('Thank you! You have up-voted the question!')" type="submit" name="vote_up">Vote up</button>
+            <td class="text-center align-middle"><button class="btn btn-success" onclick="alert('Thank you! You have up-voted the question!')" type="submit" name="vote_up">Vote up</button>
         </form>
         <form action="/question/{{ element['id'] }}/vote_down" method="POST">
-            <button class="votedown__button" onclick="alert('Thank you! You have down-voted the question!')" type="submit" name="vote_down">Vote down</button></td>
+            <button class="btn btn-danger" onclick="alert('Thank you! You have down-voted the question!')" type="submit" name="vote_down">Vote down</button></td>
         </form>
          </tr>
     {% endfor %}

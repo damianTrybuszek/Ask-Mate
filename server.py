@@ -10,6 +10,17 @@ app.config['UPLOAD_FOLDER'] = data_handling.UPLOAD_FOLDER
 app.secret_key = os.environ.get('SECRET_KEY', 'dev')
 app.permanent_session_lifetime= timedelta(days=1)
 
+
+def login_required(function):
+    def wrapper(*args, **kwargs):
+        if 'username' not in session:
+            flash("You must be logged in to do this!")
+            return redirect(url_for('user_login'))
+        return function(*args, **kwargs)
+    wrapper.__name__ = function.__name__
+    return wrapper
+
+
 @app.route("/")
 def hello():
     headers = data_handling.get_headers_questions()
@@ -25,7 +36,7 @@ def display_list():
     order_direction = request.args.get('order_direction', 'desc')
     headers = data_handling.get_headers_questions()
     question_list = data_handling.get_questions(order_by, order_direction)
-    correct_table_order = ["id", "title", "message", "image", "view_number", "vote_number", "submission_time"]
+    correct_table_order = ["id", "title", "message", "image", "views", "votes", "posted"]
 
     return render_template("list.html", question_list=question_list, headers=headers,
                            correct_order=correct_table_order)
@@ -58,6 +69,7 @@ def display(question_id):
 
 
 @app.route("/add_question", methods=["POST", "GET"])
+@login_required
 def add_question():
     if request.method == "POST":
         if "file" in request.files:
@@ -68,20 +80,19 @@ def add_question():
             else:
                 filename = False
         new_question_input = dict(request.form)
-        try:
-            email = session['username']
-            user_id = data_handling.get_user_id(email)
 
-            data_handling.save_question(new_question_input, filename, user_id)
-            question_id = data_handling.get_last_question()[0]['id']
-            return redirect(f"/question/{question_id}")
-        except:
-            flash("Adding question failed! Please log in!")
-            return redirect(url_for("user_login"))
+        email = session['username']
+        user_id = data_handling.get_user_id(email)
+
+        data_handling.save_question(new_question_input, filename, user_id)
+        question_id = data_handling.get_last_question()[0]['id']
+        return redirect(f"/question/{question_id}")
+
     return render_template("add_question.html")
 
 
 @app.route("/question/<question_id>/new-answer", methods=["GET", "POST"])
+@login_required
 def post_an_answer(question_id):
     if request.method == "POST":
         if "file" in request.files:
@@ -93,8 +104,10 @@ def post_an_answer(question_id):
             else:
                 filename = False
         answer = dict(request.form)
-        data_handling.save_answer(question_id, answer, filename)
+        user_id = session['id']
+        data_handling.save_answer(question_id, answer, filename, user_id)
         return redirect(f"/question/{answer['question_id']}")
+
     return render_template("post_an_answer.html", question_id=question_id)
 
 
@@ -172,7 +185,8 @@ def questions_vote_up(question_id):
     question = data_handling.get_question_by_id(question_id)
     if request.method == "POST":
         if 'vote_up' in request.form:
-            data_handling.question_vote_up(question)
+            user_id = data_handling.get_user_id_from_question(question_id)
+            data_handling.question_vote_up(question, user_id)
     return redirect("/list")
 
 
@@ -181,7 +195,8 @@ def questions_vote_down(question_id):
     question = data_handling.get_question_by_id(question_id)
     if request.method == "POST":
         if 'vote_down' in request.form:
-            data_handling.question_vote_down(question)
+            user_id = data_handling.get_user_id_from_question(question_id)
+            data_handling.question_vote_down(question, user_id)
     return redirect("/list")
 
 
@@ -190,7 +205,8 @@ def answers_vote_up(answer_id):
     answer = data_handling.get_answer_by_id(answer_id)
     if request.method == "POST":
         if 'vote_up' in request.form:
-            data_handling.answer_vote_up(answer)
+            user_id = data_handling.get_user_id_from_answer(answer_id)
+            data_handling.answer_vote_up(answer, user_id)
     return redirect(f"/question/{answer[0]['question_id']}")
 
 
@@ -199,7 +215,8 @@ def answers_vote_down(answer_id):
     answer = data_handling.get_answer_by_id(answer_id)
     if request.method == "POST":
         if 'vote_down' in request.form:
-            data_handling.answer_vote_down(answer)
+            user_id = data_handling.get_user_id_from_answer(answer_id)
+            data_handling.answer_vote_down(answer, user_id)
     return redirect(f"/question/{answer[0]['question_id']}")
 
 
@@ -230,12 +247,15 @@ def search_question():
 
 
 @app.route("/question/<question_id>/new-comment", methods=["GET", "POST"])
+@login_required
 def add_comment_question(question_id):
     if request.method == "POST":
         if 'message' in request.form:
             comment = dict(request.form)
-            data_handling.add_comment_to_question(question_id, comment)
+            user_id = session['id']
+            data_handling.add_comment_to_question(question_id, comment, user_id)
             return redirect(f"/question/{question_id}")
+
     return render_template("new_comment.html")
 
 
@@ -262,13 +282,16 @@ def delete_tag(question_id, tag_id):
 
 
 @app.route("/answer/<answer_id>/new-comment", methods=["GET", "POST"])
+@login_required
 def add_comment_answer(answer_id):
     if request.method == "POST":
         if 'message' in request.form:
+            user_id = session['id']
             comment = dict(request.form)
-            data_handling.add_comment_to_answer(answer_id, comment)
+            data_handling.add_comment_to_answer(answer_id, comment, user_id)
             question_id = data_handling.get_question_id_from_answer(answer_id)
             return redirect(f"/question/{question_id}")
+
     return render_template("new_comment.html")
 
 
@@ -345,11 +368,14 @@ def logout():
     if "username" in session:
         flash(f"You've been logged out!, {session['user']}")
     session.pop("username", None)
+    session.pop("user", None)
+    session.pop("id", None)
 
     return redirect(url_for("user_login"))
 
   
 @app.route("/users", methods=["GET", "POST"])
+@login_required
 def users_list():
     users_data = data_handling.get_users_data()
     return render_template("users.html", users_data=users_data)
@@ -357,7 +383,17 @@ def users_list():
 
 @app.route("/accept-answer/<answer_id>/<question_id>", methods=["GET"])
 def accept_answer(answer_id, question_id):
-    data_handling.update_answer_accepted(answer_id)
+    user_id = data_handling.get_user_id_from_answer(answer_id)
+    if session['id'] == user_id:
+        data_handling.update_answer_accepted(answer_id)
+        accepted_status = data_handling.accepted_status_check(answer_id)
+        if accepted_status:
+            data_handling.accepted_rep_up(user_id)
+        else:
+            data_handling.accepted_rep_down(user_id)
+    else:
+        flash('Only person who created the question can accept it.')
+        return redirect(f"/question/{question_id}")
     return redirect(f"/question/{question_id}")
 
 
@@ -375,6 +411,7 @@ def user_page(user_id):
 def display_tags():
     tags_list = data_handling.get_all_tags()
     return render_template("tags.html", tags_list=tags_list)
+
 
 
 
