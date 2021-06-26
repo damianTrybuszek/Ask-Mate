@@ -653,7 +653,14 @@ def update_answer_accepted(cursor, answer_id):
 def get_single_user_data(cursor, user_id):
     query = sql.SQL("SELECT "
                     "users.id, users.first_name, users.last_name, users.email,"
-                    " users.registration_date::date, users.reputation, "
+                    " users.registration_date::date, users.reputation "
+                    "FROM users "
+                    "WHERE users.id=%s;")
+    query_params = [user_id]
+    cursor.execute(query, query_params)
+    user_details = cursor.fetchall()
+
+    query = sql.SQL("SELECT "
                     "COUNT(question.id) AS questions "
                     "FROM users "
                     "JOIN question on users.id=question.user_id "
@@ -661,7 +668,10 @@ def get_single_user_data(cursor, user_id):
                     "HAVING users.id=%s;")
     query_params = [user_id]
     cursor.execute(query, query_params)
-    user_details = cursor.fetchall()
+    try:
+        user_details['questions'] = cursor.fetchall()[0]['questions']
+    except:
+        user_details[0]['questions'] = 0
 
     query = sql.SQL("SELECT "
                     "COUNT(answer.id) AS answers "
@@ -671,7 +681,10 @@ def get_single_user_data(cursor, user_id):
                     "HAVING users.id=%s;")
     query_params = [user_id]
     cursor.execute(query, query_params)
-    user_details[0]['answers'] = cursor.fetchall()[0]['answers']
+    try:
+        user_details[0]['answers'] = cursor.fetchall()[0]['answers']
+    except:
+        user_details[0]['answers'] = 0
 
     query = sql.SQL("SELECT "
                     "COUNT(comment.id) AS comments "
@@ -681,7 +694,10 @@ def get_single_user_data(cursor, user_id):
                     "HAVING users.id=%s;")
     query_params = [user_id]
     cursor.execute(query, query_params)
-    user_details[0]['comments'] = cursor.fetchall()[0]['comments']
+    try:
+        user_details[0]['comments'] = cursor.fetchall()[0]['comments']
+    except:
+        user_details[0]['comments'] = 0
 
     return user_details[0]
 
