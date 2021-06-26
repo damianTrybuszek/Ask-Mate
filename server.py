@@ -347,9 +347,8 @@ def user_login():
         email = request.form['email']
         password = request.form['password']
         try:
-            data_handling.check_user_login(email, password)
-            session['username'] = request.form['email']
-            if "username" in session:
+            if data_handling.check_user_login(email, password):
+                session['username'] = request.form['email']
                 session['user'] = data_handling.get_session_user(email)
                 session['id'] = data_handling.get_user_id(email)
                 flash(f"You were successfully logged in, {session['user']}")
