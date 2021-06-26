@@ -3,133 +3,141 @@
 
 {% block content %}
 
-{#    <header class="masterhead">#}
-{#    <div class="container">#}
-{#        <div class="masthead-subheading">Hello! Welcome to the <b>most awesome</b> page in the universe!</div>#}
-{#        <div class="masthead-heading text-uppercase">It Is Nice To Meet You</div>#}
-{#        <a class="btn btn-primary btn-xl text-uppercase" href="/list">Questions List</a>#}
-{#    </div>#}
-{#    </header>#}
+    {#    <header class="masterhead">#}
+    {#    <div class="container">#}
+    {#        <div class="masthead-subheading">Hello! Welcome to the <b>most awesome</b> page in the universe!</div>#}
+    {#        <div class="masthead-heading text-uppercase">It Is Nice To Meet You</div>#}
+    {#        <a class="btn btn-primary btn-xl text-uppercase" href="/list">Questions List</a>#}
+    {#    </div>#}
+    {#    </header>#}
 
-{#Carousel#}
-<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" data-interval="2500">
-  <ol class="carousel-indicators">
-    <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-    <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-    <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-  </ol>
-  <div class="carousel-inner">
-    <div class="carousel-item active">
-      <img class="d-block w-100" src="/static/graphics/banner_main_page_1.png" alt="First slide">
+    {#Carousel#}
+    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" data-interval="2500">
+        <ol class="carousel-indicators">
+            <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+            <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+            <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+        </ol>
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img class="d-block w-100" src="/static/graphics/banner_main_page_1.png" alt="First slide">
+            </div>
+            <div class="carousel-item">
+                <img class="d-block w-100" src="/static/graphics/banner_main_page_2.png" alt="Second slide">
+            </div>
+            <div class="carousel-item">
+                <img class="d-block w-100" src="/static/graphics/banner_main_page_3.png" alt="Third slide">
+            </div>
+        </div>
+        <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
     </div>
-    <div class="carousel-item">
-      <img class="d-block w-100" src="/static/graphics/banner_main_page_2.png" alt="Second slide">
-    </div>
-    <div class="carousel-item">
-      <img class="d-block w-100" src="/static/graphics/banner_main_page_3.png" alt="Third slide">
-    </div>
-  </div>
-  <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-    <span class="sr-only">Previous</span>
-  </a>
-  <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-    <span class="sr-only">Next</span>
-  </a>
-</div>
 
-<hr color="#FFFFFF">
+    <hr color="#FFFFFF">
 
-<div>
-    <button type="button" class="btn btn-dark btn-lg btn-block">
-        <h4 class="header"><a href="/list">Questions List</a></h4>
-    </button>
-    {% if 'username' in session %}
+    <div>
         <button type="button" class="btn btn-dark btn-lg btn-block">
-            <h4 class="header"><a href="/users">See All Users</a></h4>
+            <h4 class="header"><a href="/list">Questions List</a></h4>
         </button>
-    {% endif %}
-{#    <button type="button" class="btn btn-dark btn-lg btn-block">#}
-{#        <h4 class="header"><a href="/user/{{ user['id'] }}">User Profile</a></h4>#}
-{#    </button>#}
+        {% if 'username' in session %}
+            <button type="button" class="btn btn-dark btn-lg btn-block">
+                <h4 class="header"><a href="/users">See All Users</a></h4>
+            </button>
+        {% endif %}
+        {#    <button type="button" class="btn btn-dark btn-lg btn-block">#}
+        {#        <h4 class="header"><a href="/user/{{ user['id'] }}">User Profile</a></h4>#}
+        {#    </button>#}
 
-    <button type="button" class="btn btn-dark btn-lg btn-block">
-        <h4 class="header"><a href="/tags">See all tags</a></h4>
-    </button>
-</div>
+        <button type="button" class="btn btn-dark btn-lg btn-block">
+            <h4 class="header"><a href="/tags">See all tags</a></h4>
+        </button>
+    </div>
 
-<hr color="#FFFFFF">
+    <hr color="#FFFFFF">
 
-<div class="header text-center text-white" role="alert">
-    <h3>Latest questions</h3>
-</div>
+    <div class="header text-center text-white" role="alert">
+        <h3>Latest questions</h3>
+    </div>
 
 
-<hr color="#FFFFFF">
-<div class="mx-auto" style="width: 80%">
-<table class="table table-dark table-striped table-hover table-sm table-bordered border-light ">
+    <hr color="#FFFFFF">
+    <div class="mx-auto" style="width: 80%">
+        <table class="table table-dark table-striped table-hover table-sm table-bordered border-light ">
 
-{# Headers #}
-    <tr class="text-center align-middle" >
-        {% for element in correct_order %}
+            {# Headers #}
+            <tr class="text-center align-middle" >
+                {% for element in correct_order %}
 
-            {%  if element == "posted" %}
-                <th class="text-center align-middle" colspan="2">
-                    {{ element }}
+                    {%  if element == "posted" %}
+                        <th class="text-center align-middle" colspan="2">
+                            {{ element }}
 
-                    <form action="/list?order_by={{ element }}&order_direction=asc" method="POST">
-                    <button class="asc__button" type="submit" name="asc"><img class="arrows_up_down" src="/static/graphics/up_arrow.jpg"></button>
-                    </form>
+                            <form action="/list?order_by={{ element }}&order_direction=asc" method="POST">
+                                <button class="asc__button" type="submit" name="asc">
+                                    <img class="arrows_up_down" src="/static/graphics/up_arrow.jpg" alt="up_button">
+                                </button>
+                            </form>
 
-                    <form action="/list?order_by={{ element }}&order_direction=desc" method="POST">
-                    <button class="desc__button" type="submit" name="desc"><img class="arrows_up_down" src="/static/graphics/down_arrow.jpg"></button>
-                    </form>
-                </th>
-            {% else %}
-                <th class="text-center align-middle">
-                    {{ element }}
+                            <form action="/list?order_by={{ element }}&order_direction=desc" method="POST">
+                                <button class="desc__button" type="submit" name="desc">
+                                    <img class="arrows_up_down" src="/static/graphics/down_arrow.jpg" alt="down_button">
+                                </button>
+                            </form>
+                        </th>
+                    {% else %}
+                        <th class="text-center align-middle">
+                            {{ element }}
 
-                    <form action="/list?order_by={{ element }}&order_direction=asc" method="POST">
-                    <button class="asc__button" type="submit" name="asc"><img class="arrows_up_down" src="/static/graphics/up_arrow.jpg"></button>
-                    </form>
+                            <form action="/list?order_by={{ element }}&order_direction=asc" method="POST">
+                                <button class="asc__button" type="submit" name="asc">
+                                    <img class="arrows_up_down" src="/static/graphics/up_arrow.jpg" alt="up_button">
+                                </button>
+                            </form>
 
-                    <form action="/list?order_by={{ element }}&order_direction=desc" method="POST">
-                    <button class="desc__button" type="submit" name="desc"><img class="arrows_up_down" src="/static/graphics/down_arrow.jpg"></button>
-                    </form>
-                </th>
-            {% endif %}
-        {% endfor %}
-    </tr>
+                            <form action="/list?order_by={{ element }}&order_direction=desc" method="POST">
+                                <button class="desc__button" type="submit" name="desc">
+                                    <img class="arrows_up_down" src="/static/graphics/down_arrow.jpg" alt="down_button">
+                                </button>
+                            </form>
+                        </th>
+                    {% endif %}
+                {% endfor %}
+            </tr>
 
-{# Questions #}
-    {% for element in latest_questions %}
-        <tr class="text-center">
-            {% for key in element %}
-                {% if key == "id" %}
-                    <td class="text-center align-middle" ><a href="/question/{{ element[key] }}">{{ element[key] }}</a></td>
-                {% elif key == "image" and element[key] == None %}
-                    <td class="text-center align-middle" ></td>
-                {% elif key == "image" and element[key] %}
-                    <td class="text-center align-middle"><img src="/static/img/{{ element[key] }}" alt="Question Image"
-                                                              max-width="100%" width="200"/></td>
-                {% else %}
-                    <td class="text-center align-middle">{{ element[key] }}</td>
-                {% endif %}
+            {# Questions #}
+            {% for element in latest_questions %}
+                <tr class="text-center">
+                    {% for key in element %}
+                        {% if key == "id" %}
+                            <td class="text-center align-middle" ><a href="/question/{{ element[key] }}">{{ element[key] }}</a></td>
+                        {% elif key == "image" and element[key] == None %}
+                            <td class="text-center align-middle" ></td>
+                        {% elif key == "image" and element[key] %}
+                            <td class="text-center align-middle"><img src="/static/img/{{ element[key] }}"
+                                                                      alt="Question Image" width="200"/></td>
+                        {% else %}
+                            <td class="text-center align-middle">{{ element[key] }}</td>
+                        {% endif %}
+                    {% endfor %}
+                    <td class="text-center align-middle">
+                        <form action="/question/{{ element['id'] }}/vote_up" method="POST">
+                            <button class="btn btn-success btn-sm btn-block" onclick="alert('Thank you! You have up-voted the question!')"
+                                    type="submit" name="vote_up">Vote up</button>
+                        </form>
+                        <form action="/question/{{ element['id'] }}/vote_down" method="POST">
+                            <button class="btn btn-danger btn-sm btn-block" onclick="alert('Thank you! You have down-voted the question!')"
+                                    type="submit" name="vote_down">Vote down</button>
+                        </form>
+                    </td>
+                </tr>
             {% endfor %}
-            <td class="text-center align-middle">
-                <form action="/question/{{ element['id'] }}/vote_up" method="POST">
-                    <button class="btn btn-success btn-sm btn-block" onclick="alert('Thank you! You have up-voted the question!')"
-                            type="submit" name="vote_up">Vote up</button>
-                </form>
-                <form action="/question/{{ element['id'] }}/vote_down" method="POST">
-                    <button class="btn btn-danger btn-sm btn-block" onclick="alert('Thank you! You have down-voted the question!')"
-                            type="submit" name="vote_down">Vote down</button>
-                </form>
-            </td>
-        </tr>
-        {% endfor %}
-</table>
+        </table>
 
 
 {% endblock %}

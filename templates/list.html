@@ -3,73 +3,74 @@
 
 {% block content %}
 
-<h1 class="header display-5 text-center text-white mt-2">Hello There!</h1>
+    <h1 class="header display-5 text-center text-white mt-2">Hello There!</h1>
 
-    <h3 class="header  text-center text-white" role="alert">
-  Currently available list of questions
+    <h3 class="header text-center text-white">
+        Currently available list of questions
     </h3>
 
-<hr color="white">
-<div class="mx-auto" style="width: 80%">
-<table class="table table-dark table-striped table-hover table-sm table-bordered border-light">
+    <hr color="white">
+    <div class="mx-auto" style="width: 80%">
+        <table class="table table-dark table-striped table-hover table-sm table-bordered border-light">
 
-    <tr class="text-center align-middle" >
-        {% for element in correct_order %}
+            <tr class="text-center align-middle" >
+                {% for element in correct_order %}
 
-            {%  if element == "posted" %}
-                <th class="text-center align-middle" colspan="2">
-                    {{ element }}
+                    {%  if element == "posted" %}
+                        <th class="text-center align-middle" colspan="2">
+                            {{ element }}
 
-                    <form action="/list?order_by={{ element }}&order_direction=asc" method="POST">
-                    <button class="asc__button" type="submit" name="asc"><img class="arrows_up_down" alt="Arrow up image" src="/static/graphics/up_arrow.jpg"></button>
-                    </form>
+                            <form action="/list?order_by={{ element }}&order_direction=asc" method="POST">
+                                <button class="asc__button" type="submit" name="asc"><img class="arrows_up_down" alt="Arrow up image" src="/static/graphics/up_arrow.jpg"></button>
+                            </form>
 
-                    <form action="/list?order_by={{ element }}&order_direction=desc" method="POST">
-                    <button class="desc__button" type="submit" name="desc"><img class="arrows_up_down" alt="Arrow down image" src="/static/graphics/down_arrow.jpg"></button>
-                    </form>
-                </th>
+                            <form action="/list?order_by={{ element }}&order_direction=desc" method="POST">
+                                <button class="desc__button" type="submit" name="desc"><img class="arrows_up_down" alt="Arrow down image" src="/static/graphics/down_arrow.jpg"></button>
+                            </form>
+                        </th>
 
-            {% else %}
-                <th class="text-center align-middle">
-                    {{ element }}
+                    {% else %}
+                        <th class="text-center align-middle">
+                            {{ element }}
 
-                    <form action="/list?order_by={{ element }}&order_direction=asc" method="POST">
-                    <button class="asc__button" type="submit" name="asc"><img class="arrows_up_down" alt="Arrow up image" src="/static/graphics/up_arrow.jpg"></button>
-                    </form>
+                            <form action="/list?order_by={{ element }}&order_direction=asc" method="POST">
+                                <button class="asc__button" type="submit" name="asc"><img class="arrows_up_down" alt="Arrow up image" src="/static/graphics/up_arrow.jpg"></button>
+                            </form>
 
-                    <form action="/list?order_by={{ element }}&order_direction=desc" method="POST">
-                    <button class="desc__button" type="submit" name="desc"><img class="arrows_up_down" alt="Arrow down image" src="/static/graphics/down_arrow.jpg"></button>
-                    </form>
-                </th>
-            {% endif %}
-        {% endfor %}
-    </tr>
+                            <form action="/list?order_by={{ element }}&order_direction=desc" method="POST">
+                                <button class="desc__button" type="submit" name="desc"><img class="arrows_up_down" alt="Arrow down image" src="/static/graphics/down_arrow.jpg"></button>
+                            </form>
+                        </th>
+                    {% endif %}
+                {% endfor %}
+            </tr>
 
-        {% for element in question_list %}
-    <tr class="text-center">
-            {% for key in element %}
-                {% if key == "id" %}
-                    <td class="text-center align-middle" ><a href="/question/{{ element[key] }}">{{ element[key] }}</a></td>
-                {% elif key == "image" and element[key] == None %}
-                    <td class="text-center align-middle" ></td>
-                {% elif key == "image" and element[key] %}
-                    <td class="text-center align-middle"><img src="/static/img/{{ element[key] }}" alt="Question Image" max-width="100%" width="200"/></td>
-                {% else %}
-                    <td class="text-center align-middle">{{ element[key] }}</td>
-                {% endif %}
+            {% for element in question_list %}
+                <tr class="text-center">
+                    {% for key in element %}
+                        {% if key == "id" %}
+                            <td class="text-center align-middle" ><a href="/question/{{ element[key] }}">{{ element[key] }}</a></td>
+                        {% elif key == "image" and element[key] == None %}
+                            <td class="text-center align-middle" ></td>
+                        {% elif key == "image" and element[key] %}
+                            <td class="text-center align-middle"><img src="/static/img/{{ element[key] }}"
+                                                                      alt="Question Image" width="200"/></td>
+                        {% else %}
+                            <td class="text-center align-middle">{{ element[key] }}</td>
+                        {% endif %}
+                    {% endfor %}
+                    <td class="text-center align-middle">
+                        <form action="/question/{{ element['id'] }}/vote_up" method="POST">
+                            <button class="btn btn-success btn-sm btn-block" onclick="alert('Thank you! You have up-voted the question!')" type="submit" name="vote_up">Vote up</button>
+                        </form>
+                        <form action="/question/{{ element['id'] }}/vote_down" method="POST">
+                            <button class="btn btn-danger btn-sm btn-block" onclick="alert('Thank you! You have down-voted the question!')" type="submit" name="vote_down">Vote down</button>
+                        </form>
+                    </td>
+                </tr>
             {% endfor %}
-            <td class="text-center align-middle">
-                <form action="/question/{{ element['id'] }}/vote_up" method="POST">
-                    <button class="btn btn-success btn-sm btn-block" onclick="alert('Thank you! You have up-voted the question!')" type="submit" name="vote_up">Vote up</button>
-                </form>
-                <form action="/question/{{ element['id'] }}/vote_down" method="POST">
-                    <button class="btn btn-danger btn-sm btn-block" onclick="alert('Thank you! You have down-voted the question!')" type="submit" name="vote_down">Vote down</button>
-                </form>
-            </td>
-    </tr>
-        {% endfor %}
-</table>
-</div>
+        </table>
+    </div>
 
 
 {% endblock %}

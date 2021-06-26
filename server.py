@@ -56,7 +56,7 @@ def display(question_id):
     question_comments = data_handling.get_comments_for_question(question_id)
     added_tags = data_handling.get_question_tag(question_id)
     answers_comments = data_handling.get_comments_for_answer(question_id)
-    correct_table_order = ["id", "message", "image", "vote_number", "submission_time"]
+    correct_table_order = ["id", "message", "image", "votes", "posted"]
 
     if len(question) > 0:
         question_to_display = question[0]
@@ -347,9 +347,8 @@ def user_login():
         email = request.form['email']
         password = request.form['password']
         try:
-            data_handling.check_user_login(email, password)
-            session['username'] = request.form['email']
-            if "username" in session:
+            if data_handling.check_user_login(email, password):
+                session['username'] = request.form['email']
                 session['user'] = data_handling.get_session_user(email)
                 session['id'] = data_handling.get_user_id(email)
                 flash(f"You were successfully logged in, {session['user']}")
