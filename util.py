@@ -38,7 +38,7 @@ def get_questions_to_display(cursor, question_id):
 
 @database_connection.connection_handler
 def get_answer_to_display(cursor, question_id, order_by, order_direction):
-    query = f"SELECT id, message, image, vote_number, submission_time, question_id, is_accepted" \
+    query = f"SELECT id, message, image, vote_number AS votes, submission_time AS posted, question_id, is_accepted" \
             f" FROM answer WHERE question_id = {question_id} ORDER BY {order_by} {order_direction};"
     cursor.execute(query)
     return cursor.fetchall()

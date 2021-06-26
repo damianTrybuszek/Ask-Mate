@@ -56,7 +56,7 @@ def display(question_id):
     question_comments = data_handling.get_comments_for_question(question_id)
     added_tags = data_handling.get_question_tag(question_id)
     answers_comments = data_handling.get_comments_for_answer(question_id)
-    correct_table_order = ["id", "message", "image", "vote_number", "submission_time"]
+    correct_table_order = ["id", "message", "image", "votes", "posted"]
 
     if len(question) > 0:
         question_to_display = question[0]

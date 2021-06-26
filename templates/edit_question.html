@@ -3,14 +3,14 @@
 
 {% block content %}
 
-<div class="grid-container">
-    <h3 class="header text-white ml-5">Edit your question</h3>
+    <div class="grid-container">
+        <h3 class="header text-white ml-5">Edit your question</h3>
         <div class="grid-child d-flex justify-content-left">
 
             <form action="#" method="POST" enctype="multipart/form-data"><br/>
-{#                <label class="label text-white" for="title">Title:</label><br/>#}
+                {#                <label class="label text-white" for="title">Title:</label><br/>#}
                 <input type="text" id="title" name="title" value="{{ question['title'] }}"><br/>
-{#                <label class="label text-white" for="message">Message:</label><br/>#}
+                {#                <label class="label text-white" for="message">Message:</label><br/>#}
                 <br>
                 <textarea id="message" name="message" rows="10" cols="80">{{ question['message'] }}</textarea><br/>
 
@@ -19,10 +19,10 @@
                 <div>
                     <button type="reset" class="btn btn-secondary">Reset</button>
                     <button autofocus onclick="alert('Your question has been submitted! Thank you!')" type="submit"
-                        class ="btn btn-success">Submit</button>
+                            class ="btn btn-success">Submit</button>
                 </div>
             </form>
         </div>
-</div>
+    </div>
 
 {% endblock %}

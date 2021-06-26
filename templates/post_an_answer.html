@@ -4,14 +4,14 @@
 {% block content %}
 
     <div class="grid-container">
-            <h3 class="header text-white ml-5">Please submit your answer</h3>
+        <h3 class="header text-white ml-5">Please submit your answer</h3>
         <div class="grid-child d-flex justify-content-center mt-5">
 
             <form action="#" method="POST" enctype="multipart/form-data">
-{#                <label class="label text-white" for="message">Answer:</label><br/>#}
+                {#                <label class="label text-white" for="message">Answer:</label><br/>#}
                 <textarea name='message' placeholder='Please type your answer here...' cols='80' rows='10' required></textarea><br/>
 
-{#                <label class="label text-white" for="file">Choose image to upload</label>#}
+                {#                <label class="label text-white" for="file">Choose image to upload</label>#}
                 <input class="add_image__button text-white" type="file" accept=".jpg, .jpeg, .png" name="file">
                 <button class="btn btn-secondary" type="reset">Reset</button>
                 <button class="btn btn-success" onclick="alert('Thank you! You answer has been submitted!')" type="submit">Submit</button>
